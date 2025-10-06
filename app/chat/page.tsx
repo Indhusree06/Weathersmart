@@ -1,0 +1,1066 @@
+"use client"
+
+import { useState, useEffect, useMemo } from "react"
+import { useRouter } from "next/navigation"
+import Link from "next/link"
+import { useAuth } from "@/hooks/useAuth"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import {
+  Loader2, MapPin, Cloud, User, Users, Shirt, Check, ChevronsUpDown, Settings, Star, Palette, Lightbulb, Thermometer, Send
+} from "lucide-react"
+import { cn } from "@/lib/utils"
+import { supabase, wardrobeProfileService, wardrobeService } from "@/lib/supabase"
+import { createSimpleOutfitRecommendation, analyzeColorHarmony } from "./createSimpleOutfitRecommendation"
+
+/* --------------------------------- Types --------------------------------- */
+interface WeatherData {
+  location: string
+  temperature: number
+  condition: string
+  description: string
+  humidity: number
+  windSpeed: number
+  icon: string
+}
+
+interface WardrobeProfile {
+  id: string
+  name: string
+  relationship: string
+  age?: number
+}
+
+/* --------------------------- Locations (trimmed) -------------------------- */
+const US_LOCATIONS = [
+  { city: "New York", state: "NY", isCapital: false },
+  { city: "Los Angeles", state: "CA", isCapital: false },
+  { city: "Chicago", state: "IL", isCapital: false },
+  { city: "Houston", state: "TX", isCapital: false },
+  { city: "Phoenix", state: "AZ", isCapital: true },
+  { city: "Philadelphia", state: "PA", isCapital: false },
+  { city: "San Antonio", state: "TX", isCapital: false },
+  { city: "San Diego", state: "CA", isCapital: false },
+  { city: "Dallas", state: "TX", isCapital: false },
+  { city: "San Jose", state: "CA", isCapital: false },
+  { city: "Miami", state: "FL", isCapital: false },
+  { city: "Orlando", state: "FL", isCapital: false },
+  { city: "Tampa", state: "FL", isCapital: false },
+  { city: "Las Vegas", state: "NV", isCapital: false },
+  { city: "Seattle", state: "WA", isCapital: false },
+  { city: "Portland", state: "OR", isCapital: false },
+  { city: "San Francisco", state: "CA", isCapital: false },
+  { city: "Detroit", state: "MI", isCapital: false },
+  { city: "Minneapolis", state: "MN", isCapital: false },
+  { city: "Cleveland", state: "OH", isCapital: false },
+  { city: "New Orleans", state: "LA", isCapital: false },
+  { city: "Wichita", state: "KS", isCapital: false },
+  { city: "Arlington", state: "TX", isCapital: false },
+  { city: "Bakersfield", state: "CA", isCapital: false },
+  { city: "Aurora", state: "CO", isCapital: false },
+  { city: "Anaheim", state: "CA", isCapital: false },
+  { city: "Santa Ana", state: "CA", isCapital: false },
+  { city: "Corpus Christi", state: "TX", isCapital: false },
+  { city: "Riverside", state: "CA", isCapital: false },
+  { city: "Lexington", state: "KY", isCapital: false },
+  { city: "Stockton", state: "CA", isCapital: false },
+  { city: "St. Louis", state: "MO", isCapital: false },
+  { city: "Cincinnati", state: "OH", isCapital: false },
+  { city: "Pittsburgh", state: "PA", isCapital: false },
+  { city: "Greensboro", state: "NC", isCapital: false },
+  { city: "Plano", state: "TX", isCapital: false },
+  { city: "Anchorage", state: "AK", isCapital: false },
+  { city: "Omaha", state: "NE", isCapital: false },
+  { city: "Irvine", state: "CA", isCapital: false },
+  { city: "Newark", state: "NJ", isCapital: false },
+  { city: "Durham", state: "NC", isCapital: false },
+  { city: "Chula Vista", state: "CA", isCapital: false },
+  { city: "Toledo", state: "OH", isCapital: false },
+  { city: "Fort Wayne", state: "IN", isCapital: false },
+  { city: "St. Petersburg", state: "FL", isCapital: false },
+  { city: "Laredo", state: "TX", isCapital: false },
+  { city: "Jersey City", state: "NJ", isCapital: false },
+  { city: "Chandler", state: "AZ", isCapital: false },
+  { city: "Lubbock", state: "TX", isCapital: false },
+  { city: "Scottsdale", state: "AZ", isCapital: false },
+  { city: "Reno", state: "NV", isCapital: false },
+  { city: "Buffalo", state: "NY", isCapital: false },
+  { city: "Gilbert", state: "AZ", isCapital: false },
+  { city: "Glendale", state: "AZ", isCapital: false },
+  { city: "North Las Vegas", state: "NV", isCapital: false },
+  { city: "Winston-Salem", state: "NC", isCapital: false },
+  { city: "Chesapeake", state: "VA", isCapital: false },
+  { city: "Norfolk", state: "VA", isCapital: false },
+  { city: "Fremont", state: "CA", isCapital: false },
+  { city: "Garland", state: "TX", isCapital: false },
+  { city: "Irving", state: "TX", isCapital: false },
+  { city: "Hialeah", state: "FL", isCapital: false },
+  { city: "Spokane", state: "WA", isCapital: false }
+]
+
+/* --------------------------- Color Helper Utils --------------------------- */
+const COLOR_MAP: Record<string, string> = {
+  black: "#000000",
+  white: "#FFFFFF",
+  ivory: "#FFFFF0",
+  cream: "#FFF1D6",
+  offwhite: "#F8F8F4",
+  "off-white": "#F8F8F4",
+  beige: "#F5F5DC",
+  tan: "#D2B48C",
+  khaki: "#C3B091",
+  camel: "#C19A6B",
+  brown: "#8B4513",
+  chocolate: "#7B3F00",
+  grey: "#808080",
+  gray: "#808080",
+  charcoal: "#36454F",
+  silver: "#C0C0C0",
+  navy: "#001F3F",
+  blue: "#1E90FF",
+  skyblue: "#87CEEB",
+  lightblue: "#ADD8E6",
+  cobalt: "#0047AB",
+  teal: "#008080",
+  turquoise: "#40E0D0",
+  green: "#228B22",
+  olive: "#556B2F",
+  sage: "#B2AC88",
+  lime: "#00FF00",
+  yellow: "#FFD400",
+  mustard: "#E1AD01",
+  orange: "#FFA500",
+  coral: "#FF7F50",
+  red: "#FF3B30",
+  maroon: "#800000",
+  burgundy: "#800020",
+  pink: "#FFC0CB",
+  hotpink: "#FF69B4",
+  magenta: "#FF00FF",
+  purple: "#800080",
+  violet: "#8F00FF",
+  indigo: "#4B0082",
+  gold: "#FFD700"
+}
+
+const HEX_RE = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i
+const RGB_RE = /^rgba?\(\s*([.\d]+)\s*,\s*([.\d]+)\s*,\s*([.\d]+)(?:\s*,\s*([.\d]+))?\s*\)$/i
+
+function normalizeColorString(input?: string): string | null {
+  if (!input) return null
+  const raw = String(input).trim().toLowerCase()
+  if (HEX_RE.test(raw)) return raw.length === 4 ? "#" + raw.slice(1).split("").map(ch => ch + ch).join("") : raw
+  const rgb = raw.match(RGB_RE)
+  if (rgb) {
+    const r = Math.max(0, Math.min(255, Math.round(Number(rgb[1]))))
+    const g = Math.max(0, Math.min(255, Math.round(Number(rgb[2]))))
+    const b = Math.max(0, Math.min(255, Math.round(Number(rgb[3]))))
+    return "#" + [r, g, b].map(n => n.toString(16).padStart(2, "0")).join("")
+  }
+  const tokens = raw.replace(/[^a-z0-9]/g, " ").split(/\s+/).filter(Boolean)
+  const condensed = tokens.join("")
+  if (COLOR_MAP[condensed]) return COLOR_MAP[condensed]
+  for (const t of tokens) if (COLOR_MAP[t]) return COLOR_MAP[t]
+  for (const key of Object.keys(COLOR_MAP)) if (raw.includes(key)) return COLOR_MAP[key]
+  if (raw.includes("cream")) return COLOR_MAP["cream"]
+  if (raw.includes("ivory")) return COLOR_MAP["ivory"]
+  if (raw.includes("off white") || raw.includes("off-white")) return COLOR_MAP["offwhite"]
+  return null
+}
+function colorForItemDot(color?: string): string {
+  return normalizeColorString(color) ?? "#888888"
+}
+
+/* -------------------------------- Component ------------------------------- */
+export default function ChatPage() {
+  const { signOut } = useAuth()
+  const router = useRouter()
+
+  // --- State ---
+  const [user, setUser] = useState<any>(null)
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  const [weather, setWeather] = useState<WeatherData | null>(null)
+  const [weatherLoading, setWeatherLoading] = useState(false)
+
+  const [selectedLocation, setSelectedLocation] = useState("New York, NY")
+  const [mainLocationOpen, setMainLocationOpen] = useState(false)
+  const [mainSearchQuery, setMainSearchQuery] = useState("")
+
+  const [selectedProfile, setSelectedProfile] = useState<string>("owner")
+  const [wardrobeProfiles, setWardrobeProfiles] = useState<WardrobeProfile[]>([])
+  const [profilesLoading, setProfilesLoading] = useState(true)
+
+  const [currentOutfit, setCurrentOutfit] = useState<any>(null)
+  const [currentWardrobeItems, setCurrentWardrobeItems] = useState<any[]>([])
+  const [wardrobeLoading, setWardrobeLoading] = useState(false)
+
+  const [messages, setMessages] = useState<any[]>([])
+  const [input, setInput] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+
+  const addMessage = (m: any) => setMessages(prev => [...prev, m])
+
+  /* ------------------------------- Auth check ------------------------------ */
+  useEffect(() => {
+    const checkUser = async () => {
+      try {
+        const { data: { user: supaUser } } = await supabase.auth.getUser()
+        if (!supaUser) {
+          router.push('/')
+          return
+        }
+        if (currentUserId && currentUserId !== supaUser.id) {
+          setCurrentOutfit(null)
+          setMessages([])
+          setCurrentWardrobeItems([])
+          setWardrobeProfiles([])
+          setSelectedProfile("owner")
+          setInput("")
+          localStorage.removeItem('weathersmart-chat-session')
+          localStorage.removeItem('weathersmart-outfit-session')
+        }
+        setUser(supaUser)
+        setCurrentUserId(supaUser.id)
+      } catch (error) {
+        console.error('Error checking user:', error)
+        router.push('/')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    checkUser()
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_OUT') {
+        setCurrentOutfit(null)
+        setMessages([])
+        setCurrentWardrobeItems([])
+        setWardrobeProfiles([])
+        setSelectedProfile("owner")
+        setInput("")
+        setCurrentUserId(null)
+        localStorage.removeItem('weathersmart-chat-session')
+        localStorage.removeItem('weathersmart-outfit-session')
+      } else if (event === 'SIGNED_IN' && session?.user) {
+        if (currentUserId && currentUserId !== session.user.id) {
+          setCurrentOutfit(null)
+          setMessages([])
+          setCurrentWardrobeItems([])
+          setWardrobeProfiles([])
+          setSelectedProfile("owner")
+          setInput("")
+          localStorage.removeItem('weathersmart-chat-session')
+          localStorage.removeItem('weathersmart-outfit-session')
+        }
+        setCurrentUserId(session.user.id)
+      }
+    })
+
+    return () => {
+      subscription.unsubscribe()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router])
+
+  useEffect(() => {
+    if (!loading && !user) router.push("/auth")
+  }, [user, loading, router])
+
+  /* ---------------------------- Load profiles/items ---------------------------- */
+  useEffect(() => {
+    const loadProfiles = async () => {
+      if (!user) return
+      setProfilesLoading(true)
+      try {
+        const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+        let profiles: any[] | null = null
+        let useMockData = false
+
+        if (!uuidRegex.test(user.id)) {
+          useMockData = true
+        } else {
+          profiles = await wardrobeProfileService.getWardrobeProfiles(user.id)
+          if (!profiles || profiles.length === 0) useMockData = true
+        }
+
+        if (profiles && profiles.length > 0) {
+          const formattedProfiles = await Promise.all(
+            profiles.map(async (profile: any) => {
+              let itemCount = 0
+              try {
+                const items = await wardrobeService.getWardrobeItems(user.id, profile.id)
+                itemCount = items?.length || 0
+              } catch { itemCount = 0 }
+              return {
+                id: profile.id,
+                name: profile.name,
+                relationship: profile.relation || "other",
+                age: profile.age,
+                itemCount,
+              }
+            })
+          )
+          setWardrobeProfiles(formattedProfiles)
+          const ownerProfile = formattedProfiles.find((p: any) => p.relationship === "self")
+          setSelectedProfile(ownerProfile ? "owner" : (formattedProfiles[0]?.id ?? "owner"))
+        } else if (useMockData) {
+          setWardrobeProfiles([])
+        }
+      } catch (error) {
+        console.error("Error loading wardrobe profiles:", error)
+        setWardrobeProfiles([])
+      } finally {
+        setProfilesLoading(false)
+      }
+    }
+    loadProfiles()
+  }, [user])
+
+  useEffect(() => {
+    const loadWardrobeItems = async () => {
+      if (!user || !selectedProfile || profilesLoading) return
+      setWardrobeLoading(true)
+      try {
+        let items: any[] = []
+
+        if (selectedProfile === "family") {
+          const allItems: any[] = []
+          for (const profile of wardrobeProfiles) {
+            const profileItems = await wardrobeService.getWardrobeItems(user.id, profile.id)
+            if (profileItems) allItems.push(...profileItems)
+          }
+          const mainItems = await wardrobeService.getWardrobeItems(user.id)
+          if (mainItems) allItems.push(...mainItems)
+          items = allItems
+        } else if (selectedProfile === "owner") {
+          const ownerProfile = wardrobeProfiles.find((p) => p.relationship === "self")
+          if (ownerProfile) {
+            items = await wardrobeService.getWardrobeItems(user.id, ownerProfile.id)
+          }
+          const mainItems = await wardrobeService.getWardrobeItems(user.id)
+          if (mainItems) items = [...(items || []), ...mainItems]
+        } else {
+          items = await wardrobeService.getWardrobeItems(user.id, selectedProfile)
+        }
+
+        const sanitizedItems = (items || []).map((item) => ({
+          ...item,
+          name: String(item.name || 'Unknown Item'),
+          category: String(item.category || 'Uncategorized'),
+          color: String(item.color || ''),
+          brand: String(item.brand || ''),
+          description: String(item.description || ''),
+          id: String(item.id || ''),
+          created_at: String(item.created_at || ''),
+          price: typeof item.price === 'number' ? item.price : 0,
+          wear_count: typeof item.wear_count === 'number' ? item.wear_count : 0,
+          image: item.image_url || item.image_path || item.image || '/images/placeholder.png',
+        }))
+
+        setCurrentWardrobeItems(sanitizedItems)
+      } catch (error) {
+        console.error("Error loading wardrobe items:", error)
+        setCurrentWardrobeItems([])
+      } finally {
+        setWardrobeLoading(false)
+      }
+    }
+    loadWardrobeItems()
+  }, [user, selectedProfile, wardrobeProfiles, profilesLoading])
+
+  /* -------------------------------- Weather -------------------------------- */
+  const fetchWeather = async (location: string) => {
+    setWeatherLoading(true)
+    try {
+      const response = await fetch(`/api/weather?location=${encodeURIComponent(location)}`, { cache: "no-store" })
+      if (response.ok) {
+        const data = await response.json()
+        setWeather(data)
+      } else {
+        console.error("Failed to fetch weather")
+        setWeather(null)
+      }
+    } catch (error) {
+      console.error("Weather fetch error:", error)
+      setWeather(null)
+    } finally {
+      setWeatherLoading(false)
+    }
+  }
+
+  // IMPORTANT: refetch on every location change (no !weather gate)
+  useEffect(() => {
+    if (!selectedLocation) return
+    setWeather(null)                // optional: clear stale weather
+    fetchWeather(selectedLocation)  // always refetch
+  }, [selectedLocation])
+
+  /* ------------------------------- Persistence ------------------------------ */
+  useEffect(() => {
+    const chatSession = { messages, currentOutfit, selectedProfile, selectedLocation, timestamp: Date.now() }
+    localStorage.setItem('weathersmart-chat-session', JSON.stringify(chatSession))
+  }, [messages, currentOutfit, selectedProfile, selectedLocation])
+
+  useEffect(() => {
+    const restore = () => {
+      try {
+        const saved = localStorage.getItem('weathersmart-chat-session')
+        if (saved) {
+          const s = JSON.parse(saved)
+          const isRecent = Date.now() - s.timestamp < 24 * 60 * 60 * 1000
+          if (isRecent) {
+            if (s.messages) setMessages(s.messages)
+            if (s.currentOutfit) setCurrentOutfit(s.currentOutfit)
+            if (s.selectedLocation) setSelectedLocation(s.selectedLocation)
+          }
+        }
+      } catch (e) { console.error("restore error", e) }
+    }
+    if (!profilesLoading && user) restore()
+  }, [profilesLoading, user])
+
+  /* ------------------------------- UI helpers ------------------------------- */
+  const mainFilteredLocations = useMemo(() => {
+    return US_LOCATIONS
+      .filter((l) => `${l.city}, ${l.state}`.toLowerCase().includes(mainSearchQuery.toLowerCase()))
+      .slice(0, 50)
+  }, [mainSearchQuery])
+
+  const handleMainLocationSelect = (location: string) => {
+    setSelectedLocation(location)
+    setMainLocationOpen(false)
+    setMainSearchQuery("")
+    setWeather(null)               // clear current weather
+    fetchWeather(location)         // proactively fetch
+  }
+
+  const handleLogout = async () => {
+    try {
+      await signOut()
+      router.push("/auth")
+    } catch (error) { console.error("Logout error:", error) }
+  }
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => setInput(e.target.value)
+
+  /* --------------------------------- Submit -------------------------------- */
+  const handleSubmit = async (
+    e: React.FormEvent & { isButtonClick?: boolean; skipErrorMessage?: boolean; target?: any }
+  ) => {
+    e.preventDefault()
+    if (!input.trim() || isLoading) return
+
+    const userMessage = input.trim()
+    setInput("")
+    setIsLoading(true)
+
+    const newUserMessage = { id: Date.now().toString(), role: "user", content: String(userMessage || '') }
+    setMessages((prev) => [...prev, newUserMessage])
+
+    try {
+      const isButtonClick = e?.isButtonClick === true
+      const lower = userMessage.toLowerCase()
+      const isOutfitRequest = isButtonClick || /wear|outfit|recommend/.test(lower)
+
+      if (isOutfitRequest) {
+        let occasion: "casual" | "work" | "formal" | "date" = "casual"
+        if (/(work|office|business)/i.test(lower)) occasion = "work"
+        else if (/(formal|party|event)/i.test(lower)) occasion = "formal"
+        else if (/(date|dinner)/i.test(lower)) occasion = "date"
+
+        // profile
+        let profileIdToUse = selectedProfile
+        if (selectedProfile === "owner") {
+          const ownerProfile = wardrobeProfiles.find((p) => p.relationship === "self")
+          if (ownerProfile) profileIdToUse = ownerProfile.id
+        }
+
+        // Weather summary to send to API (FIXED)
+        const weatherSummary =
+          weatherLoading
+            ? "Loading"
+            : weather
+              ? `${weather.temperature}°F ${weather.condition}`
+              : "Weather unavailable"
+
+        const startTime = Date.now()
+        try {
+          const response = await fetch('/api/outfit-recommendation', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              userId: user.id,
+              occasion,
+              weather: weatherSummary,       // ✅ proper key:value
+              profileId: profileIdToUse,
+              location: selectedLocation,
+            }),
+          })
+          if (!response.ok) throw new Error('Failed to get outfit recommendation')
+          const recommendation = await response.json()
+          if (!recommendation.items || recommendation.items.length === 0) throw new Error('No outfit items returned from API')
+
+          const itemsWithColors = recommendation.items.map((it: any) => ({
+            ...it,
+            color: it.color ? it.color : "",
+            _hex: colorForItemDot(it.color)
+          }))
+
+          const computedColorHarmony = analyzeColorHarmony(itemsWithColors)
+          setCurrentOutfit({
+            id: `outfit-${Date.now()}`,
+            name: `${occasion.charAt(0).toUpperCase() + occasion.slice(1)} Outfit`,
+            items: itemsWithColors,
+            occasion,
+            weather_suitability: weatherSummary,
+            style_notes: recommendation.reasoning,
+            colorHarmony: computedColorHarmony,
+          })
+
+          if (recommendation?.reasoning) {
+            setMessages((prev) => [...prev, {
+              id: (Date.now() + 2).toString(),
+              role: "assistant",
+              content: `${recommendation.reasoning}\n\n**Weather:** ${weatherSummary}`
+            }])
+          }
+        } catch (err) {
+          console.error("Outfit recommendation error:", err)
+          if (!e?.skipErrorMessage) {
+            addMessage({
+              id: (Date.now() + 2).toString(),
+              role: "assistant",
+              content: "I'm having trouble generating an outfit recommendation. Please try again or check your connection.",
+            })
+          }
+        } finally {
+          const elapsed = Date.now() - startTime
+          const min = 1200
+          if (elapsed < min) setTimeout(() => setIsLoading(false), min - elapsed)
+          else setIsLoading(false)
+        }
+        return
+      }
+
+      // general chat path
+      let profileIdToUse = selectedProfile
+      if (selectedProfile === "owner") {
+        const ownerProfile = wardrobeProfiles.find((p) => p.relationship === "self")
+        if (ownerProfile) profileIdToUse = ownerProfile.id
+      }
+
+      let response: Response | null = null
+      let retries = 3
+      let delay = 800
+      while (retries > 0) {
+        try {
+          response = await fetch('/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              messages: [...messages, newUserMessage],
+              profileId: profileIdToUse,
+              weather: weather ? {
+                temperature: weather.temperature,
+                condition: weather.condition,
+                description: weather.description,
+                humidity: weather.humidity,
+                windSpeed: weather.windSpeed,
+                icon: weather.icon,
+                location: weather.location,
+              } : null,
+              userId: user?.id,
+              timestamp: Date.now(),
+            }),
+            cache: 'no-store',
+          })
+          break
+        } catch (netErr) {
+          console.error(`Network error during chat API call (${retries} left):`, netErr)
+          retries--
+          if (retries === 0) throw new Error('Failed to connect to the chat service after multiple attempts.')
+          await new Promise((res) => setTimeout(res, delay))
+          delay *= 2
+        }
+      }
+
+      if (!response || !response.ok) {
+        let msg = 'Failed to get AI response'
+        try { msg += `: ${await response?.text()}` } catch {}
+        throw new Error(msg)
+      }
+
+      let content = ''
+      try {
+        content = (await response.text())?.trim()
+        if (!content) throw new Error('Empty response from chat service')
+      } catch (readErr) {
+        console.error('Error reading chat response:', readErr)
+        throw new Error('Failed to read the AI response')
+      }
+
+      setMessages((prev) => [...prev, { id: (Date.now() + 2).toString(), role: "assistant", content }])
+      setIsLoading(false)
+    } catch (error) {
+      console.error("Chat error:", error)
+      if (!e?.skipErrorMessage) {
+        addMessage({ id: (Date.now() + 2).toString(), role: "assistant", content: "I'm sorry, I encountered an error. Please try again or check your connection." })
+      }
+      setIsLoading(false)
+    }
+  }
+
+  const handleQuickAction = async (message: string) => {
+    if (message === "Pick a dress for me") message = "What should I wear today?"
+    setInput(message)
+    try { window.localStorage.setItem('skipNextErrorMessage', 'true') } catch {}
+    const fakeEvent = {
+      preventDefault: () => {},
+      isButtonClick: true,
+      skipErrorMessage: true,
+      target: { skipErrorMessage: true },
+    } as unknown as React.FormEvent & { isButtonClick: boolean; skipErrorMessage: boolean; target: { skipErrorMessage: boolean } }
+    await handleSubmit(fakeEvent)
+    setTimeout(() => { try { window.localStorage.removeItem('skipNextErrorMessage') } catch {} }, 4000)
+  }
+
+  /* ----------------------------- Derived colors ---------------------------- */
+  const uniqueItemColors = useMemo(() => {
+    if (!currentOutfit?.items) return []
+    const arr: { name: string; hex: string }[] = []
+    for (const it of currentOutfit.items) {
+      const hex = colorForItemDot(it?.color)
+      const name = (String(it?.color || "").trim() || "color").toLowerCase()
+      if (!arr.some((c) => c.hex === hex)) arr.push({ name, hex })
+    }
+    return arr.slice(0, 6)
+  }, [currentOutfit])
+
+  /* ---------------------------------- UI ---------------------------------- */
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+        <div className="flex items-center space-x-2 text-white">
+          <Loader2 className="w-6 h-6 animate-spin" />
+          <span>Loading...</span>
+        </div>
+      </div>
+    )
+  }
+  if (!user) return null
+
+  return (
+    <div className="min-h-screen bg-slate-900">
+      {/* Top Bar */}
+      <div className="bg-slate-800 px-6 py-3">
+        <div className="flex items-center justify-center text-white">
+          <div className="flex items-center space-x-8">
+            <Link href="/wardrobes" className="flex items-center space-x-2 cursor-pointer hover:opacity-80">
+              <span className="font-semibold">Weather Smart</span>
+            </Link>
+            <Link href="/chat" className="text-slate-300 cursor-pointer hover:text-white font-medium">AI Outfit Picker</Link>
+            <Link href="/wardrobes" className="text-slate-300 cursor-pointer hover:text-white">Wardrobes</Link>
+            <Link href="/weather-essentials" className="text-slate-300 cursor-pointer hover:text-white">Weather Essentials</Link>
+            <Link href="/lifecycle-alerts" className="text-slate-300 cursor-pointer hover:text-white">Lifecycle Alerts</Link>
+            <div className="flex items-center space-x-2 text-sm ml-8">
+              <User className="w-4 h-4" />
+              <span>{user?.email || "abcd@gmail.com"}</span>
+              <Button variant="ghost" className="text-white hover:bg-slate-700 p-1 text-sm" onClick={handleLogout}>Logout</Button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Weather Ticker */}
+      <div className="bg-blue-600 px-6 py-2">
+        <div className="overflow-hidden">
+          <div className="animate-scroll whitespace-nowrap text-sm text-white">
+            <span className="inline-block px-8">
+              📍 {selectedLocation}: {
+                weatherLoading
+                  ? "Loading weather…"
+                  : weather
+                    ? `${weather.temperature}°F, ${weather.condition}`
+                    : "Weather unavailable"
+              } • Humidity: {weather && typeof weather.humidity === "number" ? `${weather.humidity}%` : "—"} • Wind: {weather && typeof weather.windSpeed === "number" ? `${weather.windSpeed} mph` : "—"} • Perfect weather for outfit planning!
+            </span>
+            <span className="inline-block px-8">🌤️  {weather?.description || 'Check layers if temps vary today.'}</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Controls Row */}
+      <div className="bg-slate-800">
+        <div className="container mx-auto px-6 pt-6">
+          <div className="grid grid-cols-12 gap-4">
+            {/* Location */}
+            <div className="col-span-12 md:col-span-6">
+              <div className="flex items-center space-x-2 mb-2">
+                <MapPin className="w-4 h-4 text-slate-400" />
+                <span className="text-white text-sm font-medium">Location</span>
+              </div>
+              <Popover open={mainLocationOpen} onOpenChange={setMainLocationOpen}>
+                <PopoverTrigger asChild>
+                  <Button variant="outline" className="w-full justify-between bg-slate-800 border-slate-600 text-white hover:bg-slate-700">
+                    {selectedLocation}
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-80 p-0 bg-slate-800 border-slate-600">
+                  <Command className="bg-slate-800">
+                    <CommandInput placeholder="Search cities..." value={mainSearchQuery} onValueChange={setMainSearchQuery} className="text-white" />
+                    <CommandEmpty className="text-slate-400 p-4">No cities found.</CommandEmpty>
+                    <CommandGroup>
+                      <CommandList className="max-h-60">
+                        {mainFilteredLocations.map((l) => (
+                          <CommandItem
+                            key={`loc-${l.city}-${l.state}`}
+                            value={`${l.city}, ${l.state}`}
+                            onSelect={() => handleMainLocationSelect(`${l.city}, ${l.state}`)}
+                            className="text-white hover:bg-slate-700 cursor-pointer"
+                          >
+                            <Check className={cn("mr-2 h-4 w-4", selectedLocation === `${l.city}, ${l.state}` ? "opacity-100" : "opacity-0")} />
+                            {l.city}, {l.state}
+                          </CommandItem>
+                        ))}
+                      </CommandList>
+                    </CommandGroup>
+                  </Command>
+                </PopoverContent>
+              </Popover>
+            </div>
+
+            {/* Wardrobe */}
+            <div className="col-span-12 md:col-span-6">
+              <div className="flex items-center space-x-2 mb-2">
+                <User className="w-4 h-4 text-slate-400" />
+                <span className="text-white text-sm font-medium">Wardrobe</span>
+              </div>
+              <Select value={selectedProfile} onValueChange={setSelectedProfile}>
+                <SelectTrigger className="w-full bg-slate-800 border-slate-600 text-white">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="bg-slate-800 border-slate-600">
+                  {profilesLoading ? (
+                    <SelectItem value="loading" className="text-slate-400" disabled>
+                      <div className="flex items-center space-x-2">
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <span>Loading profiles...</span>
+                      </div>
+                    </SelectItem>
+                  ) : wardrobeProfiles.length > 0 ? (
+                    <>
+                      {wardrobeProfiles.map((p) => (
+                        <SelectItem key={p.id} value={p.relationship === "self" ? "owner" : p.id} className="text-white hover:bg-slate-700">
+                          <div className="flex items-center space-x-2">
+                            <User className="w-4 h-4" />
+                            <span>
+                              {String(p.name || 'Unknown')} {p.relationship === "self" ? " (You)" : ` (${String(p.relationship || 'Unknown')})`}
+                              {p.age ? ` - ${String(p.age)} years` : ""}
+                            </span>
+                          </div>
+                        </SelectItem>
+                      ))}
+                      <SelectItem value="family" className="text-white hover:bg-slate-700">
+                        <div className="flex items-center space-x-2"><Users className="w-4 h-4" /><span>All Family Members</span></div>
+                      </SelectItem>
+                    </>
+                  ) : (
+                    <SelectItem value="owner" className="text-white hover:bg-slate-700">
+                      <div className="flex items-center space-x-2"><User className="w-4 h-4" /><span>My Wardrobe</span></div>
+                    </SelectItem>
+                  )}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          {/* Two Column Main */}
+          <div className="grid grid-cols-12 gap-6 mt-4 pb-8">
+            {/* Chat (left) */}
+            <section className="col-span-12 lg:col-span-7">
+              <div className="bg-slate-900 rounded-lg p-4 h-[72vh] flex flex-col">
+                <div className="mb-2">
+                  <p className="text-slate-300 text-sm">
+                    Hi! I’m your AI Outfit Picker. Tell me your plans and I’ll suggest an outfit that matches the weather, occasion, and your wardrobe.
+                  </p>
+                </div>
+
+                <div className="flex-1 min-h-0">
+                  <ScrollArea className="h-full">
+                    {messages.map((m) => (
+                      <div key={m.id} className="mb-3">
+                        <div className={`${m.role === "user" ? "bg-blue-600 text-white ml-auto max-w-md" : "bg-slate-700 text-white max-w-2xl"} rounded-lg px-3 py-2 text-sm`}>
+                          {typeof m.content === 'string' ? m.content : JSON.stringify(m.content)}
+                        </div>
+                      </div>
+                    ))}
+                    {isLoading && (
+                      <div className="bg-slate-700 text-white max-w-2xl rounded-lg px-3 py-2 flex items-center space-x-2">
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <span>Thinking...</span>
+                      </div>
+                    )}
+                  </ScrollArea>
+                </div>
+
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-2">
+                  <Button variant="outline" size="sm" onClick={() => handleQuickAction("What should I wear today?")} className="bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700">
+                    What should I wear today?
+                  </Button>
+                  <Button variant="outline" size="sm" onClick={() => handleQuickAction("Suggest a work outfit")} className="bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700">
+                    Suggest a work outfit
+                  </Button>
+                  <Button variant="outline" size="sm" onClick={() => handleQuickAction("Show me weekend casual looks")} className="bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700">
+                    Weekend casual
+                  </Button>
+                  <Button variant="outline" size="sm" onClick={() => handleQuickAction("What's good for this weather?")} className="bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700">
+                    Weather outfit
+                  </Button>
+                </div>
+
+                <form onSubmit={handleSubmit} className="flex gap-2 mt-2">
+                  <Input
+                    value={input}
+                    onChange={handleInputChange}
+                    placeholder="Ask me about outfits, styling, or wardrobe advice..."
+                    className="flex-1 bg-slate-800 border-slate-600 text-white placeholder-slate-400"
+                    disabled={isLoading}
+                  />
+                  <Button type="submit" disabled={isLoading || !input.trim()} className="bg-blue-600 hover:bg-blue-700">
+                    <Send className="w-4 h-4" />
+                  </Button>
+                </form>
+              </div>
+            </section>
+
+            {/* Recommendation (right) */}
+            <aside className="col-span-12 lg:col-span-5">
+              <div className="bg-slate-900 rounded-lg p-4 h-[72vh] flex flex-col overflow-hidden">
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-white text-sm font-semibold">Recommended Outfit</h3>
+                  <span className="text-[11px] text-slate-400 flex items-center gap-1">
+                    <Cloud className="w-3 h-3" />
+                    {selectedLocation}{
+                      weatherLoading ? " • Loading…" : weather ? ` • ${weather.temperature}°F • ${weather.condition}` : ""
+                    }
+                  </span>
+                </div>
+
+                <div className="flex-1 min-h-0">
+                  <ScrollArea className="h-full pr-2">
+                    {!currentOutfit ? (
+                      <div className="text-center py-8">
+                        <Settings className="w-12 h-12 text-slate-600 mx-auto mb-3" />
+                        <h4 className="text-white font-medium">No Outfit Selected</h4>
+                        <p className="text-slate-400 text-xs mt-1">Ask me to pick an outfit and I’ll show you recommendations from your actual wardrobe items.</p>
+                        <div className="space-y-2 mt-4">
+                          <Button onClick={() => handleQuickAction("What should I wear today?")} className="bg-blue-600 hover:bg-blue-700 w-full text-sm">
+                            What should I wear today?
+                          </Button>
+                          <Button variant="outline" onClick={() => handleQuickAction("Family Outfits")} className="bg-slate-800 border-slate-600 text-white hover:bg-slate-700 w-full text-sm">
+                            Family Outfits
+                          </Button>
+                          <Button
+                            onClick={async () => {
+                              try {
+                                const response = await fetch("/api/add-sample-wardrobe", {
+                                  method: "POST",
+                                  headers: { "Content-Type": "application/json" },
+                                  body: JSON.stringify({ userId: user?.id }),
+                                })
+                                const result = await response.json()
+                                if (result.success) alert(`Added ${result.items?.length || 0} sample wardrobe items!`)
+                                else alert(`Error: ${result.error}`)
+                              } catch { alert("Error adding sample items") }
+                            }}
+                            variant="outline"
+                            className="bg-green-600 border-green-500 text-white hover:bg-green-700 w-full text-sm"
+                          >
+                            Add Sample Wardrobe Items
+                          </Button>
+                          <Link href="/add-clothes">
+                            <Button variant="outline" className="bg-slate-800 border-slate-600 text-white hover:bg-slate-700 w-full text-sm">
+                              Add Items to Wardrobe
+                            </Button>
+                          </Link>
+                        </div>
+                      </div>
+                    ) : (
+                      <>
+                        {/* Reasoning */}
+                        <p className="text-slate-300 text-xs mb-3">{currentOutfit.style_notes}</p>
+
+                        {/* Preview row */}
+                        <div className="bg-slate-800 rounded-lg p-3 mb-3">
+                          <div className="flex items-center gap-3 overflow-x-auto no-scrollbar">
+                            {Array.isArray(currentOutfit.items) && currentOutfit.items.map((item: any, idx: number) => (
+                              <div key={`preview-${item.id || idx}`} className="relative shrink-0">
+                                <div className="w-28 h-28 bg-slate-700 rounded-xl overflow-hidden flex items-center justify-center">
+                                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                                  <img
+                                    src={item.image?.startsWith("http") ? item.image : `${typeof window !== 'undefined' ? window.location.origin : ""}${item.image}`}
+                                    alt={item.name || "Clothing item"}
+                                    className="w-full h-full object-cover"
+                                    onError={(ev) => { (ev.target as HTMLImageElement).style.display = "none" }}
+                                  />
+                                  {!item.image && <Shirt className="w-7 h-7 text-slate-400" />}
+                                </div>
+                                <div className="absolute -bottom-1 -right-1 bg-slate-900 rounded-full p-[3px] shadow-md">
+                                  <div className="w-4 h-4 rounded-full" style={{ backgroundColor: item._hex ?? colorForItemDot(item.color) }} />
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-2 mt-3">
+                            <Button
+                              onClick={() => handleQuickAction("What should I wear today?")}
+                              className="bg-green-600 hover:bg-green-700 w-full text-xs"
+                              disabled={isLoading}
+                            >
+                              {isLoading ? "Getting New Suggestion..." : "Get Another Suggestion"}
+                            </Button>
+                            <Button
+                              onClick={async () => {
+                                try {
+                                  if (currentOutfit?.items) {
+                                    for (const outfitItem of currentOutfit.items) {
+                                      const w = currentWardrobeItems.find((i) => i.id === outfitItem.id || i.name.toLowerCase() === String(outfitItem.name).toLowerCase())
+                                      if (w) {
+                                        try {
+                                          const newWearCount = (w.wear_count || 0) + 1
+                                          const { error: updateError } = await supabase
+                                            .from('wardrobe_items')
+                                            .update({ wear_count: newWearCount, last_worn: new Date().toISOString().split('T')[0] })
+                                            .eq('id', w.id)
+                                          if (updateError) throw updateError
+                                        } catch (e) { console.error("wear update", e) }
+                                      }
+                                    }
+                                  }
+                                  alert("Great choice! Outfit recorded.")
+                                } catch (e) { alert("Outfit noted! (Wear count update may have failed)") }
+                              }}
+                              className="bg-purple-600 hover:bg-purple-700 w-full text-xs"
+                            >
+                              I Choose This Outfit
+                            </Button>
+                          </div>
+                        </div>
+
+                        {/* Items list */}
+                        <div className="space-y-2 mb-3">
+                          {Array.isArray(currentOutfit.items) && currentOutfit.items.map((item: any, index: number) => (
+                            <div
+                              key={item.id || `item-${index}`}
+                              className="bg-slate-800 rounded-lg p-2 flex items-center gap-3 hover:bg-slate-700 transition-colors cursor-pointer"
+                              onClick={() => {
+                                const profileParam = selectedProfile === "owner" ? wardrobeProfiles.find((p) => p.relationship === "self")?.id : selectedProfile
+                                const match = currentWardrobeItems.find((wi) => wi.name.toLowerCase().includes(String(item.name).toLowerCase()) || String(item.name).toLowerCase().includes(wi.name.toLowerCase()))
+                                if (match) router.push(`/wardrobe?profile=${profileParam}&item=${match.id}&from=chat&highlight=${match.name}`)
+                                else router.push(`/wardrobe?profile=${profileParam}&from=chat&search=${encodeURIComponent(item.name)}`)
+                              }}
+                            >
+                              <div className="w-14 h-14 rounded-md overflow-hidden bg-slate-700 flex items-center justify-center">
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img
+                                  src={item.image?.startsWith("http") ? item.image : `${typeof window !== 'undefined' ? window.location.origin : ""}${item.image}`}
+                                  alt={item.name || 'item'}
+                                  className="w-full h-full object-cover"
+                                  onError={(ev) => { (ev.target as HTMLImageElement).style.display = "none" }}
+                                />
+                                {!item.image && <Shirt className="w-5 h-5 text-slate-400" />}
+                              </div>
+                              <div className="flex-1">
+                                <p className="text-white text-xs font-medium leading-tight">{item.name || 'Unknown Item'}</p>
+                                <p className="text-slate-400 text-[11px]">{item.category || 'No category'}</p>
+                                {typeof item.wear_count === 'number' && (
+                                  <p className="text-yellow-400 text-[11px] flex items-center gap-1">
+                                    <Star className="w-3 h-3" /> Worn {item.wear_count} times
+                                  </p>
+                                )}
+                              </div>
+                              <div className="w-3 h-3 rounded-full" title={String(item.color || '').toUpperCase()} style={{ backgroundColor: item._hex ?? colorForItemDot(item.color) }} />
+                            </div>
+                          ))}
+                        </div>
+
+                        {/* Weather & Occasion */}
+                        <div className="text-left space-y-1 mb-3">
+                          <div className="flex items-center text-[11px]">
+                            <Cloud className="w-3 h-3 text-slate-400 mr-2" />
+                            <span className="text-slate-300">
+                              {typeof currentOutfit.weather_suitability === 'string' ? currentOutfit.weather_suitability : 'Any weather'}
+                            </span>
+                          </div>
+                          <div className="flex items-center text-[11px]">
+                            <User className="w-3 h-3 text-slate-400 mr-2" />
+                            <span className="text-slate-300 capitalize">
+                              {typeof currentOutfit.occasion === 'string' ? currentOutfit.occasion : 'casual'}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Color Harmony */}
+                        <div className="bg-slate-800 rounded-lg p-3">
+                          <h5 className="text-white text-sm font-medium flex items-center gap-2 mb-2">
+                            <Palette className="w-4 h-4" /> Color Harmony
+                          </h5>
+
+                          <div className="flex gap-2 mb-2">
+                            {uniqueItemColors.length === 0 ? (
+                              <span className="text-slate-400 text-xs">No colors detected.</span>
+                            ) : uniqueItemColors.map((c, i) => (
+                              <div key={i} className="flex flex-col items-center">
+                                <div className="w-8 h-8 rounded-full border border-slate-700" style={{ backgroundColor: c.hex }} />
+                                <span className="text-[10px] text-slate-400 mt-1">{c.name.length > 10 ? c.name.slice(0, 10) + "…" : c.name}</span>
+                              </div>
+                            ))}
+                          </div>
+
+                          {currentOutfit.colorHarmony && (
+                            <>
+                              <p className="text-slate-300 text-xs mb-1">{currentOutfit.colorHarmony.harmonyType}</p>
+                              <p className="text-slate-400 text-[11px]">{currentOutfit.colorHarmony.explanation}</p>
+
+                              <div className="space-y-2 mt-3">
+                                <div className="flex items-start gap-2">
+                                  <Lightbulb className="w-3 h-3 text-yellow-400 mt-0.5 flex-shrink-0" />
+                                  <p className="text-slate-300 text-[11px]">
+                                    <span className="text-yellow-400 font-medium">Why This Works</span><br />
+                                    {currentOutfit.colorHarmony.styleNotes}
+                                  </p>
+                                </div>
+                                {currentOutfit.colorHarmony.weatherMatch && (
+                                  <div className="flex items-start gap-2">
+                                    <Thermometer className="w-3 h-3 text-blue-400 mt-0.5 flex-shrink-0" />
+                                    <p className="text-slate-300 text-[11px]">
+                                      <span className="text-blue-400 font-medium">Weather Match</span><br />
+                                      {currentOutfit.colorHarmony.weatherMatch}
+                                    </p>
+                                  </div>
+                                )}
+                              </div>
+                            </>
+                          )}
+                        </div>
+                      </>
+                    )}
+                  </ScrollArea>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
