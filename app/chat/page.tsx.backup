@@ -103,7 +103,6 @@ const US_LOCATIONS = [
 ]
 
 /* --------------------------- Color Helper Utils --------------------------- */
-// robust name → hex table (bias toward neutrals you use)
 const COLOR_MAP: Record<string, string> = {
   black: "#000000",
   white: "#FFFFFF",
@@ -154,13 +153,7 @@ const RGB_RE = /^rgba?\(\s*([.\d]+)\s*,\s*([.\d]+)\s*,\s*([.\d]+)(?:\s*,\s*([.\d
 function normalizeColorString(input?: string): string | null {
   if (!input) return null
   const raw = String(input).trim().toLowerCase()
-
-  // hex already
-  if (HEX_RE.test(raw)) return raw.length === 4
-    ? "#" + raw.slice(1).split("").map(ch => ch + ch).join("")
-    : raw
-
-  // rgb/rgba
+  if (HEX_RE.test(raw)) return raw.length === 4 ? "#" + raw.slice(1).split("").map(ch => ch + ch).join("") : raw
   const rgb = raw.match(RGB_RE)
   if (rgb) {
     const r = Math.max(0, Math.min(255, Math.round(Number(rgb[1]))))
@@ -168,33 +161,17 @@ function normalizeColorString(input?: string): string | null {
     const b = Math.max(0, Math.min(255, Math.round(Number(rgb[3]))))
     return "#" + [r, g, b].map(n => n.toString(16).padStart(2, "0")).join("")
   }
-
-  // tokenized words → try longest match
   const tokens = raw.replace(/[^a-z0-9]/g, " ").split(/\s+/).filter(Boolean)
-  // try exact string (join without spaces)
   const condensed = tokens.join("")
   if (COLOR_MAP[condensed]) return COLOR_MAP[condensed]
-
-  // try any token individually
-  for (const t of tokens) {
-    if (COLOR_MAP[t]) return COLOR_MAP[t]
-  }
-
-  // fuzzy: check substrings like "off white", "light-blue"
-  for (const key of Object.keys(COLOR_MAP)) {
-    if (raw.includes(key)) return COLOR_MAP[key]
-  }
-
-  // if still nothing and looks like “cream/ivory/off-white” with extra text
+  for (const t of tokens) if (COLOR_MAP[t]) return COLOR_MAP[t]
+  for (const key of Object.keys(COLOR_MAP)) if (raw.includes(key)) return COLOR_MAP[key]
   if (raw.includes("cream")) return COLOR_MAP["cream"]
   if (raw.includes("ivory")) return COLOR_MAP["ivory"]
   if (raw.includes("off white") || raw.includes("off-white")) return COLOR_MAP["offwhite"]
-
   return null
 }
-
 function colorForItemDot(color?: string): string {
-  // prefer parsed value; fallback to neutral dot
   return normalizeColorString(color) ?? "#888888"
 }
 
@@ -402,24 +379,28 @@ export default function ChatPage() {
   const fetchWeather = async (location: string) => {
     setWeatherLoading(true)
     try {
-      const response = await fetch(`/api/weather?location=${encodeURIComponent(location)}`)
+      const response = await fetch(`/api/weather?location=${encodeURIComponent(location)}`, { cache: "no-store" })
       if (response.ok) {
         const data = await response.json()
         setWeather(data)
       } else {
         console.error("Failed to fetch weather")
+        setWeather(null)
       }
     } catch (error) {
       console.error("Weather fetch error:", error)
+      setWeather(null)
     } finally {
       setWeatherLoading(false)
     }
   }
 
+  // IMPORTANT: refetch on every location change (no !weather gate)
   useEffect(() => {
-    if (selectedLocation && !weather) fetchWeather(selectedLocation)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedLocation, weather])
+    if (!selectedLocation) return
+    setWeather(null)                // optional: clear stale weather
+    fetchWeather(selectedLocation)  // always refetch
+  }, [selectedLocation])
 
   /* ------------------------------- Persistence ------------------------------ */
   useEffect(() => {
@@ -456,7 +437,8 @@ export default function ChatPage() {
     setSelectedLocation(location)
     setMainLocationOpen(false)
     setMainSearchQuery("")
-    fetchWeather(location)
+    setWeather(null)               // clear current weather
+    fetchWeather(location)         // proactively fetch
   }
 
   const handleLogout = async () => {
@@ -500,6 +482,14 @@ export default function ChatPage() {
           if (ownerProfile) profileIdToUse = ownerProfile.id
         }
 
+        // Weather summary to send to API (FIXED)
+        const weatherSummary =
+          weatherLoading
+            ? "Loading"
+            : weather
+              ? `${weather.temperature}°F ${weather.condition}`
+              : "Weather unavailable"
+
         const startTime = Date.now()
         try {
           const response = await fetch('/api/outfit-recommendation', {
@@ -508,7 +498,7 @@ export default function ChatPage() {
             body: JSON.stringify({
               userId: user.id,
               occasion,
-              weather: weather ? `${weather.temperature}°F ${weather.condition}` : '75°F clear',
+              weather: weatherSummary,       // ✅ proper key:value
               profileId: profileIdToUse,
               location: selectedLocation,
             }),
@@ -517,11 +507,10 @@ export default function ChatPage() {
           const recommendation = await response.json()
           if (!recommendation.items || recommendation.items.length === 0) throw new Error('No outfit items returned from API')
 
-          // Ensure colors are normalized for UI + harmony
           const itemsWithColors = recommendation.items.map((it: any) => ({
             ...it,
-            color: it.color ? it.color : "", // keep original string (we’ll convert only for display)
-            _hex: colorForItemDot(it.color)   // precomputed hex for dots
+            color: it.color ? it.color : "",
+            _hex: colorForItemDot(it.color)
           }))
 
           const computedColorHarmony = analyzeColorHarmony(itemsWithColors)
@@ -530,18 +519,17 @@ export default function ChatPage() {
             name: `${occasion.charAt(0).toUpperCase() + occasion.slice(1)} Outfit`,
             items: itemsWithColors,
             occasion,
-            weather_suitability: `${weather?.temperature}°F ${weather?.condition || 'clear'}`,
+            weather_suitability: weatherSummary,
             style_notes: recommendation.reasoning,
             colorHarmony: computedColorHarmony,
           })
 
           if (recommendation?.reasoning) {
-            const botMessage = {
+            setMessages((prev) => [...prev, {
               id: (Date.now() + 2).toString(),
               role: "assistant",
-              content: `${recommendation.reasoning}\n\n**Weather:** ${weather ? `${weather.temperature}°F ${weather.condition}` : '75°F clear'}\n\n**Styling Tips:**\n${Array.isArray(recommendation.stylingTips) ? recommendation.stylingTips.map((tip: any) => `• ${typeof tip === 'string' ? tip : tip.name || tip.description || 'Styling tip'}`).join('\n') : 'No styling tips available'}`
-            }
-            setMessages((prev) => [...prev, botMessage])
+              content: `${recommendation.reasoning}\n\n**Weather:** ${weatherSummary}`
+            }])
           }
         } catch (err) {
           console.error("Outfit recommendation error:", err)
@@ -650,7 +638,6 @@ export default function ChatPage() {
     for (const it of currentOutfit.items) {
       const hex = colorForItemDot(it?.color)
       const name = (String(it?.color || "").trim() || "color").toLowerCase()
-      // dedupe by hex
       if (!arr.some((c) => c.hex === hex)) arr.push({ name, hex })
     }
     return arr.slice(0, 6)
@@ -696,9 +683,15 @@ export default function ChatPage() {
         <div className="overflow-hidden">
           <div className="animate-scroll whitespace-nowrap text-sm text-white">
             <span className="inline-block px-8">
-              📍 {selectedLocation}: {weather ? `${weather.temperature}°F, ${weather.condition}` : '75°F, clear sky'} • Humidity: {weather ? `${weather.humidity}%` : '61%'} • Wind: {weather ? `${weather.windSpeed} mph` : '8 mph'} • Perfect weather for outfit planning!
+              📍 {selectedLocation}: {
+                weatherLoading
+                  ? "Loading weather…"
+                  : weather
+                    ? `${weather.temperature}°F, ${weather.condition}`
+                    : "Weather unavailable"
+              } • Humidity: {weather && typeof weather.humidity === "number" ? `${weather.humidity}%` : "—"} • Wind: {weather && typeof weather.windSpeed === "number" ? `${weather.windSpeed} mph` : "—"} • Perfect weather for outfit planning!
             </span>
-            <span className="inline-block px-8">🌤️  {weather ? weather.description : 'Great conditions for layering'}</span>
+            <span className="inline-block px-8">🌤️  {weather?.description || 'Check layers if temps vary today.'}</span>
           </div>
         </div>
       </div>
@@ -794,14 +787,12 @@ export default function ChatPage() {
             {/* Chat (left) */}
             <section className="col-span-12 lg:col-span-7">
               <div className="bg-slate-900 rounded-lg p-4 h-[72vh] flex flex-col">
-                {/* Header text (tight) */}
                 <div className="mb-2">
                   <p className="text-slate-300 text-sm">
                     Hi! I’m your AI Outfit Picker. Tell me your plans and I’ll suggest an outfit that matches the weather, occasion, and your wardrobe.
                   </p>
                 </div>
 
-                {/* Messages area */}
                 <div className="flex-1 min-h-0">
                   <ScrollArea className="h-full">
                     {messages.map((m) => (
@@ -820,7 +811,6 @@ export default function ChatPage() {
                   </ScrollArea>
                 </div>
 
-                {/* Quick actions */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-2">
                   <Button variant="outline" size="sm" onClick={() => handleQuickAction("What should I wear today?")} className="bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700">
                     What should I wear today?
@@ -836,7 +826,6 @@ export default function ChatPage() {
                   </Button>
                 </div>
 
-                {/* Input anchored at bottom */}
                 <form onSubmit={handleSubmit} className="flex gap-2 mt-2">
                   <Input
                     value={input}
@@ -859,11 +848,12 @@ export default function ChatPage() {
                   <h3 className="text-white text-sm font-semibold">Recommended Outfit</h3>
                   <span className="text-[11px] text-slate-400 flex items-center gap-1">
                     <Cloud className="w-3 h-3" />
-                    {selectedLocation}{weather ? ` • ${weather.temperature}°F • ${weather.condition}` : ""}
+                    {selectedLocation}{
+                      weatherLoading ? " • Loading…" : weather ? ` • ${weather.temperature}°F • ${weather.condition}` : ""
+                    }
                   </span>
                 </div>
 
-                {/* Content area scrolls independently */}
                 <div className="flex-1 min-h-0">
                   <ScrollArea className="h-full pr-2">
                     {!currentOutfit ? (
@@ -923,7 +913,6 @@ export default function ChatPage() {
                                   />
                                   {!item.image && <Shirt className="w-7 h-7 text-slate-400" />}
                                 </div>
-                                {/* color dot (accurate) */}
                                 <div className="absolute -bottom-1 -right-1 bg-slate-900 rounded-full p-[3px] shadow-md">
                                   <div className="w-4 h-4 rounded-full" style={{ backgroundColor: item._hex ?? colorForItemDot(item.color) }} />
                                 </div>
@@ -1009,32 +998,23 @@ export default function ChatPage() {
                           <div className="flex items-center text-[11px]">
                             <Cloud className="w-3 h-3 text-slate-400 mr-2" />
                             <span className="text-slate-300">
-                              {currentOutfit.weather_suitability
-                                ? typeof currentOutfit.weather_suitability === 'object'
-                                  ? JSON.stringify(currentOutfit.weather_suitability)
-                                  : String(currentOutfit.weather_suitability)
-                                : 'Any weather'}
+                              {typeof currentOutfit.weather_suitability === 'string' ? currentOutfit.weather_suitability : 'Any weather'}
                             </span>
                           </div>
                           <div className="flex items-center text-[11px]">
                             <User className="w-3 h-3 text-slate-400 mr-2" />
                             <span className="text-slate-300 capitalize">
-                              {currentOutfit.occasion
-                                ? typeof currentOutfit.occasion === 'object'
-                                  ? JSON.stringify(currentOutfit.occasion)
-                                  : String(currentOutfit.occasion)
-                                : 'casual'}
+                              {typeof currentOutfit.occasion === 'string' ? currentOutfit.occasion : 'casual'}
                             </span>
                           </div>
                         </div>
 
-                        {/* Color Harmony (use accurate hexes derived above) */}
+                        {/* Color Harmony */}
                         <div className="bg-slate-800 rounded-lg p-3">
                           <h5 className="text-white text-sm font-medium flex items-center gap-2 mb-2">
                             <Palette className="w-4 h-4" /> Color Harmony
                           </h5>
 
-                          {/* swatches from actual items */}
                           <div className="flex gap-2 mb-2">
                             {uniqueItemColors.length === 0 ? (
                               <span className="text-slate-400 text-xs">No colors detected.</span>
