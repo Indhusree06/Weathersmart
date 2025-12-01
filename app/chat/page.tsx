@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useEffect, useMemo } from "react"
 import { useRouter } from "next/navigation"
@@ -487,23 +487,25 @@ export default function ChatPage() {
           weatherLoading
             ? "Loading"
             : weather
-              ? `${weather.temperature}°F ${weather.condition}`
+              ? `${weather.temperature}Â°F ${weather.condition}`
               : "Weather unavailable"
 
         const startTime = Date.now()
         try {
-          const response = await fetch('/api/outfit-recommendation', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              userId: user.id,
-              occasion,
-              weather: weatherSummary,       // ✅ proper key:value
-              profileId: profileIdToUse,
-              location: selectedLocation,
-            }),
-          })
-          if (!response.ok) throw new Error('Failed to get outfit recommendation')
+              const uid = user?.id ?? currentUserId;
+              const isUuid = typeof uid === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(uid)
+              if (!isUuid) { setIsLoading(false); setMessages((prev) => [...prev, { id: Date.now().toString(), role: 'bot', content: 'Please sign in to get outfit recommendations.', timestamp: new Date().toISOString() }]); return }
+              const response = await fetch('/api/outfit-recommendation', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  userId: uid,
+                  occasion,
+                  weather: weatherSummary,
+                  profileId: profileIdToUse,
+                  location: selectedLocation,
+                }),
+              })
           const recommendation = await response.json()
           if (!recommendation.items || recommendation.items.length === 0) throw new Error('No outfit items returned from API')
 
@@ -683,15 +685,15 @@ export default function ChatPage() {
         <div className="overflow-hidden">
           <div className="animate-scroll whitespace-nowrap text-sm text-white">
             <span className="inline-block px-8">
-              📍 {selectedLocation}: {
+              ðŸ“ {selectedLocation}: {
                 weatherLoading
-                  ? "Loading weather…"
+                  ? "Loading weatherâ€¦"
                   : weather
-                    ? `${weather.temperature}°F, ${weather.condition}`
+                    ? `${weather.temperature}Â°F, ${weather.condition}`
                     : "Weather unavailable"
-              } • Humidity: {weather && typeof weather.humidity === "number" ? `${weather.humidity}%` : "—"} • Wind: {weather && typeof weather.windSpeed === "number" ? `${weather.windSpeed} mph` : "—"} • Perfect weather for outfit planning!
+              } â€¢ Humidity: {weather && typeof weather.humidity === "number" ? `${weather.humidity}%` : "â€”"} â€¢ Wind: {weather && typeof weather.windSpeed === "number" ? `${weather.windSpeed} mph` : "â€”"} â€¢ Perfect weather for outfit planning!
             </span>
-            <span className="inline-block px-8">🌤️  {weather?.description || 'Check layers if temps vary today.'}</span>
+            <span className="inline-block px-8">ðŸŒ¤ï¸  {weather?.description || 'Check layers if temps vary today.'}</span>
           </div>
         </div>
       </div>
@@ -789,7 +791,7 @@ export default function ChatPage() {
               <div className="bg-slate-900 rounded-lg p-4 h-[72vh] flex flex-col">
                 <div className="mb-2">
                   <p className="text-slate-300 text-sm">
-                    Hi! I’m your AI Outfit Picker. Tell me your plans and I’ll suggest an outfit that matches the weather, occasion, and your wardrobe.
+                    Hi! Iâ€™m your AI Outfit Picker. Tell me your plans and Iâ€™ll suggest an outfit that matches the weather, occasion, and your wardrobe.
                   </p>
                 </div>
 
@@ -849,7 +851,7 @@ export default function ChatPage() {
                   <span className="text-[11px] text-slate-400 flex items-center gap-1">
                     <Cloud className="w-3 h-3" />
                     {selectedLocation}{
-                      weatherLoading ? " • Loading…" : weather ? ` • ${weather.temperature}°F • ${weather.condition}` : ""
+                      weatherLoading ? " â€¢ Loadingâ€¦" : weather ? ` â€¢ ${weather.temperature}Â°F â€¢ ${weather.condition}` : ""
                     }
                   </span>
                 </div>
@@ -860,7 +862,7 @@ export default function ChatPage() {
                       <div className="text-center py-8">
                         <Settings className="w-12 h-12 text-slate-600 mx-auto mb-3" />
                         <h4 className="text-white font-medium">No Outfit Selected</h4>
-                        <p className="text-slate-400 text-xs mt-1">Ask me to pick an outfit and I’ll show you recommendations from your actual wardrobe items.</p>
+                        <p className="text-slate-400 text-xs mt-1">Ask me to pick an outfit and Iâ€™ll show you recommendations from your actual wardrobe items.</p>
                         <div className="space-y-2 mt-4">
                           <Button onClick={() => handleQuickAction("What should I wear today?")} className="bg-blue-600 hover:bg-blue-700 w-full text-sm">
                             What should I wear today?
@@ -1021,7 +1023,7 @@ export default function ChatPage() {
                             ) : uniqueItemColors.map((c, i) => (
                               <div key={i} className="flex flex-col items-center">
                                 <div className="w-8 h-8 rounded-full border border-slate-700" style={{ backgroundColor: c.hex }} />
-                                <span className="text-[10px] text-slate-400 mt-1">{c.name.length > 10 ? c.name.slice(0, 10) + "…" : c.name}</span>
+                                <span className="text-[10px] text-slate-400 mt-1">{c.name.length > 10 ? c.name.slice(0, 10) + "â€¦" : c.name}</span>
                               </div>
                             ))}
                           </div>
@@ -1064,3 +1066,4 @@ export default function ChatPage() {
     </div>
   )
 }
+
