@@ -1,4 +1,4 @@
-import { type NextRequest, NextResponse } from "next/server"
+﻿import { type NextRequest, NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
 
 const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_KEY!)
@@ -6,6 +6,11 @@ const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env
 export async function POST(request: NextRequest) {
   try {
     const { occasion, weather, userId, profileId, profileAge, profileRelationship, profileName, randomSeed, timestamp } = await request.json()
+
+    const isUuid = typeof userId === "string" && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(userId)
+    if (!isUuid) {
+      return NextResponse.json({ error: "Invalid userId" }, { status: 400 })
+    }
 
     if (!userId) {
       return NextResponse.json({ error: "User ID is required" }, { status: 400 })
@@ -787,3 +792,4 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Failed to generate outfit recommendation" }, { status: 500 })
   }
 }
+
