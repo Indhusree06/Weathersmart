@@ -1,7 +1,22 @@
 import { createClient } from "@supabase/supabase-js"
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+// Validate environment variables
+if (!supabaseUrl || supabaseUrl === 'your_supabase_url_here') {
+  throw new Error(
+    'Missing or invalid NEXT_PUBLIC_SUPABASE_URL environment variable. ' +
+    'Please add your Supabase URL to .env.local and restart the dev server.'
+  )
+}
+
+if (!supabaseAnonKey || supabaseAnonKey === 'your_supabase_anon_key_here') {
+  throw new Error(
+    'Missing or invalid NEXT_PUBLIC_SUPABASE_ANON_KEY environment variable. ' +
+    'Please add your Supabase anon key to .env.local and restart the dev server.'
+  )
+}
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 

@@ -1,7 +1,13 @@
 import { Message as AIMessage } from "ai"
 import OpenAI from "openai"
 import { NextRequest } from "next/server"
-import { supabase } from "@/lib/supabase"
+import { createClient } from "@supabase/supabase-js"
+
+// Use service key to bypass RLS and fetch wardrobe items server-side
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_KEY!
+)
 
 interface AIMessage {
   role: string;
@@ -79,13 +85,14 @@ export async function POST(req: NextRequest) {
     }
 
     // Get wardrobe items for the user
-    let wardrobeItems = []
+    let wardrobeItems: any[] = []
     try {
       if (userId) {
+        console.log(`[Chat API] Fetching wardrobe items for userId: ${userId}, profileId: ${profileId || 'none'}`)
+        
         // First try to get items with profile filter if profileId is provided
-        if (profileId) {
+        if (profileId && profileId !== 'owner' && profileId !== 'family') {
           try {
-            console.log(`Trying to fetch wardrobe items for user ${userId} and profile ${profileId}`)
             const { data: profileItems, error: profileError } = await supabase
               .from('wardrobe_items')
               .select('*')
@@ -93,15 +100,15 @@ export async function POST(req: NextRequest) {
               .eq('wardrobe_profile_id', profileId)
             
             if (profileError) {
-              console.error("Error fetching profile-specific wardrobe items:", profileError)
+              console.error("[Chat API] Error fetching profile-specific wardrobe items:", profileError)
             } else if (profileItems && profileItems.length > 0) {
               wardrobeItems = profileItems
-              console.log(`Fetched ${wardrobeItems.length} wardrobe items for user ${userId} and profile ${profileId}`)
+              console.log(`[Chat API] Fetched ${wardrobeItems.length} wardrobe items for profile ${profileId}`)
             } else {
-              console.log(`No items found for profile ${profileId}, falling back to all user items`)
+              console.log(`[Chat API] No items found for profile ${profileId}, will fall back to all user items`)
             }
           } catch (error) {
-            console.error("Error with profile filtering:", error)
+            console.error("[Chat API] Error with profile filtering:", error)
           }
         }
         
@@ -113,15 +120,24 @@ export async function POST(req: NextRequest) {
             .eq('user_id', userId)
           
           if (error) {
-            console.error("Error fetching all user wardrobe items:", error)
+            console.error("[Chat API] Error fetching all user wardrobe items:", error)
           } else {
             wardrobeItems = allUserItems || []
-            console.log(`Fetched ${wardrobeItems.length} total wardrobe items for user ${userId}`)
+            console.log(`[Chat API] Fetched ${wardrobeItems.length} total wardrobe items for user ${userId}`)
           }
         }
+      } else {
+        console.warn("[Chat API] No userId provided - cannot fetch wardrobe items")
       }
     } catch (error) {
-      console.error("Error accessing wardrobe data:", error)
+      console.error("[Chat API] Error accessing wardrobe data:", error)
+    }
+    
+    // Log wardrobe item summary for debugging
+    if (wardrobeItems.length > 0) {
+      console.log(`[Chat API] Wardrobe items being sent to AI: ${wardrobeItems.map(item => item.name).join(', ')}`)
+    } else {
+      console.warn("[Chat API] WARNING: No wardrobe items found for this user!")
     }
 
     // Create a system message with wardrobe information
@@ -270,14 +286,14 @@ This format helps the app identify your recommendations and display them visuall
     try {
       // Log the request parameters for debugging
       console.log("OpenAI API request:", {
-        model: "gpt-4-turbo-preview",
+        model: "gpt-4o-mini",
         messagesCount: messages.length,
         maxTokens: 1000,
         temperature: 0.7
       })
 
       const response = await openai.chat.completions.create({
-        model: "gpt-4-turbo-preview",
+        model: "gpt-4o-mini",
         messages: [
           systemMessage,
           ...messages.map((m: AIMessage) => ({

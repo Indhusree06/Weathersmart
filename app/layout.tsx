@@ -11,7 +11,8 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "Weather Smart - AI Outfit Assistant",
   description: "Get personalized outfit recommendations based on weather and your wardrobe",
-    generator: 'v0.app'
+  generator: 'v0.app',
+  charset: 'utf-8'
 }
 
 export default function RootLayout({

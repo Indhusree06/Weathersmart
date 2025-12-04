@@ -452,12 +452,15 @@ export default function ChatPage() {
 
   /* --------------------------------- Submit -------------------------------- */
   const handleSubmit = async (
-    e: React.FormEvent & { isButtonClick?: boolean; skipErrorMessage?: boolean; target?: any }
+    e: React.FormEvent & { isButtonClick?: boolean; skipErrorMessage?: boolean; target?: any },
+    directMessage?: string  // Allow passing message directly to avoid state race condition
   ) => {
     e.preventDefault()
-    if (!input.trim() || isLoading) return
+    
+    // Use directMessage if provided (from quick action buttons), otherwise use input state
+    const userMessage = (directMessage || input).trim()
+    if (!userMessage || isLoading) return
 
-    const userMessage = input.trim()
     setInput("")
     setIsLoading(true)
 
@@ -470,16 +473,39 @@ export default function ChatPage() {
       const isOutfitRequest = isButtonClick || /wear|outfit|recommend/.test(lower)
 
       if (isOutfitRequest) {
-        let occasion: "casual" | "work" | "formal" | "date" = "casual"
-        if (/(work|office|business)/i.test(lower)) occasion = "work"
-        else if (/(formal|party|event)/i.test(lower)) occasion = "formal"
-        else if (/(date|dinner)/i.test(lower)) occasion = "date"
+        // Enhanced occasion detection with child-specific occasions
+        let occasion: string = "casual"
+        
+        // Child-specific occasions (check these first)
+        if (/(school|class|classroom|learning|homework)/i.test(lower)) occasion = "school"
+        else if (/(playground|park|playing outside|outdoor play)/i.test(lower)) occasion = "playground"
+        else if (/(playdate|play date|friend.?s house|playing with friends)/i.test(lower)) occasion = "playdate"
+        else if (/(birthday|bday|birthday party)/i.test(lower)) occasion = "birthday"
+        // Adult occasions
+        else if (/(work|office|business|professional|meeting|interview)/i.test(lower)) occasion = "work"
+        else if (/(formal|elegant|gala|wedding|ceremony)/i.test(lower)) occasion = "formal"
+        else if (/(party|club|night out|celebration|festive)/i.test(lower)) occasion = "party"
+        else if (/(date|dinner|romantic|evening out)/i.test(lower)) occasion = "date"
+        else if (/(weekend|relaxed|chill|laid-back|brunch)/i.test(lower)) occasion = "weekend"
+        else if (/(workout|gym|exercise|sport|athletic|running|fitness|soccer|basketball|tennis)/i.test(lower)) occasion = "athletic"
+        else if (/(beach|pool|summer|vacation|resort|swimming)/i.test(lower)) occasion = "beach"
+        else if (/(weather|today|rain|cold|hot|sunny|warm|cool)/i.test(lower)) occasion = "weather-based"
 
-        // profile
+        // profile - get full profile info for child detection
         let profileIdToUse = selectedProfile
+        let profileInfo: { age?: number; relationship?: string; name?: string } = {}
+        
         if (selectedProfile === "owner") {
           const ownerProfile = wardrobeProfiles.find((p) => p.relationship === "self")
-          if (ownerProfile) profileIdToUse = ownerProfile.id
+          if (ownerProfile) {
+            profileIdToUse = ownerProfile.id
+            profileInfo = { age: ownerProfile.age, relationship: ownerProfile.relationship, name: ownerProfile.name }
+          }
+        } else if (selectedProfile !== "family") {
+          const selectedProfileData = wardrobeProfiles.find((p) => p.id === selectedProfile)
+          if (selectedProfileData) {
+            profileInfo = { age: selectedProfileData.age, relationship: selectedProfileData.relationship, name: selectedProfileData.name }
+          }
         }
 
         // Weather summary to send to API (FIXED)
@@ -498,8 +524,11 @@ export default function ChatPage() {
             body: JSON.stringify({
               userId: user.id,
               occasion,
-              weather: weatherSummary,       // ✅ proper key:value
+              weather: weatherSummary,
               profileId: profileIdToUse,
+              profileAge: profileInfo.age,
+              profileRelationship: profileInfo.relationship,
+              profileName: profileInfo.name,
               location: selectedLocation,
             }),
           })
@@ -627,7 +656,8 @@ export default function ChatPage() {
       skipErrorMessage: true,
       target: { skipErrorMessage: true },
     } as unknown as React.FormEvent & { isButtonClick: boolean; skipErrorMessage: boolean; target: { skipErrorMessage: boolean } }
-    await handleSubmit(fakeEvent)
+    // Pass message directly to avoid race condition with setInput state update
+    await handleSubmit(fakeEvent, message)
     setTimeout(() => { try { window.localStorage.removeItem('skipNextErrorMessage') } catch {} }, 4000)
   }
 
@@ -642,6 +672,25 @@ export default function ChatPage() {
     }
     return arr.slice(0, 6)
   }, [currentOutfit])
+
+  /* ----------------------------- Child Profile Detection ---------------------------- */
+  const isChildProfileSelected = useMemo(() => {
+    if (selectedProfile === "owner" || selectedProfile === "family") return false
+    const profile = wardrobeProfiles.find(p => p.id === selectedProfile)
+    if (!profile) return false
+    
+    const childRelationships = ['child', 'son', 'daughter', 'grandchild', 'kid', 'kids']
+    const isChild = (profile.age && profile.age < 13) || 
+                    (profile.relationship && childRelationships.includes(profile.relationship.toLowerCase()))
+    return isChild
+  }, [selectedProfile, wardrobeProfiles])
+
+  const selectedProfileName = useMemo(() => {
+    if (selectedProfile === "owner") return "you"
+    if (selectedProfile === "family") return "family"
+    const profile = wardrobeProfiles.find(p => p.id === selectedProfile)
+    return profile?.name || "them"
+  }, [selectedProfile, wardrobeProfiles])
 
   /* ---------------------------------- UI ---------------------------------- */
   if (loading) {
@@ -681,17 +730,17 @@ export default function ChatPage() {
       {/* Weather Ticker */}
       <div className="bg-blue-600 px-6 py-2">
         <div className="overflow-hidden">
-          <div className="animate-scroll whitespace-nowrap text-sm text-white">
+          <div className="animate-scroll whitespace-nowrap text-sm text-white font-medium">
             <span className="inline-block px-8">
-              📍 {selectedLocation}: {
+              {selectedLocation}: {
                 weatherLoading
-                  ? "Loading weather…"
+                  ? "Loading weather..."
                   : weather
                     ? `${weather.temperature}°F, ${weather.condition}`
                     : "Weather unavailable"
-              } • Humidity: {weather && typeof weather.humidity === "number" ? `${weather.humidity}%` : "—"} • Wind: {weather && typeof weather.windSpeed === "number" ? `${weather.windSpeed} mph` : "—"} • Perfect weather for outfit planning!
+              } | Humidity: {weather && typeof weather.humidity === "number" ? `${weather.humidity}%` : "-"} | Wind: {weather && typeof weather.windSpeed === "number" ? `${weather.windSpeed} mph` : "-"} | Perfect weather for outfit planning!
             </span>
-            <span className="inline-block px-8">🌤️  {weather?.description || 'Check layers if temps vary today.'}</span>
+            <span className="inline-block px-8">{weather?.description || 'partly cloudy'}</span>
           </div>
         </div>
       </div>
@@ -788,8 +837,11 @@ export default function ChatPage() {
             <section className="col-span-12 lg:col-span-7">
               <div className="bg-slate-900 rounded-lg p-4 h-[72vh] flex flex-col">
                 <div className="mb-2">
-                  <p className="text-slate-300 text-sm">
-                    Hi! I’m your AI Outfit Picker. Tell me your plans and I’ll suggest an outfit that matches the weather, occasion, and your wardrobe.
+                  <p className="text-slate-300 text-sm font-normal leading-relaxed">
+                    {isChildProfileSelected 
+                      ? `Hi! I'm here to help pick outfits for ${selectedProfileName}! 🌈 Tell me what ${selectedProfileName} is doing today and I'll suggest something cute and weather-appropriate.`
+                      : "Hi! I'm your AI Outfit Picker. Tell me your plans and I'll suggest an outfit that matches the weather, occasion, and your wardrobe."
+                    }
                   </p>
                 </div>
 
@@ -797,13 +849,13 @@ export default function ChatPage() {
                   <ScrollArea className="h-full">
                     {messages.map((m) => (
                       <div key={m.id} className="mb-3">
-                        <div className={`${m.role === "user" ? "bg-blue-600 text-white ml-auto max-w-md" : "bg-slate-700 text-white max-w-2xl"} rounded-lg px-3 py-2 text-sm`}>
+                        <div className={`${m.role === "user" ? "bg-blue-600 text-white ml-auto max-w-md" : "bg-slate-700 text-white max-w-2xl"} rounded-lg px-3 py-2 text-sm font-normal leading-relaxed`}>
                           {typeof m.content === 'string' ? m.content : JSON.stringify(m.content)}
                         </div>
                       </div>
                     ))}
                     {isLoading && (
-                      <div className="bg-slate-700 text-white max-w-2xl rounded-lg px-3 py-2 flex items-center space-x-2">
+                      <div className="bg-slate-700 text-white max-w-2xl rounded-lg px-3 py-2 flex items-center space-x-2 text-sm font-normal">
                         <Loader2 className="w-4 h-4 animate-spin" />
                         <span>Thinking...</span>
                       </div>
@@ -812,18 +864,39 @@ export default function ChatPage() {
                 </div>
 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-2">
-                  <Button variant="outline" size="sm" onClick={() => handleQuickAction("What should I wear today?")} className="bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700">
-                    What should I wear today?
-                  </Button>
-                  <Button variant="outline" size="sm" onClick={() => handleQuickAction("Suggest a work outfit")} className="bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700">
-                    Suggest a work outfit
-                  </Button>
-                  <Button variant="outline" size="sm" onClick={() => handleQuickAction("Show me weekend casual looks")} className="bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700">
-                    Weekend casual
-                  </Button>
-                  <Button variant="outline" size="sm" onClick={() => handleQuickAction("What's good for this weather?")} className="bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700">
-                    Weather outfit
-                  </Button>
+                  {isChildProfileSelected ? (
+                    <>
+                      {/* Child-specific buttons */}
+                      <Button variant="outline" size="sm" onClick={() => handleQuickAction(`What should ${selectedProfileName} wear to school today?`)} className="bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700">
+                        🎒 School outfit
+                      </Button>
+                      <Button variant="outline" size="sm" onClick={() => handleQuickAction(`Suggest a playground outfit for ${selectedProfileName}`)} className="bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700">
+                        🛝 Playground
+                      </Button>
+                      <Button variant="outline" size="sm" onClick={() => handleQuickAction(`What should ${selectedProfileName} wear to a playdate?`)} className="bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700">
+                        🧸 Playdate
+                      </Button>
+                      <Button variant="outline" size="sm" onClick={() => handleQuickAction(`What's good for ${selectedProfileName} in this weather?`)} className="bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700">
+                        🌤️ Weather outfit
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      {/* Adult buttons */}
+                      <Button variant="outline" size="sm" onClick={() => handleQuickAction("What should I wear today?")} className="bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700">
+                        What should I wear today?
+                      </Button>
+                      <Button variant="outline" size="sm" onClick={() => handleQuickAction("Suggest a work outfit")} className="bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700">
+                        Suggest a work outfit
+                      </Button>
+                      <Button variant="outline" size="sm" onClick={() => handleQuickAction("Show me weekend casual looks")} className="bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700">
+                        Weekend casual
+                      </Button>
+                      <Button variant="outline" size="sm" onClick={() => handleQuickAction("What's good for this weather?")} className="bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700">
+                        Weather outfit
+                      </Button>
+                    </>
+                  )}
                 </div>
 
                 <form onSubmit={handleSubmit} className="flex gap-2 mt-2">
@@ -831,7 +904,7 @@ export default function ChatPage() {
                     value={input}
                     onChange={handleInputChange}
                     placeholder="Ask me about outfits, styling, or wardrobe advice..."
-                    className="flex-1 bg-slate-800 border-slate-600 text-white placeholder-slate-400"
+                    className="flex-1 bg-slate-800 border-slate-600 text-white placeholder-slate-400 font-normal"
                     disabled={isLoading}
                   />
                   <Button type="submit" disabled={isLoading || !input.trim()} className="bg-blue-600 hover:bg-blue-700">
@@ -846,10 +919,10 @@ export default function ChatPage() {
               <div className="bg-slate-900 rounded-lg p-4 h-[72vh] flex flex-col overflow-hidden">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="text-white text-sm font-semibold">Recommended Outfit</h3>
-                  <span className="text-[11px] text-slate-400 flex items-center gap-1">
+                  <span className="text-[11px] text-slate-400 flex items-center gap-1 font-normal">
                     <Cloud className="w-3 h-3" />
                     {selectedLocation}{
-                      weatherLoading ? " • Loading…" : weather ? ` • ${weather.temperature}°F • ${weather.condition}` : ""
+                      weatherLoading ? " | Loading..." : weather ? ` | ${weather.temperature}°F | ${weather.condition}` : ""
                     }
                   </span>
                 </div>
@@ -860,7 +933,7 @@ export default function ChatPage() {
                       <div className="text-center py-8">
                         <Settings className="w-12 h-12 text-slate-600 mx-auto mb-3" />
                         <h4 className="text-white font-medium">No Outfit Selected</h4>
-                        <p className="text-slate-400 text-xs mt-1">Ask me to pick an outfit and I’ll show you recommendations from your actual wardrobe items.</p>
+                        <p className="text-slate-400 text-xs mt-1 font-normal leading-relaxed">Ask me to pick an outfit and I'll show you recommendations from your actual wardrobe items.</p>
                         <div className="space-y-2 mt-4">
                           <Button onClick={() => handleQuickAction("What should I wear today?")} className="bg-blue-600 hover:bg-blue-700 w-full text-sm">
                             What should I wear today?
@@ -896,7 +969,7 @@ export default function ChatPage() {
                     ) : (
                       <>
                         {/* Reasoning */}
-                        <p className="text-slate-300 text-xs mb-3">{currentOutfit.style_notes}</p>
+                        <p className="text-slate-300 text-xs mb-3 font-normal leading-relaxed">{currentOutfit.style_notes}</p>
 
                         {/* Preview row */}
                         <div className="bg-slate-800 rounded-lg p-3 mb-3">
@@ -981,9 +1054,9 @@ export default function ChatPage() {
                               </div>
                               <div className="flex-1">
                                 <p className="text-white text-xs font-medium leading-tight">{item.name || 'Unknown Item'}</p>
-                                <p className="text-slate-400 text-[11px]">{item.category || 'No category'}</p>
+                                <p className="text-slate-400 text-[11px] font-normal">{item.category || 'No category'}</p>
                                 {typeof item.wear_count === 'number' && (
-                                  <p className="text-yellow-400 text-[11px] flex items-center gap-1">
+                                  <p className="text-yellow-400 text-[11px] flex items-center gap-1 font-normal">
                                     <Star className="w-3 h-3" /> Worn {item.wear_count} times
                                   </p>
                                 )}
