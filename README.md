@@ -1,6 +1,6 @@
-# StyleGenie AI - Smart Wardrobe Management
+# Weather Smart - Smart Wardrobe Management
 
-StyleGenie AI is an intelligent wardrobe management system that helps you organize your clothing, get personalized outfit recommendations, and manage wardrobes for your entire family.
+Weather Smart is an intelligent wardrobe management system that helps you organize your clothing, get personalized outfit recommendations, and manage wardrobes for your entire family.
 
 ## 🌟 Features
 
