@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Navbar } from "@/components/ui/navbar"
 import { useAuth } from "@/hooks/useAuth"
 import { wardrobeProfileService, wardrobeService } from "@/lib/supabase"
 import {
@@ -703,62 +704,23 @@ export default function WardrobesPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
       {/* Navigation */}
-      <nav className="border-b border-gray-700 bg-gray-800/40 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            {/* Logo */}
-            <Link href="/home" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
-                <Sparkles className="w-5 h-5 text-black" />
-              </div>
-              <span className="text-xl font-bold text-white">Weather Smart</span>
-            </Link>
-
-            {/* Navigation Items */}
-            <div className="hidden md:flex items-center space-x-6">
-              <Link href="/chat" className="text-gray-300 hover:text-white transition-colors">
-                AI Outfit Picker
-              </Link>
-              <Link href="/wardrobes" className="text-white font-medium">
-                Wardrobes
-              </Link>
-              <Link href="/weather-essentials" className="text-gray-300 hover:text-white transition-colors">
-                Weather Essentials
-              </Link>
-              <Link href="/lifecycle-alerts" className="text-gray-300 hover:text-white transition-colors">
-                Lifecycle Alerts
-              </Link>
-            </div>
-
-            {/* User Profile */}
-            {user && (
-              <div className="flex items-center space-x-4">
-                <div className="flex items-center space-x-2">
-                  <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-                    <span className="text-white font-bold text-sm">{user.email?.charAt(0).toUpperCase()}</span>
-                  </div>
-                  <div className="hidden sm:block">
-                    <div className="text-sm font-medium text-white">{user.email?.split("@")[0]}</div>
-                    <div className="text-xs text-gray-400">{user.email}</div>
-                  </div>
-                </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => {
-                    signOut()
-                    router.push("/auth")
-                  }}
-                  className="bg-white text-black hover:bg-gray-100"
-                >
-                  <LogOut className="w-4 h-4 mr-2" />
-                  Logout
-                </Button>
-              </div>
-            )}
-          </div>
-        </div>
-      </nav>
+      <Navbar 
+        navLinks={[
+          { name: "AI Outfit Picker", href: "/chat" },
+          { name: "Wardrobes", href: "/wardrobes" },
+          { name: "Weather Essentials", href: "/weather-essentials" },
+          { name: "Lifecycle Alerts", href: "/lifecycle-alerts" }
+        ]}
+        currentPath="/wardrobes"
+        onLogout={() => {
+          signOut()
+          router.push("/auth")
+        }}
+        user={user}
+        userEmail={user?.email}
+        userInitial={user?.email?.[0]?.toUpperCase()}
+        userName={user?.email?.split('@')[0]}
+      />
 
       <div className="container mx-auto px-6 pt-12 pb-8">
         <div className="max-w-6xl mx-auto">

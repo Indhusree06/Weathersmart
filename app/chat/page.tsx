@@ -10,6 +10,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { Navbar } from "@/components/ui/navbar"
 import {
   Loader2, MapPin, Cloud, User, Users, Shirt, Check, ChevronsUpDown, Settings, Star, Palette, Lightbulb, Thermometer, Send
 } from "lucide-react"
@@ -707,25 +708,21 @@ export default function ChatPage() {
 
   return (
     <div className="min-h-screen bg-slate-900">
-      {/* Top Bar */}
-      <div className="bg-slate-800 px-6 py-3">
-        <div className="flex items-center justify-center text-white">
-          <div className="flex items-center space-x-8">
-            <Link href="/wardrobes" className="flex items-center space-x-2 cursor-pointer hover:opacity-80">
-              <span className="font-semibold">Weather Smart</span>
-            </Link>
-            <Link href="/chat" className="text-slate-300 cursor-pointer hover:text-white font-medium">AI Outfit Picker</Link>
-            <Link href="/wardrobes" className="text-slate-300 cursor-pointer hover:text-white">Wardrobes</Link>
-            <Link href="/weather-essentials" className="text-slate-300 cursor-pointer hover:text-white">Weather Essentials</Link>
-            <Link href="/lifecycle-alerts" className="text-slate-300 cursor-pointer hover:text-white">Lifecycle Alerts</Link>
-            <div className="flex items-center space-x-2 text-sm ml-8">
-              <User className="w-4 h-4" />
-              <span>{user?.email || "abcd@gmail.com"}</span>
-              <Button variant="ghost" className="text-white hover:bg-slate-700 p-1 text-sm" onClick={handleLogout}>Logout</Button>
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* Navbar */}
+      <Navbar 
+        navLinks={[
+          { name: "AI Outfit Picker", href: "/chat" },
+          { name: "Wardrobes", href: "/wardrobes" },
+          { name: "Weather Essentials", href: "/weather-essentials" },
+          { name: "Lifecycle Alerts", href: "/lifecycle-alerts" }
+        ]}
+        currentPath="/chat"
+        onLogout={handleLogout}
+        user={user}
+        userEmail={user?.email}
+        userInitial={user?.email?.[0]?.toUpperCase()}
+        userName={user?.email?.split('@')[0]}
+      />
 
       {/* Weather Ticker */}
       <div className="bg-blue-600 px-6 py-2">

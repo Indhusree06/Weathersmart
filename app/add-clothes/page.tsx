@@ -19,6 +19,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
+import { Navbar } from "@/components/ui/navbar"
 
 // ---------------------------------- Constants ----------------------------------
 
@@ -562,36 +563,20 @@ export default function AddClothesPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
       {/* Nav */}
-      <nav className="bg-gray-800/50 backdrop-blur-sm border-b border-gray-700 sticky top-0 z-50">
-        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Link href={profileId ? "/wardrobes" : "/wardrobe"}>
-              <Button variant="ghost" size="sm" className="text-gray-300 hover:text-white hover:bg-gray-700">
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                {profileId ? "Back to Wardrobes" : "Back to Wardrobe"}
-              </Button>
-            </Link>
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                <Shirt className="w-4 h-4 text-black" />
-              </div>
-              <h1 className="text-2xl font-bold text-white">Add Items</h1>
-            </div>
-          </div>
-
-          {currentProfile && (
-            <div className="flex items-center gap-3 bg-gray-700/50 px-4 py-2 rounded-lg">
-              <AgeIcon />
-              <div>
-                <p className="text-white font-medium">{currentProfile.name}</p>
-                <p className="text-gray-400 text-sm">
-                  {ageCategory(currentProfile)}{currentProfile.age !== null && currentProfile.age !== undefined ? ` • ${currentProfile.age} years old` : ""}
-                </p>
-              </div>
-            </div>
-          )}
-        </div>
-      </nav>
+      <Navbar 
+        navLinks={[
+          { name: "AI Outfit Picker", href: "/chat" },
+          { name: "Wardrobes", href: "/wardrobes" },
+          { name: "Weather Essentials", href: "/weather-essentials" },
+          { name: "Lifecycle Alerts", href: "/lifecycle-alerts" }
+        ]}
+        currentPath="/add-clothes"
+        onLogout={handleLogout}
+        user={user}
+        userEmail={user?.email}
+        userInitial={user?.email?.[0]?.toUpperCase()}
+        userName={user?.email?.split('@')[0]}
+      />
 
       {/* Mode Switch */}
       <div className="container mx-auto px-6 pt-6">

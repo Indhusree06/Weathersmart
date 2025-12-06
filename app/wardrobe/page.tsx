@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
+import { Navbar } from "@/components/ui/navbar"
 import {
   ArrowLeft,
   Search,
@@ -561,54 +562,20 @@ export default function WardrobePage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
       {/* Navigation */}
-      <nav className="border-b border-gray-700 bg-gray-800/40 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            {/* Left side - Back button and title */}
-            <div className="flex items-center space-x-4">
-              <Link href={getBackUrl()} className="flex items-center space-x-2 text-gray-300 hover:text-white">
-                <ArrowLeft className="w-4 h-4" />
-                <span>{getBackText()}</span>
-              </Link>
-              <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
-                  <Sparkles className="w-5 h-5 text-black" />
-                </div>
-                <span className="text-xl font-bold">{selectedProfile.name}</span>
-              </div>
-            </div>
-
-            {/* Right side - Navigation and user */}
-            <div className="flex items-center space-x-6">
-              <Link href="/chat" className="text-gray-300 hover:text-white transition-colors">
-                AI Outfit Picker
-              </Link>
-              <Link href="/wardrobes" className="text-gray-300 hover:text-white transition-colors">
-                Wardrobes
-              </Link>
-              <Link href="/weather-essentials" className="text-gray-300 hover:text-white transition-colors">
-                Weather Essentials
-              </Link>
-
-              <div className="flex items-center space-x-4">
-                <div className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center">
-                  <User className="w-4 h-4" />
-                </div>
-                <span className="text-sm text-gray-300">{user?.email}</span>
-                <Button
-                  onClick={handleLogout}
-                  variant="outline"
-                  size="sm"
-                  className="bg-transparent border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white"
-                >
-                  <LogOut className="w-4 h-4 mr-1" />
-                  Logout
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <Navbar 
+        navLinks={[
+          { name: "AI Outfit Picker", href: "/chat" },
+          { name: "Wardrobes", href: "/wardrobes" },
+          { name: "Weather Essentials", href: "/weather-essentials" },
+          { name: "Lifecycle Alerts", href: "/lifecycle-alerts" }
+        ]}
+        currentPath="/wardrobe"
+        onLogout={handleLogout}
+        user={user}
+        userEmail={user?.email}
+        userInitial={user?.email?.[0]?.toUpperCase()}
+        userName={user?.email?.split('@')[0]}
+      />
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 py-6">
