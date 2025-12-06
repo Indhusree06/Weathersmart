@@ -166,7 +166,7 @@ export async function GET(request: NextRequest) {
           console.log("Fetching geo data from Tomorrow.io:", geocodingUrl)
           
           const geoResponse = await fetch(geocodingUrl, { 
-            signal: AbortSignal.timeout(5000) // 5 second timeout
+            signal: AbortSignal.timeout(3000) // Reduced to 3 seconds
           })
           const geoData = await geoResponse.json()
           console.log("Geo API response status:", geoResponse.status, "data:", JSON.stringify(geoData).slice(0, 200))
@@ -202,7 +202,7 @@ export async function GET(request: NextRequest) {
     let weatherData: any;
     try {
       const weatherResponse = await fetch(weatherUrl, {
-        signal: AbortSignal.timeout(10000) // 10 second timeout
+        signal: AbortSignal.timeout(5000) // Reduced to 5 seconds
       })
       weatherData = await weatherResponse.json()
       console.log("Weather API response status:", weatherResponse.status, "data preview:", JSON.stringify(weatherData).slice(0, 300))
@@ -214,7 +214,7 @@ export async function GET(request: NextRequest) {
           location: locationName,
           temperature: 65,
           condition: "Unknown",
-          description: "weather data temporarily unavailable",
+          description: "Weather data temporarily unavailable",
           humidity: 50,
           windSpeed: 5,
           icon: "01d",

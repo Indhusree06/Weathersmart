@@ -6,6 +6,12 @@ import { X } from "lucide-react"
 import Image from "next/image"
 import type { WardrobeItem, MannequinSlots, MannequinType, WardrobeItemCategory } from "@/lib/supabase"
 import { getItemCategory } from "@/lib/supabase"
+import { 
+  AdultFemaleSilhouette, 
+  AdultMaleSilhouette, 
+  ChildBoySilhouette, 
+  ChildGirlSilhouette 
+} from "./mannequins/MannequinSilhouettes"
 
 interface MannequinCanvasProps {
   mannequinType: MannequinType
@@ -88,16 +94,19 @@ function DropZone({ label, category, item, onDrop, onClear, position }: DropZone
     >
       {item ? (
         <div className="relative w-full h-full group">
-          <Image
-            src={item.image_url || '/placeholder-clothing.png'}
-            alt={item.name}
-            fill
-            className="object-contain rounded-lg"
-            style={{ 
-              mixBlendMode: 'normal',
-              filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))'
-            }}
-          />
+          <div className="absolute inset-0 overflow-hidden rounded-lg">
+            <Image
+              src={item.image_url || '/placeholder-clothing.png'}
+              alt={item.name}
+              fill
+              className="object-cover"
+              style={{ 
+                objectFit: 'cover',
+                objectPosition: 'center',
+                filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))'
+              }}
+            />
+          </div>
           {/* Clear button */}
           <button
             onClick={onClear}
@@ -189,37 +198,23 @@ export function MannequinCanvas({
     return tones[skinTone] || tones[2]
   }
 
-  const getAvatarUrl = () => {
-    // Map skin tone to DiceBear skin color
-    const skinColors = ['ffdbb4', 'edb98a', 'd08b5b', 'ae5d29', '614335']
-    const skinColor = skinColors[skinTone] || skinColors[2]
-    
-    // Determine gender
-    const isMale = mannequinType.includes('male') || mannequinType.includes('boy')
-    
-    // Use avataaars-neutral style for better human avatars
-    const style = 'avataaars-neutral'
-    const seed = `human-${isMale ? 'male' : 'female'}-${skinTone}-${bodyType}-${Date.now()}`
-    
-    // Build URL with minimal accessories for clean look
-    const params = new URLSearchParams({
-      seed: seed,
-      backgroundColor: 'transparent',
-      skinColor: skinColor,
-      size: '350',
-      // No sunglasses or accessories
-      accessories: 'blank',
-      accessoriesColor: '000000',
-      accessoriesProbability: '0',
-      clothingGraphic: 'none',
-      facialHair: 'blank',
-      facialHairProbability: '0',
-      glasses: 'none',
-      glassesProbability: '0',
-      top: isMale ? 'shortHair' : 'longHair'
-    })
-    
-    return `https://api.dicebear.com/7.x/${style}/svg?${params.toString()}`
+  const getMannequinSilhouette = () => {
+    switch (mannequinType) {
+      case 'adult_male':
+      case 'teen_male':
+        return <AdultMaleSilhouette />
+      case 'adult_female':
+      case 'teen_female':
+        return <AdultFemaleSilhouette />
+      case 'boy':
+      case 'baby_boy':
+        return <ChildBoySilhouette />
+      case 'girl':
+      case 'baby_girl':
+        return <ChildGirlSilhouette />
+      default:
+        return <AdultFemaleSilhouette />
+    }
   }
 
   const getPositionStyles = (position: string) => {
@@ -252,19 +247,13 @@ export function MannequinCanvas({
             isAnimating ? 'opacity-0 scale-98' : 'opacity-100 scale-100'
           }`}
         >
-          {/* Cartoon Character */}
+          {/* Mannequin Silhouette */}
           <div className="relative w-80 h-[600px] flex items-center justify-center">
-            {/* Character Avatar Base */}
-            <div className="absolute inset-0 flex flex-col items-center justify-center pt-8">
-              <Image
-                src={getAvatarUrl()}
-                alt={getMannequinLabel()}
-                width={280}
-                height={450}
-                className="object-contain"
-                style={{ filter: 'drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2))' }}
-                unoptimized
-              />
+            {/* Silhouette Base */}
+            <div className="absolute inset-0 flex flex-col items-center justify-center">
+              <div className="w-full h-full opacity-90">
+                {getMannequinSilhouette()}
+              </div>
             </div>
 
             {/* Drop Zones - Now with z-index for layering */}

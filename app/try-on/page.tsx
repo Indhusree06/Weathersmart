@@ -46,11 +46,14 @@ function TryOnContent() {
 
     const loadData = async () => {
       try {
+        console.log("Try-On: Loading data for profileId:", profileIdParam)
+        
         // Load profile
         if (profileIdParam === "owner") {
           const profiles = await wardrobeProfileService.getWardrobeProfiles(user.id)
           const ownerProfile = profiles.find((p: WardrobeProfile) => p.is_owner || p.relation === "self")
           if (ownerProfile) {
+            console.log("Try-On: Loaded owner profile:", ownerProfile.name)
             setCurrentProfile(ownerProfile)
             const mType = getMannequinType(ownerProfile)
             setMannequinType(mType)
@@ -58,19 +61,25 @@ function TryOnContent() {
         } else {
           const profile = await wardrobeProfileService.getWardrobeProfile(profileIdParam)
           if (profile) {
+            console.log("Try-On: Loaded family profile:", profile.name, "Age:", profile.age, "Relation:", profile.relation)
             setCurrentProfile(profile)
             const mType = getMannequinType(profile)
+            console.log("Try-On: Mannequin type for family member:", mType)
             setMannequinType(mType)
           }
         }
 
         // Load outfit items from localStorage (passed from chat page)
         const savedOutfit = localStorage.getItem('tryOnOutfit')
+        console.log("Try-On: Saved outfit from localStorage:", savedOutfit ? "Found" : "Not found")
         if (savedOutfit) {
           const items = JSON.parse(savedOutfit) as WardrobeItem[]
+          console.log("Try-On: Loaded outfit items:", items.length, "items")
           setOutfitItems(items)
           const slots = mapOutfitToSlots(items)
           setMannequinSlots(slots)
+        } else {
+          console.warn("Try-On: No outfit found in localStorage - user may have come directly to this page")
         }
       } catch (error) {
         console.error("Error loading try-on data:", error)
