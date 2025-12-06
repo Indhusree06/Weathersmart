@@ -259,81 +259,212 @@ function capitalize(str: string): string {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-// Function to analyze color harmony
+// Function to analyze color harmony with detailed descriptions
 export function analyzeColorHarmony(items: WardrobeItem[]): any {
   // Get all colors from items
   const colors = items
     .map(item => item.color?.toLowerCase().trim())
     .filter((color): color is string => !!color);
 
-  if (colors.length < 2) {
-    return {
-      colors,
-      harmonyType: "monochromatic",
-      explanation: "Single color outfit"
-    };
-  }
-
-  // Basic color harmony analysis
   const uniqueColors = Array.from(new Set(colors));
   
-  if (uniqueColors.length === 1) {
+  // Normalize color names for matching
+  const normalizeColor = (color: string): string => {
+    const colorMap: Record<string, string> = {
+      'navy': 'blue', 'cobalt': 'blue', 'teal': 'blue', 'turquoise': 'blue', 'sky blue': 'blue', 'light blue': 'blue',
+      'burgundy': 'red', 'maroon': 'red', 'crimson': 'red', 'coral': 'red', 'pink': 'red', 'rose': 'red',
+      'olive': 'green', 'sage': 'green', 'mint': 'green', 'lime': 'green', 'forest': 'green', 'emerald': 'green',
+      'mustard': 'yellow', 'gold': 'yellow', 'cream': 'yellow', 'ivory': 'yellow',
+      'violet': 'purple', 'lavender': 'purple', 'plum': 'purple', 'magenta': 'purple',
+      'tan': 'brown', 'camel': 'brown', 'chocolate': 'brown', 'khaki': 'brown', 'taupe': 'brown',
+      'charcoal': 'gray', 'grey': 'gray', 'silver': 'gray',
+      'off-white': 'white', 'offwhite': 'white', 'cream': 'white', 'ivory': 'white'
+    };
+    return colorMap[color] || color;
+  };
+  
+  const normalizedColors = uniqueColors.map(normalizeColor);
+  
+  // Neutrals definition
+  const neutrals = ['black', 'white', 'gray', 'grey', 'beige', 'brown', 'tan', 'cream', 'ivory', 'navy', 'khaki', 'taupe', 'charcoal'];
+  const isNeutralColor = (color: string) => neutrals.some(n => color.includes(n));
+  
+  // Count neutral vs accent colors
+  const neutralCount = uniqueColors.filter(isNeutralColor).length;
+  const accentColors = uniqueColors.filter(c => !isNeutralColor(c));
+  
+  if (colors.length < 2 || uniqueColors.length === 1) {
+    const color = uniqueColors[0] || 'unknown';
     return {
       colors: uniqueColors,
-      harmonyType: "monochromatic",
-      explanation: "Single color outfit creating a sleek, unified look"
+      harmonyType: "Monochromatic",
+      explanation: `A single-color outfit in ${color} creates a sleek, streamlined look.`,
+      styleNotes: `Monochromatic outfits are effortlessly chic. The ${color} creates visual continuity from head to toe, making you appear taller and more put-together.`,
+      howItWorks: `When you wear one color throughout, there's nothing to break up your silhouette. This creates an elongating effect and looks very intentional.`
     };
   }
 
-  // Simple complementary check
-  const isComplementary = (
-    (colors.includes("blue") && colors.includes("orange")) ||
-    (colors.includes("red") && colors.includes("green")) ||
-    (colors.includes("yellow") && colors.includes("purple"))
-  );
+  // Check for complementary colors (opposite on color wheel)
+  const complementaryPairs: [string, string, string][] = [
+    ['blue', 'orange', 'Blue and orange are direct opposites on the color wheel - blue\'s cool calmness balances orange\'s warm energy, creating exciting visual tension.'],
+    ['red', 'green', 'Red and green sit across from each other on the color wheel. While bold, this pairing feels fresh and balanced when done in muted tones.'],
+    ['yellow', 'purple', 'Yellow and purple are complementary opposites - the sunny warmth of yellow plays beautifully against purple\'s rich depth.'],
+    ['pink', 'green', 'Pink and green is a fresh, spring-inspired pairing. The soft femininity of pink balances the natural freshness of green.'],
+    ['navy', 'orange', 'Navy and orange is a classic complementary combo - the deep, serious navy grounds the playful pop of orange.'],
+    ['teal', 'coral', 'Teal and coral create a beach-inspired palette - cool ocean tones meet warm sunset hues for a balanced, tropical feel.']
+  ];
+  
+  for (const [color1, color2, description] of complementaryPairs) {
+    if ((normalizedColors.includes(color1) || uniqueColors.some(c => c.includes(color1))) && 
+        (normalizedColors.includes(color2) || uniqueColors.some(c => c.includes(color2)))) {
+      return {
+        colors: uniqueColors,
+        harmonyType: "Complementary",
+        explanation: description,
+        styleNotes: `Complementary colors create maximum contrast and visual interest. This bold pairing draws attention and shows confidence in your style choices.`,
+        howItWorks: `These colors sit opposite each other on the color wheel. When placed together, each color makes the other appear more vibrant and intense.`
+      };
+    }
+  }
 
-  if (isComplementary) {
+  // Check for analogous colors (neighbors on color wheel)
+  const analogousGroups: [string[], string][] = [
+    [['red', 'orange', 'yellow'], 'These warm colors flow naturally together like a sunset - from fiery red through orange to sunny yellow, creating a cohesive, energetic palette.'],
+    [['yellow', 'green', 'blue'], 'This cool-to-warm transition moves smoothly through nature\'s colors - sunshine yellow, leafy green, and sky blue blend seamlessly.'],
+    [['blue', 'purple', 'pink'], 'These cool tones create a dreamy, sophisticated gradient - from calm blue through regal purple to soft pink.'],
+    [['green', 'blue', 'teal'], 'Ocean-inspired colors that flow together naturally - the cool freshness of green, blue, and teal creates a serene, harmonious look.'],
+    [['red', 'pink', 'purple'], 'A romantic color story moving from passionate red through soft pink to luxurious purple - feminine and bold.'],
+    [['orange', 'yellow', 'gold'], 'Warm, sunny tones that radiate energy - like capturing golden hour in an outfit.']
+  ];
+  
+  for (const [colorGroup, description] of analogousGroups) {
+    const matchCount = colorGroup.filter(c => 
+      normalizedColors.includes(c) || uniqueColors.some(uc => uc.includes(c))
+    ).length;
+    if (matchCount >= 2) {
+      return {
+        colors: uniqueColors,
+        harmonyType: "Analogous",
+        explanation: description,
+        styleNotes: `Analogous colors are neighbors on the color wheel, so they naturally look good together. This creates a harmonious, pleasing-to-the-eye outfit.`,
+        howItWorks: `Because these colors share undertones, they blend smoothly without competing. The result is cohesive and easy on the eyes.`
+      };
+    }
+  }
+
+  // Neutral + Pop of Color
+  if (neutralCount >= 1 && accentColors.length === 1) {
+    const accent = accentColors[0];
+    const neutralsUsed = uniqueColors.filter(isNeutralColor).join(' and ');
     return {
       colors: uniqueColors,
-      harmonyType: "complementary",
-      explanation: "High contrast complementary colors create a bold, dynamic look"
+      harmonyType: "Neutral + Accent",
+      explanation: `A classic combination of ${neutralsUsed} with a pop of ${accent}. The neutrals provide a sophisticated base while ${accent} adds personality and visual interest.`,
+      styleNotes: `This is the easiest way to incorporate color into your wardrobe. The neutral foundation keeps things grounded while the accent color becomes the star.`,
+      howItWorks: `Neutrals don't compete for attention, so your ${accent} piece becomes the focal point. This makes getting dressed easy - just add one colorful item to your basics!`
     };
   }
 
-  // Analogous colors check (simplified)
-  const colorWheel = ["red", "orange", "yellow", "green", "blue", "purple"];
-  const isAnalogous = uniqueColors.every(color => {
-    const index = colorWheel.indexOf(color);
-    return index !== -1 && uniqueColors.every(c => 
-      Math.abs(colorWheel.indexOf(c) - index) <= 1 ||
-      Math.abs(colorWheel.indexOf(c) - index) === colorWheel.length - 1
-    );
-  });
-
-  if (isAnalogous) {
+  // All neutrals
+  if (neutralCount === uniqueColors.length) {
+    const neutralList = uniqueColors.join(', ');
+    
+    // Check for specific neutral combinations
+    if (uniqueColors.some(c => c.includes('black')) && uniqueColors.some(c => c.includes('white'))) {
+      return {
+        colors: uniqueColors,
+        harmonyType: "Classic Contrast",
+        explanation: `Black and white is the most timeless color combination in fashion. The stark contrast is bold yet always appropriate.`,
+        styleNotes: `This high-contrast pairing is graphic, modern, and endlessly chic. It works for any occasion from casual to formal.`,
+        howItWorks: `Black and white create maximum contrast without any color competition. It's clean, sharp, and makes a statement through simplicity.`
+      };
+    }
+    
+    if (uniqueColors.some(c => c.includes('navy')) && uniqueColors.some(c => c.includes('white') || c.includes('cream'))) {
+      return {
+        colors: uniqueColors,
+        harmonyType: "Nautical Classic",
+        explanation: `Navy and white is a crisp, preppy combination inspired by maritime style. It's fresh, clean, and eternally stylish.`,
+        styleNotes: `This combination reads as polished and put-together. It's perfect for both casual and semi-formal occasions.`,
+        howItWorks: `The deep richness of navy pairs beautifully with bright white, creating a clean contrast that's softer than black and white.`
+      };
+    }
+    
+    if (uniqueColors.some(c => c.includes('brown') || c.includes('tan') || c.includes('camel')) && 
+        uniqueColors.some(c => c.includes('black') || c.includes('navy'))) {
+      return {
+        colors: uniqueColors,
+        harmonyType: "Earth Tones",
+        explanation: `Mixing ${neutralList} creates a rich, sophisticated palette. These earth-inspired tones are inherently harmonious.`,
+        styleNotes: `Earth tones feel grounded and luxurious. This combination works beautifully in fall/winter and adds warmth to any look.`,
+        howItWorks: `These colors all exist in nature together, so they naturally complement each other. The warm browns soften the cool darks.`
+      };
+    }
+    
     return {
       colors: uniqueColors,
-      harmonyType: "analogous",
-      explanation: "Similar colors create a harmonious, cohesive look"
+      harmonyType: "Neutral Palette",
+      explanation: `A sophisticated neutral combination of ${neutralList}. These versatile colors create an elegant, understated look.`,
+      styleNotes: `An all-neutral outfit is the epitome of quiet luxury. It looks expensive, intentional, and effortlessly chic.`,
+      howItWorks: `Neutrals work together because none compete for attention. The interest comes from textures, silhouettes, and subtle tonal variations.`
     };
   }
 
-  // Neutral combination
-  const neutrals = ["black", "white", "gray", "beige", "brown", "navy"];
-  const isNeutral = uniqueColors.every(color => neutrals.includes(color));
+  // Triadic (three colors equally spaced on wheel)
+  const triadicGroups: [string[], string][] = [
+    [['red', 'yellow', 'blue'], 'The primary color trio - bold, playful, and energetic. Each color is equally strong, creating a vibrant, balanced look.'],
+    [['orange', 'green', 'purple'], 'The secondary color trio - rich, artistic, and unexpected. This combination feels creative and fashion-forward.'],
+    [['pink', 'yellow', 'blue'], 'A softer take on the primary trio - cheerful, fresh, and youthful.']
+  ];
+  
+  for (const [colorGroup, description] of triadicGroups) {
+    const matchCount = colorGroup.filter(c => 
+      normalizedColors.includes(c) || uniqueColors.some(uc => uc.includes(c))
+    ).length;
+    if (matchCount >= 3) {
+      return {
+        colors: uniqueColors,
+        harmonyType: "Triadic",
+        explanation: description,
+        styleNotes: `Triadic color schemes are vibrant and bold. This takes confidence to pull off, but the payoff is a head-turning, memorable outfit.`,
+        howItWorks: `These three colors are equally spaced around the color wheel, creating perfect balance. Each color gets equal visual weight.`
+      };
+    }
+  }
 
-  if (isNeutral) {
+  // Warm colors combination
+  const warmColors = ['red', 'orange', 'yellow', 'coral', 'pink', 'gold', 'burgundy', 'rust'];
+  const hasWarm = uniqueColors.some(c => warmColors.some(w => c.includes(w) || normalizeColor(c) === w));
+  const coolColors = ['blue', 'green', 'purple', 'teal', 'navy', 'mint'];
+  const hasCool = uniqueColors.some(c => coolColors.some(w => c.includes(w) || normalizeColor(c) === w));
+  
+  if (hasWarm && !hasCool && accentColors.length >= 2) {
     return {
       colors: uniqueColors,
-      harmonyType: "neutral",
-      explanation: "Classic neutral combination for a sophisticated look"
+      harmonyType: "Warm Harmony",
+      explanation: `A warm color palette that radiates energy and confidence. These sun-inspired tones naturally complement each other.`,
+      styleNotes: `Warm colors advance toward the eye, making this combination attention-grabbing and energetic. Perfect for making a statement.`,
+      howItWorks: `All warm colors share yellow or red undertones, so they blend harmoniously. The effect is cohesive and inviting.`
+    };
+  }
+  
+  if (hasCool && !hasWarm && accentColors.length >= 2) {
+    return {
+      colors: uniqueColors,
+      harmonyType: "Cool Harmony",
+      explanation: `A cool color palette that feels calm and sophisticated. These ocean and sky-inspired tones create a serene look.`,
+      styleNotes: `Cool colors recede, creating a calming effect. This combination feels polished, professional, and refreshing.`,
+      howItWorks: `Cool colors share blue undertones, making them natural partners. The result is soothing and elegant.`
     };
   }
 
-  // Default return for other combinations
+  // Default - mixed/eclectic
+  const colorList = uniqueColors.join(', ');
   return {
     colors: uniqueColors,
-    harmonyType: "mixed",
-    explanation: "Mixed color palette creating an eclectic look"
+    harmonyType: "Eclectic Mix",
+    explanation: `An adventurous combination of ${colorList}. This unexpected pairing shows creative confidence and personal style.`,
+    styleNotes: `Sometimes the best outfits break the rules! This mix might not follow traditional color theory, but fashion is about self-expression.`,
+    howItWorks: `While these colors aren't traditional partners, wearing them with confidence makes it work. The key is owning your unique style!`
   };
 }
