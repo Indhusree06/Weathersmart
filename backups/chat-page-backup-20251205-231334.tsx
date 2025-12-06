@@ -1024,26 +1024,6 @@ export default function ChatPage() {
                               I Choose This Outfit
                             </Button>
                           </div>
-
-                          {/* Try On Button */}
-                          <div className="mt-2">
-                            <Button
-                              onClick={() => {
-                                // Save outfit to localStorage for Try-On page
-                                if (currentOutfit?.items) {
-                                  localStorage.setItem('tryOnOutfit', JSON.stringify(currentOutfit.items))
-                                  // Navigate to Try-On page
-                                  const profileParam = selectedProfile === "owner" ? "owner" : selectedProfile
-                                  const weatherInfo = weather ? `${weather.temperature}°F · ${weather.condition}` : "Unknown"
-                                  router.push(`/try-on?profileId=${profileParam}&location=${encodeURIComponent(selectedLocation)}&weather=${encodeURIComponent(weatherInfo)}`)
-                                }
-                              }}
-                              className="bg-cyan-600 hover:bg-cyan-700 w-full text-xs"
-                              disabled={!currentOutfit?.items || currentOutfit.items.length === 0}
-                            >
-                              🧍 Try This Outfit On
-                            </Button>
-                          </div>
                         </div>
 
                         {/* Items list */}
