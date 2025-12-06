@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -250,7 +250,7 @@ function KeepInlineAction({
 
 /* ------------------------- page -------------------------- */
 
-export default function LifecycleAlertsPage() {
+function LifecycleAlertsContent() {
   const { user, loading } = useAuth()
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -756,5 +756,18 @@ export default function LifecycleAlertsPage() {
         )}
       </main>
     </div>
+  )
+}
+
+// Wrap with Suspense for useSearchParams
+export default function LifecycleAlertsPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+        <div className="text-white">Loading...</div>
+      </div>
+    }>
+      <LifecycleAlertsContent />
+    </Suspense>
   )
 }
