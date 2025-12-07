@@ -204,6 +204,7 @@ export default function ChatPage() {
   const [messages, setMessages] = useState<any[]>([])
   const [input, setInput] = useState("")
   const [isLoading, setIsLoading] = useState(false)
+  const [lastRequest, setLastRequest] = useState<string>("What should I wear today?")
 
   const addMessage = (m: any) => setMessages(prev => [...prev, m])
 
@@ -462,6 +463,9 @@ export default function ChatPage() {
     const userMessage = (directMessage || input).trim()
     if (!userMessage || isLoading) return
 
+    // Store the request for potential regeneration
+    setLastRequest(userMessage)
+
     setInput("")
     setIsLoading(true)
 
@@ -650,6 +654,7 @@ export default function ChatPage() {
   const handleQuickAction = async (message: string) => {
     if (message === "Pick a dress for me") message = "What should I wear today?"
     setInput(message)
+    setLastRequest(message) // Store the request for regeneration
     try { window.localStorage.setItem('skipNextErrorMessage', 'true') } catch {}
     const fakeEvent = {
       preventDefault: () => {},
@@ -991,7 +996,7 @@ export default function ChatPage() {
 
                           <div className="grid grid-cols-2 gap-2 mt-3">
                             <Button
-                              onClick={() => handleQuickAction("What should I wear today?")}
+                              onClick={() => handleQuickAction(lastRequest)}
                               className="bg-green-600 hover:bg-green-700 w-full text-xs"
                               disabled={isLoading}
                             >
