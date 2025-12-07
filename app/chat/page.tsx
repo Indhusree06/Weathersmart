@@ -713,8 +713,8 @@ export default function ChatPage() {
         navLinks={[
           { name: "AI Outfit Picker", href: "/chat" },
           { name: "Wardrobes", href: "/wardrobes" },
-          { name: "Weather Essentials", href: "/weather-essentials" },
-          { name: "Lifecycle Alerts", href: "/lifecycle-alerts" }
+          { name: "Lifecycle Alerts", href: "/lifecycle-alerts" },
+          { name: "Analytics", href: "/analytics" }
         ]}
         currentPath="/chat"
         onLogout={handleLogout}

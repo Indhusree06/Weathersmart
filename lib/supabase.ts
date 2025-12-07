@@ -988,6 +988,38 @@ export const wardrobeProfileService = {
     }
   },
 
+  // Get a single wardrobe profile by ID
+  async getWardrobeProfile(profileId: string): Promise<WardrobeProfile | null> {
+    try {
+      console.log("Fetching wardrobe profile by ID:", profileId)
+
+      // Check if DOB column exists
+      const dobExists = await this.checkDobColumnExists()
+
+      // Build select query based on column availability
+      const selectFields = dobExists
+        ? "id, user_id, name, relation, age, date_of_birth, profile_picture_url, profile_picture_path, is_owner, created_at, updated_at"
+        : "id, user_id, name, relation, age, profile_picture_url, profile_picture_path, is_owner, created_at, updated_at"
+
+      const { data, error } = await supabase
+        .from("wardrobe_profiles")
+        .select(selectFields)
+        .eq("id", profileId)
+        .single()
+
+      if (error) {
+        console.error("Error fetching wardrobe profile:", error)
+        return null
+      }
+
+      console.log("Successfully fetched profile:", data)
+      return data
+    } catch (error) {
+      console.error("Database error:", error)
+      return null
+    }
+  },
+
   // Get all public wardrobe profiles (for browsing other users' wardrobes)
   async getAllPublicWardrobeProfiles(): Promise<WardrobeProfile[] | null> {
     try {
@@ -1233,263 +1265,4 @@ export const outfitService = {
   },
 }
 
-export interface WeatherEssential {
-  id: string
-  user_id: string
-  wardrobe_profile_id?: string
-  name: string
-  category: string
-  size?: string
-  color?: string
-  condition: "new" | "excellent" | "good" | "fair" | "poor"
-  weather_conditions: string[]
-  assigned_to: string[]
-  is_common: boolean // Add this field to handle common items
-  image_url?: string
-  image_path?: string
-  created_at: string
-  updated_at: string
-}
-
-// Weather Essentials service
-export const weatherEssentialsService = {
-  async getWeatherEssentials(userId: string): Promise<WeatherEssential[]> {
-    try {
-      console.log("Fetching weather essentials for user:", userId)
-
-      if (!userId) {
-        console.error("No user ID provided")
-        return []
-      }
-
-      // First check if the table exists
-      const { data: tableCheck, error: tableError } = await supabase.from("weather_essentials").select("count").limit(1)
-
-      if (tableError) {
-        // If table doesn't exist, return empty array instead of throwing error
-        if (tableError.code === "PGRST116" || tableError.message?.includes("does not exist")) {
-          console.warn("Weather essentials table does not exist yet. Please run the database migration.")
-          return []
-        }
-        console.error("Error checking weather essentials table:", JSON.stringify(tableError, null, 2))
-        return []
-      }
-
-      const { data, error } = await supabase
-        .from("weather_essentials")
-        .select("*")
-        .eq("user_id", userId)
-        .order("created_at", { ascending: false })
-
-      if (error) {
-        console.error("Error fetching weather essentials:", JSON.stringify(error, null, 2))
-        return []
-      }
-
-      console.log("Successfully fetched weather essentials:", data?.length || 0)
-      return data || []
-    } catch (error) {
-      console.error(
-        "Database error:",
-        JSON.stringify(
-          {
-            name: error?.name,
-            message: error?.message,
-            stack: error?.stack,
-            error: error,
-          },
-          null,
-          2,
-        ),
-      )
-      return []
-    }
-  },
-
-  async addWeatherEssential(
-    essential: Omit<WeatherEssential, "id" | "created_at" | "updated_at">,
-  ): Promise<WeatherEssential | null> {
-    try {
-      console.log("Adding weather essential:", essential)
-
-      // Transform the data to handle "common" assignments correctly
-      const essentialData = {
-        user_id: essential.user_id,
-        wardrobe_profile_id: essential.wardrobe_profile_id,
-        name: essential.name,
-        category: essential.category,
-        size: essential.size,
-        color: essential.color,
-        condition: essential.condition,
-        weather_conditions: essential.weather_conditions,
-        // Handle common items: if assigned_to includes "common", set is_common to true and filter out "common" from assigned_to
-        is_common: essential.assigned_to.includes("common"),
-        assigned_to: essential.assigned_to.filter((id) => id !== "common"), // Remove "common" from the UUID array
-        image_url: essential.image_url,
-        image_path: essential.image_path,
-      }
-
-      console.log("Transformed essential data:", essentialData)
-
-      const { data, error } = await supabase.from("weather_essentials").insert([essentialData]).select().single()
-
-      if (error) {
-        if (error.code === "PGRST116" || error.message?.includes("does not exist")) {
-          console.error("Weather essentials table does not exist. Please run the database migration first.")
-          throw new Error("Database table not found. Please contact support.")
-        }
-        console.error("Error adding weather essential:", JSON.stringify(error, null, 2))
-        throw new Error(`Failed to add weather essential: ${error.message || "Unknown error"}`)
-      }
-
-      console.log("Successfully added weather essential:", data)
-
-      // Transform the response data to include "common" in assigned_to if is_common is true
-      const transformedData = {
-        ...data,
-        assigned_to: data.is_common ? [...data.assigned_to, "common"] : data.assigned_to,
-      }
-
-      return transformedData
-    } catch (error) {
-      console.error(
-        "Database error:",
-        JSON.stringify(
-          {
-            name: error?.name,
-            message: error?.message,
-            stack: error?.stack,
-            error: error,
-          },
-          null,
-          2,
-        ),
-      )
-      throw error
-    }
-  },
-
-  async updateWeatherEssential(id: string, updates: Partial<WeatherEssential>): Promise<WeatherEssential | null> {
-    try {
-      console.log("Updating weather essential:", id, updates)
-
-      // Transform the updates to handle "common" assignments correctly
-      const updateData: any = { ...updates }
-
-      if (updates.assigned_to) {
-        updateData.is_common = updates.assigned_to.includes("common")
-        updateData.assigned_to = updates.assigned_to.filter((assignee) => assignee !== "common")
-      }
-
-      // Remove the transformed fields that shouldn't be in the database update
-      delete updateData.id
-      delete updateData.created_at
-      delete updateData.updated_at
-
-      console.log("Transformed update data:", updateData)
-
-      const { data, error } = await supabase
-        .from("weather_essentials")
-        .update(updateData)
-        .eq("id", id)
-        .select()
-        .single()
-
-      if (error) {
-        if (error.code === "PGRST116" || error.message?.includes("does not exist")) {
-          console.error("Weather essentials table does not exist. Please run the database migration first.")
-          throw new Error("Database table not found. Please contact support.")
-        }
-        console.error("Error updating weather essential:", JSON.stringify(error, null, 2))
-        throw new Error(`Failed to update weather essential: ${error.message || "Unknown error"}`)
-      }
-
-      console.log("Successfully updated weather essential:", data)
-
-      // Transform the response data to include "common" in assigned_to if is_common is true
-      const transformedData = {
-        ...data,
-        assigned_to: data.is_common ? [...data.assigned_to, "common"] : data.assigned_to,
-      }
-
-      return transformedData
-    } catch (error) {
-      console.error(
-        "Database error:",
-        JSON.stringify(
-          {
-            name: error?.name,
-            message: error?.message,
-            stack: error?.stack,
-            error: error,
-          },
-          null,
-          2,
-        ),
-      )
-      throw error
-    }
-  },
-
-  async deleteWeatherEssential(id: string): Promise<boolean> {
-    try {
-      console.log("Deleting weather essential:", id)
-
-      const { error } = await supabase.from("weather_essentials").delete().eq("id", id)
-
-      if (error) {
-        if (error.code === "PGRST116" || error.message?.includes("does not exist")) {
-          console.error("Weather essentials table does not exist. Please run the database migration first.")
-          throw new Error("Database table not found. Please contact support.")
-        }
-        console.error("Error deleting weather essential:", JSON.stringify(error, null, 2))
-        throw new Error(`Failed to delete weather essential: ${error.message || "Unknown error"}`)
-      }
-
-      console.log("Successfully deleted weather essential")
-      return true
-    } catch (error) {
-      console.error(
-        "Database error:",
-        JSON.stringify(
-          {
-            name: error?.name,
-            message: error?.message,
-            stack: error?.stack,
-            error: error,
-          },
-          null,
-          2,
-        ),
-      )
-      throw error
-    }
-  },
-
-  async uploadEssentialImage(file: File, userId: string, essentialId: string) {
-    try {
-      const fileExt = file.name.split(".").pop()
-      const fileName = `weather-essentials/${userId}/${essentialId}.${fileExt}`
-
-      const { data, error } = await supabase.storage.from("wardrobe-images").upload(fileName, file, {
-        cacheControl: "3600",
-        upsert: true,
-      })
-
-      if (error) {
-        console.error("Error uploading essential image:", error)
-        throw error
-      }
-
-      // Get public URL
-      const {
-        data: { publicUrl },
-      } = supabase.storage.from("wardrobe-images").getPublicUrl(fileName)
-
-      return { path: data.path, url: publicUrl }
-    } catch (error) {
-      console.error("Upload error:", error)
-      throw error
-    }
-  },
-}
+// Weather Essentials interface and service removed as feature is no longer used

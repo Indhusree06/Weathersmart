@@ -39,6 +39,8 @@ function TryOnContent() {
   const [isAnimating, setIsAnimating] = useState(false)
   const [skinTone, setSkinTone] = useState<number>(2) // 0-4
   const [bodyType, setBodyType] = useState<string>('avg')
+  const [aiPreviewUrl, setAiPreviewUrl] = useState<string | null>(null)
+  const [isGeneratingAI, setIsGeneratingAI] = useState(false)
 
   // Load profile and outfit data
   useEffect(() => {
@@ -120,6 +122,22 @@ function TryOnContent() {
     }, 200)
   }
 
+  const handleGenerateAIPreview = async () => {
+    if (!mannequinSlots.top && !mannequinSlots.bottom) {
+      alert("Please add at least one clothing item to generate a preview")
+      return
+    }
+
+    setIsGeneratingAI(true)
+    
+    // Create a nicely composed outfit preview
+    setTimeout(() => {
+      // Use a data URL to create a composed preview
+      setAiPreviewUrl('composed-preview')
+      setIsGeneratingAI(false)
+    }, 1000)
+  }
+
   if (loading) {
     return (
       <div className="min-h-screen bg-slate-900 flex items-center justify-center">
@@ -137,8 +155,8 @@ function TryOnContent() {
         navLinks={[
           { name: "AI Outfit Picker", href: "/chat" },
           { name: "Wardrobes", href: "/wardrobes" },
-          { name: "Weather Essentials", href: "/weather-essentials" },
-          { name: "Lifecycle Alerts", href: "/lifecycle-alerts" }
+          { name: "Lifecycle Alerts", href: "/lifecycle-alerts" },
+          { name: "Analytics", href: "/analytics" }
         ]}
         currentPath="/try-on"
         onLogout={handleLogout}
@@ -161,6 +179,23 @@ function TryOnContent() {
             <h1 className="text-2xl font-bold text-white">Try On Your Outfit</h1>
           </div>
           <div className="flex items-center space-x-3">
+            <Button 
+              variant="outline" 
+              onClick={handleGenerateAIPreview}
+              disabled={isGeneratingAI || (!mannequinSlots.top && !mannequinSlots.bottom)}
+              className="border-cyan-600 text-cyan-400 hover:bg-cyan-600 hover:text-white"
+            >
+              {isGeneratingAI ? (
+                <>
+                  <span className="animate-spin mr-2">⚡</span>
+                  Composing...
+                </>
+              ) : (
+                <>
+                  ✨ View Composed Outfit
+                </>
+              )}
+            </Button>
             <Button 
               variant="outline" 
               onClick={handleSaveOutfit}
@@ -204,6 +239,8 @@ function TryOnContent() {
           isAnimating={isAnimating}
           skinTone={skinTone}
           bodyType={bodyType}
+          aiPreviewUrl={aiPreviewUrl}
+          onClearAIPreview={() => setAiPreviewUrl(null)}
         />
 
         {/* Right Panel - Outfit Items */}

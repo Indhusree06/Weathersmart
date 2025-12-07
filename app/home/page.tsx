@@ -69,7 +69,7 @@ export default function HomePage() {
         navLinks={[
           { name: "AI Outfit Picker", href: createNavUrl("/chat") },
           { name: "Wardrobes", href: createNavUrl("/wardrobes") },
-          { name: "Weather Essentials", href: createNavUrl("/weather-essentials") }
+          { name: "Analytics", href: createNavUrl("/analytics") }
         ]}
         currentPath="/home"
         onLogout={handleLogout}
