@@ -51,6 +51,7 @@ export interface AnalyticsData {
   weatherReadiness: WeatherReadiness
   mostWornItems: WardrobeItem[]
   leastWornItems: WardrobeItem[]
+  allItems: WardrobeItem[]
   savedOutfits: Outfit[]
   aiOutfits: AIOutfitWithRating[]
   styleProfile: StyleProfile
@@ -408,6 +409,7 @@ export function useAnalyticsData(userId?: string, profileId?: string | null): An
       weatherReadiness,
       mostWornItems,
       leastWornItems,
+      allItems,
       savedOutfits: allOutfits,
       aiOutfits,
       styleProfile,

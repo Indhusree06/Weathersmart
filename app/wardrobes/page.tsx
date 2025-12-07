@@ -708,7 +708,6 @@ export default function WardrobesPage() {
         navLinks={[
           { name: "AI Outfit Picker", href: "/chat" },
           { name: "Wardrobes", href: "/wardrobes" },
-          { name: "Lifecycle Alerts", href: "/lifecycle-alerts" },
           { name: "Analytics", href: "/analytics" }
         ]}
         currentPath="/wardrobes"

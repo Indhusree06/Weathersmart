@@ -16,6 +16,7 @@ import { AiOutfitRatingsList } from "./components/AiOutfitRatingsList"
 import { StyleProfilePanel } from "./components/StyleProfilePanel"
 import { ClosetInsightsPanel } from "./components/ClosetInsightsPanel"
 import { SavedOutfitsList } from "./components/SavedOutfitsList"
+import { LifecycleAlertsPanel } from "./components/LifecycleAlertsPanel"
 import { ArrowLeft, Package, TrendingUp, Activity, User } from "lucide-react"
 import Link from "next/link"
 
@@ -133,7 +134,6 @@ export default function AnalyticsPage() {
         navLinks={[
           { name: "AI Outfit Picker", href: "/chat" },
           { name: "Wardrobes", href: "/wardrobes" },
-          { name: "Lifecycle Alerts", href: "/lifecycle-alerts" },
           { name: "Analytics", href: "/analytics" },
         ]}
         currentPath="/analytics"
@@ -294,6 +294,9 @@ export default function AnalyticsPage() {
               <StyleProfilePanel profile={analyticsData.styleProfile} />
               <ClosetInsightsPanel insights={analyticsData.closetInsights} />
             </div>
+
+            {/* Lifecycle Alerts */}
+            <LifecycleAlertsPanel items={analyticsData.allItems} />
 
             {/* Footer Note */}
             <div className="text-center py-6">
