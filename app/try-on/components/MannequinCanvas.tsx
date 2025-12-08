@@ -3,7 +3,7 @@
 import { useState } from "react"
 import dynamic from "next/dynamic"
 import { Card } from "@/components/ui/card"
-import { X, RotateCcw } from "lucide-react"
+import { X, RotateCcw, ZoomIn, ZoomOut } from "lucide-react"
 import Image from "next/image"
 import type { WardrobeItem, MannequinSlots, MannequinType, WardrobeItemCategory } from "@/lib/supabase"
 import { getItemCategory } from "@/lib/supabase"
@@ -24,7 +24,6 @@ export type ClothingTextures = {
 }
 
 // Dynamically import the 3D scene with SSR disabled
-// This prevents Three.js from trying to load on the server where WebGL doesn't exist
 const MannequinScene3DClient = dynamic(
   () => import('./MannequinScene3DClient').then((mod) => mod.MannequinScene3DClient),
   { 
@@ -48,6 +47,92 @@ interface MannequinCanvasProps {
   onClearAIPreview?: () => void
 }
 
+interface ClothingOverlayProps {
+  item: WardrobeItem
+  position: 'outerwear' | 'top' | 'bottom' | 'shoes'
+  onRemove: () => void
+}
+
+// Improved clothing overlay component with proper positioning and scaling
+function ClothingOverlay({ item, position, onRemove }: ClothingOverlayProps) {
+  const getPositionStyles = () => {
+    switch (position) {
+      case 'outerwear':
+        return {
+          top: '20%',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '75%',
+          height: '45%',
+          zIndex: 15
+        }
+      case 'top':
+        return {
+          top: '23%',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '65%',
+          height: '38%',
+          zIndex: 20
+        }
+      case 'bottom':
+        return {
+          top: '56%',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '60%',
+          height: '35%',
+          zIndex: 20
+        }
+      case 'shoes':
+        return {
+          bottom: '25%',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '45%',
+          height: '15%',
+          zIndex: 20
+        }
+    }
+  }
+
+  const styles = getPositionStyles()
+
+  return (
+    <div
+      className="absolute group cursor-pointer transition-all duration-200 hover:scale-105"
+      style={styles}
+    >
+      <div className="relative w-full h-full">
+        <Image
+          src={item.image_url || '/placeholder-clothing.png'}
+          alt={item.name}
+          fill
+          className="object-contain drop-shadow-2xl"
+          style={{
+            filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.4))'
+          }}
+        />
+        {/* Remove button */}
+        <button
+          onClick={(e) => {
+            e.stopPropagation()
+            onRemove()
+          }}
+          className="absolute -top-2 -right-2 w-7 h-7 bg-red-600 hover:bg-red-700 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-lg z-30"
+          title="Remove item"
+        >
+          <X className="w-4 h-4 text-white" />
+        </button>
+        {/* Item label on hover */}
+        <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-slate-800/90 px-3 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+          <span className="text-xs text-white">{item.name}</span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 interface DropZoneProps {
   label: string
   category: WardrobeItemCategory
@@ -55,9 +140,10 @@ interface DropZoneProps {
   onDrop: (item: WardrobeItem) => void
   onClear: () => void
   position: 'top' | 'bottom' | 'outerwear' | 'shoes'
+  isVisible: boolean
 }
 
-function DropZone({ label, category, item, onDrop, onClear, position }: DropZoneProps) {
+function DropZone({ label, category, item, onDrop, onClear, position, isVisible }: DropZoneProps) {
   const [isDragOver, setIsDragOver] = useState(false)
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -80,7 +166,6 @@ function DropZone({ label, category, item, onDrop, onClear, position }: DropZone
       
       // Check if item matches the expected category
       if (category === 'outerwear') {
-        // Outerwear zone accepts both top and outerwear
         if (itemCategory === 'outerwear' || itemCategory === 'top') {
           onDrop(droppedItem)
         }
@@ -94,59 +179,35 @@ function DropZone({ label, category, item, onDrop, onClear, position }: DropZone
 
   const getPositionStyles = () => {
     switch (position) {
-      case 'top':
-        return 'top-[28%] left-1/2 -translate-x-1/2 w-56 h-36 z-20'
       case 'outerwear':
-        return 'top-[25%] left-1/2 -translate-x-1/2 w-64 h-44 z-10'
+        return 'top-[20%] left-1/2 -translate-x-1/2 w-[75%] h-[45%] z-10'
+      case 'top':
+        return 'top-[23%] left-1/2 -translate-x-1/2 w-[65%] h-[38%] z-20'
       case 'bottom':
-        return 'top-[58%] left-1/2 -translate-x-1/2 w-52 h-40 z-20'
+        return 'top-[56%] left-1/2 -translate-x-1/2 w-[60%] h-[35%] z-20'
       case 'shoes':
-        return 'bottom-[8%] left-1/2 -translate-x-1/2 w-40 h-24 z-20'
+        return 'bottom-[25%] left-1/2 -translate-x-1/2 w-[45%] h-[15%] z-20'
     }
   }
+
+  // Only show drop zones when no item is present
+  if (item || !isVisible) return null
 
   return (
     <div
       className={`absolute ${getPositionStyles()} border-2 rounded-lg transition-all ${
         isDragOver
-          ? 'border-cyan-400 bg-cyan-400/10 shadow-lg shadow-cyan-500/50'
-          : item
-          ? 'border-transparent bg-transparent'
-          : 'border-dashed border-slate-500 bg-slate-800/30'
+          ? 'border-cyan-400 bg-cyan-400/20 shadow-lg shadow-cyan-500/50 scale-105'
+          : 'border-dashed border-slate-500/50 bg-slate-800/20 hover:border-slate-400 hover:bg-slate-800/30'
       }`}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
     >
-      {item ? (
-        <div className="relative w-full h-full group">
-          <div className="absolute inset-0 overflow-hidden rounded-lg">
-            <Image
-              src={item.image_url || '/placeholder-clothing.png'}
-              alt={item.name}
-              fill
-              className="object-cover"
-              style={{ 
-                objectFit: 'cover',
-                objectPosition: 'center',
-                filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))'
-              }}
-            />
-          </div>
-          {/* Clear button */}
-          <button
-            onClick={onClear}
-            className="absolute -top-2 -right-2 w-6 h-6 bg-red-600 hover:bg-red-700 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-lg z-30"
-          >
-            <X className="w-4 h-4 text-white" />
-          </button>
-        </div>
-      ) : (
-        <div className="w-full h-full flex flex-col items-center justify-center text-slate-400 text-sm px-2 text-center">
-          <span className="font-medium">{label}</span>
-          <span className="text-xs mt-1 opacity-70">Drag here</span>
-        </div>
-      )}
+      <div className="w-full h-full flex flex-col items-center justify-center text-slate-400 text-sm px-2 text-center">
+        <span className="font-medium">{label}</span>
+        <span className="text-xs mt-1 opacity-70">Drag here</span>
+      </div>
     </div>
   )
 }
@@ -161,8 +222,10 @@ export function MannequinCanvas({
   aiPreviewUrl,
   onClearAIPreview
 }: MannequinCanvasProps) {
-  const [view3D, setView3D] = useState(true) // Toggle between 3D and 2D silhouette view
-  const [canvasKey, setCanvasKey] = useState(0) // For resetting the 3D view
+  const [view3D, setView3D] = useState(false) // Default to 2D view for better initial experience
+  const [canvasKey, setCanvasKey] = useState(0)
+  const [showDropZones, setShowDropZones] = useState(true)
+  const [zoomLevel, setZoomLevel] = useState(1)
 
   const handleDrop = (category: WardrobeItemCategory, item: WardrobeItem) => {
     const newSlots = { ...slots }
@@ -211,8 +274,16 @@ export function MannequinCanvas({
   }
 
   const handleResetView = () => {
-    // Reset the 3D canvas by changing the key
     setCanvasKey(prev => prev + 1)
+    setZoomLevel(1)
+  }
+
+  const handleZoomIn = () => {
+    setZoomLevel(prev => Math.min(prev + 0.1, 1.5))
+  }
+
+  const handleZoomOut = () => {
+    setZoomLevel(prev => Math.max(prev - 0.1, 0.7))
   }
 
   const getMannequinLabel = () => {
@@ -253,23 +324,7 @@ export function MannequinCanvas({
     }
   }
 
-  const getPositionStyles = (position: string) => {
-    switch (position) {
-      case 'top':
-        return 'top-[28%] left-1/2 -translate-x-1/2 w-56 h-36 z-20'
-      case 'outerwear':
-        return 'top-[25%] left-1/2 -translate-x-1/2 w-64 h-44 z-10'
-      case 'bottom':
-        return 'top-[58%] left-1/2 -translate-x-1/2 w-52 h-40 z-20'
-      case 'shoes':
-        return 'bottom-[8%] left-1/2 -translate-x-1/2 w-40 h-24 z-20'
-      default:
-        return ''
-    }
-  }
-
   // Convert mannequin slots to clothing textures for the 3D scene
-  // Maps the current outfit items to image URLs that the 3D mannequin can use as textures
   const clothingTextures: ClothingTextures = {
     top: slots.top?.image_url,
     bottom: slots.bottom?.image_url,
@@ -277,17 +332,42 @@ export function MannequinCanvas({
     outerwear: slots.outerwear?.image_url,
   }
 
+  // Check if any clothing items are present
+  const hasClothing = slots.top || slots.bottom || slots.shoes || slots.outerwear
+
   return (
-    <div className="flex-1 bg-slate-900 relative flex items-center justify-center">
+    <div className="flex-1 bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800 relative flex items-center justify-center">
       {/* Canvas Area */}
       <div className="relative w-full h-full max-w-3xl mx-auto p-8">
         {/* Mannequin Label */}
-        <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-slate-800/90 backdrop-blur-sm px-4 py-2 rounded-full border border-slate-700 z-10">
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-slate-800/90 backdrop-blur-sm px-4 py-2 rounded-full border border-slate-700 z-10 shadow-lg">
           <p className="text-sm font-medium text-white">{getMannequinLabel()}</p>
         </div>
 
-        {/* View Toggle & Reset Controls */}
+        {/* View Toggle & Controls */}
         <div className="absolute top-4 right-4 flex items-center space-x-2 z-10">
+          {!view3D && (
+            <>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleZoomOut}
+                className="bg-slate-800/90 hover:bg-slate-700 text-white border-slate-600"
+                title="Zoom Out"
+              >
+                <ZoomOut className="w-4 h-4" />
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleZoomIn}
+                className="bg-slate-800/90 hover:bg-slate-700 text-white border-slate-600"
+                title="Zoom In"
+              >
+                <ZoomIn className="w-4 h-4" />
+              </Button>
+            </>
+          )}
           <Button
             variant="outline"
             size="sm"
@@ -296,16 +376,15 @@ export function MannequinCanvas({
           >
             {view3D ? '2D View' : '3D View'}
           </Button>
-          {view3D && (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleResetView}
-              className="bg-slate-800/90 hover:bg-slate-700 text-white border-slate-600"
-            >
-              <RotateCcw className="w-4 h-4" />
-            </Button>
-          )}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleResetView}
+            className="bg-slate-800/90 hover:bg-slate-700 text-white border-slate-600"
+            title="Reset View"
+          >
+            <RotateCcw className="w-4 h-4" />
+          </Button>
         </div>
 
         {/* Mannequin Container with Animation */}
@@ -315,33 +394,23 @@ export function MannequinCanvas({
           }`}
         >
           {aiPreviewUrl ? (
-            /* Composed Outfit Preview */
+            /* Composed Outfit Preview - Enhanced */
             <div className="relative w-full h-full flex items-center justify-center">
-              <div className="relative w-[600px] h-[700px] bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl overflow-hidden shadow-2xl border-2 border-slate-700">
-                {/* Mannequin Base for Preview */}
-                <div className="absolute inset-0 flex items-center justify-center opacity-40">
-                  <div className="w-full h-full scale-110">
+              <div className="relative w-[600px] h-[700px] bg-gradient-to-br from-slate-800 via-slate-850 to-slate-900 rounded-2xl overflow-hidden shadow-2xl border-2 border-slate-700">
+                {/* Mannequin Base for Preview with better visibility */}
+                <div className="absolute inset-0 flex items-center justify-center opacity-50">
+                  <div className="w-full h-full scale-110" style={{ 
+                    filter: 'drop-shadow(0 0 20px rgba(0,0,0,0.5))'
+                  }}>
                     {getMannequinSilhouette()}
                   </div>
                 </div>
                 
-                {/* Outfit Items Composed */}
+                {/* Outfit Items Composed with improved positioning */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  {/* Top */}
-                  {slots.top && (
-                    <div className="absolute top-[20%] left-1/2 -translate-x-1/2 w-64 h-48 z-20">
-                      <Image
-                        src={slots.top.image_url || ''}
-                        alt={slots.top.name}
-                        fill
-                        className="object-contain drop-shadow-2xl"
-                      />
-                    </div>
-                  )}
-                  
-                  {/* Outerwear */}
+                  {/* Outerwear - Largest, behind */}
                   {slots.outerwear && (
-                    <div className="absolute top-[18%] left-1/2 -translate-x-1/2 w-72 h-52 z-10">
+                    <div className="absolute top-[18%] left-1/2 -translate-x-1/2 w-80 h-56 z-10">
                       <Image
                         src={slots.outerwear.image_url || ''}
                         alt={slots.outerwear.name}
@@ -351,9 +420,21 @@ export function MannequinCanvas({
                     </div>
                   )}
                   
+                  {/* Top */}
+                  {slots.top && (
+                    <div className="absolute top-[20%] left-1/2 -translate-x-1/2 w-72 h-52 z-20">
+                      <Image
+                        src={slots.top.image_url || ''}
+                        alt={slots.top.name}
+                        fill
+                        className="object-contain drop-shadow-2xl"
+                      />
+                    </div>
+                  )}
+                  
                   {/* Bottom */}
                   {slots.bottom && (
-                    <div className="absolute top-[52%] left-1/2 -translate-x-1/2 w-60 h-48 z-20">
+                    <div className="absolute top-[52%] left-1/2 -translate-x-1/2 w-68 h-52 z-20">
                       <Image
                         src={slots.bottom.image_url || ''}
                         alt={slots.bottom.name}
@@ -365,7 +446,7 @@ export function MannequinCanvas({
                   
                   {/* Shoes */}
                   {slots.shoes && (
-                    <div className="absolute bottom-[12%] left-1/2 -translate-x-1/2 w-48 h-32 z-20">
+                    <div className="absolute bottom-[12%] left-1/2 -translate-x-1/2 w-56 h-36 z-20">
                       <Image
                         src={slots.shoes.image_url || ''}
                         alt={slots.shoes.name}
@@ -380,7 +461,7 @@ export function MannequinCanvas({
                 {onClearAIPreview && (
                   <button
                     onClick={onClearAIPreview}
-                    className="absolute top-4 right-4 px-4 py-2 bg-slate-800/90 hover:bg-slate-700 text-white rounded-lg flex items-center space-x-2 shadow-lg z-30"
+                    className="absolute top-4 right-4 px-4 py-2 bg-slate-800/90 hover:bg-slate-700 text-white rounded-lg flex items-center space-x-2 shadow-lg z-30 transition-colors"
                   >
                     <X className="w-4 h-4" />
                     <span className="text-sm">Back to Mannequin</span>
@@ -395,67 +476,122 @@ export function MannequinCanvas({
             </div>
           ) : view3D ? (
             /* 3D Mannequin View */
-            <div className="relative w-full h-full rounded-2xl overflow-hidden bg-slate-950">
+            <div className="relative w-full h-full rounded-2xl overflow-hidden bg-slate-950 shadow-2xl border border-slate-800">
               <MannequinScene3DClient key={canvasKey} clothing={clothingTextures} />
             </div>
           ) : (
-            /* 2D Silhouette View with Drag & Drop */
-            <div className="relative w-80 h-[600px] flex items-center justify-center">
-            {/* Silhouette Base */}
-            <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <div className="w-full h-full opacity-90">
-                {getMannequinSilhouette()}
+            /* 2D Silhouette View with IMPROVED Clothing Overlay */
+            <div 
+              className="relative w-96 h-[650px] flex items-center justify-center transition-transform duration-300"
+              style={{ transform: `scale(${zoomLevel})` }}
+            >
+              {/* Background glow effect */}
+              <div className="absolute inset-0 bg-gradient-radial from-slate-800/30 to-transparent rounded-2xl" />
+              
+              {/* Silhouette Base - Now properly visible */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center">
+                <div className="w-full h-full opacity-90 drop-shadow-xl">
+                  {getMannequinSilhouette()}
+                </div>
               </div>
-            </div>
 
-            {/* Drop Zones - Now with z-index for layering */}
-            <DropZone
-              label="Top"
-              category="top"
-              item={slots.top}
-              onDrop={(item) => handleDrop('top', item)}
-              onClear={() => handleClear('top')}
-              position="top"
-            />
-            
-            <DropZone
-              label="Outerwear"
-              category="outerwear"
-              item={slots.outerwear}
-              onDrop={(item) => handleDrop('outerwear', item)}
-              onClear={() => handleClear('outerwear')}
-              position="outerwear"
-            />
-            
-            <DropZone
-              label="Bottom"
-              category="bottom"
-              item={slots.bottom}
-              onDrop={(item) => handleDrop('bottom', item)}
-              onClear={() => handleClear('bottom')}
-              position="bottom"
-            />
-            
-            <DropZone
-              label="Shoes"
-              category="shoes"
-              item={slots.shoes}
-              onDrop={(item) => handleDrop('shoes', item)}
-              onClear={() => handleClear('shoes')}
-              position="shoes"
-            />
-          </div>
+              {/* Clothing Overlays - Rendered ABOVE silhouette */}
+              {slots.outerwear && (
+                <ClothingOverlay
+                  item={slots.outerwear}
+                  position="outerwear"
+                  onRemove={() => handleClear('outerwear')}
+                />
+              )}
+              
+              {slots.top && (
+                <ClothingOverlay
+                  item={slots.top}
+                  position="top"
+                  onRemove={() => handleClear('top')}
+                />
+              )}
+              
+              {slots.bottom && (
+                <ClothingOverlay
+                  item={slots.bottom}
+                  position="bottom"
+                  onRemove={() => handleClear('bottom')}
+                />
+              )}
+              
+              {slots.shoes && (
+                <ClothingOverlay
+                  item={slots.shoes}
+                  position="shoes"
+                  onRemove={() => handleClear('shoes')}
+                />
+              )}
+
+              {/* Drop Zones - Only shown when items not present */}
+              <DropZone
+                label="Outerwear"
+                category="outerwear"
+                item={slots.outerwear}
+                onDrop={(item) => handleDrop('outerwear', item)}
+                onClear={() => handleClear('outerwear')}
+                position="outerwear"
+                isVisible={showDropZones}
+              />
+              
+              <DropZone
+                label="Top"
+                category="top"
+                item={slots.top}
+                onDrop={(item) => handleDrop('top', item)}
+                onClear={() => handleClear('top')}
+                position="top"
+                isVisible={showDropZones}
+              />
+              
+              <DropZone
+                label="Bottom"
+                category="bottom"
+                item={slots.bottom}
+                onDrop={(item) => handleDrop('bottom', item)}
+                onClear={() => handleClear('bottom')}
+                position="bottom"
+                isVisible={showDropZones}
+              />
+              
+              <DropZone
+                label="Shoes"
+                category="shoes"
+                item={slots.shoes}
+                onDrop={(item) => handleDrop('shoes', item)}
+                onClear={() => handleClear('shoes')}
+                position="shoes"
+                isVisible={showDropZones}
+              />
+
+              {/* Toggle drop zones visibility */}
+              {hasClothing && (
+                <button
+                  onClick={() => setShowDropZones(!showDropZones)}
+                  className="absolute top-2 left-2 px-3 py-1 bg-slate-800/80 hover:bg-slate-700 text-white text-xs rounded-lg transition-colors z-30"
+                >
+                  {showDropZones ? 'Hide Zones' : 'Show Zones'}
+                </button>
+              )}
+            </div>
           )}
         </div>
 
         {/* Helper Text */}
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-center z-10">
-          <p className="text-sm text-slate-400">
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-center z-10 max-w-2xl">
+          <p className="text-sm text-slate-400 bg-slate-800/50 backdrop-blur-sm px-4 py-2 rounded-full">
             {aiPreviewUrl 
-              ? "AI-generated realistic preview of your outfit" 
+              ? "✨ Realistic preview of your complete outfit" 
               : view3D
               ? "🖱️ Drag to rotate • Scroll to zoom • Clothing updates automatically"
-              : "Drag clothing items from the right panel onto the mannequin"
+              : hasClothing
+              ? "👆 Click on clothing items to remove • Drag new items from the right panel"
+              : "👉 Drag clothing items from the right panel onto the mannequin"
             }
           </p>
         </div>
@@ -463,4 +599,3 @@ export function MannequinCanvas({
     </div>
   )
 }
-
