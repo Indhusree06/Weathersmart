@@ -31,8 +31,8 @@ export function Navbar({
 }: NavbarProps) {
   return (
     <nav className="bg-gray-800 border-b border-gray-700 sticky top-0 z-50">
-      <div className="w-full mx-auto px-6 sm:px-8 lg:px-12">
-        <div className="flex justify-between items-center h-16 max-w-[1600px] mx-auto">
+      <div className="w-full mx-auto px-8 sm:px-12 lg:px-16">
+        <div className="flex justify-between items-center h-16 max-w-[1400px] mx-auto">
           <div className="flex items-center space-x-8">
             <Link href="/home" className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
