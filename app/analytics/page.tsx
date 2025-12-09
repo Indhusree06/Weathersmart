@@ -9,18 +9,18 @@ import { Navbar } from "@/components/ui/navbar"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { SummaryCard } from "./components/SummaryCard"
-import { WardrobeCategoryChart } from "./components/WardrobeCategoryChart"
+
 import { InteractiveCategoryChart } from "./components/InteractiveCategoryChart"
 import { WeatherReadinessCard } from "./components/WeatherReadinessCard"
 import { TimeBasedAnalysis } from "./components/TimeBasedAnalysis"
 import { AdvancedCharts } from "./components/AdvancedCharts"
 import CostPerWearDashboard from "./components/CostPerWearDashboard"
-import { MostLeastList } from "./components/MostLeastList"
-import { AiOutfitRatingsList } from "./components/AiOutfitRatingsList"
+
+
 import { StyleProfilePanel } from "./components/StyleProfilePanel"
-import { ClosetInsightsPanel } from "./components/ClosetInsightsPanel"
+
 import { SavedOutfitsList } from "./components/SavedOutfitsList"
-import { LifecycleAlertsPanel } from "./components/LifecycleAlertsPanel"
+
 import { ArrowLeft, Package, TrendingUp, Activity, User } from "lucide-react"
 import Link from "next/link"
 
@@ -287,29 +287,11 @@ export default function AnalyticsPage() {
               <WeatherReadinessCard data={analyticsData.weatherReadiness} />
             </div>
 
-            {/* Most & Least Worn Items */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <MostLeastList type="most" items={analyticsData.mostWornItems} />
-              <MostLeastList type="least" items={analyticsData.leastWornItems} />
-            </div>
-
             {/* Saved Outfits */}
             <SavedOutfitsList outfits={analyticsData.savedOutfits} />
 
-            {/* AI Outfit Ratings */}
-            <AiOutfitRatingsList
-              outfits={analyticsData.aiOutfits}
-              onRate={handleRateOutfit}
-            />
-
-            {/* Style Profile & Closet Insights */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <StyleProfilePanel profile={analyticsData.styleProfile} />
-              <ClosetInsightsPanel insights={analyticsData.closetInsights} />
-            </div>
-
-            {/* Lifecycle Alerts */}
-            <LifecycleAlertsPanel items={analyticsData.allItems} />
+            {/* Style Profile */}
+            <StyleProfilePanel profile={analyticsData.styleProfile} />
 
             {/* Footer Note */}
             <div className="text-center py-6">
