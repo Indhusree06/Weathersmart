@@ -13,6 +13,7 @@ import { WardrobeCategoryChart } from "./components/WardrobeCategoryChart"
 import { InteractiveCategoryChart } from "./components/InteractiveCategoryChart"
 import { WeatherReadinessCard } from "./components/WeatherReadinessCard"
 import { TimeBasedAnalysis } from "./components/TimeBasedAnalysis"
+import { AdvancedCharts } from "./components/AdvancedCharts"
 import { MostLeastList } from "./components/MostLeastList"
 import { AiOutfitRatingsList } from "./components/AiOutfitRatingsList"
 import { StyleProfilePanel } from "./components/StyleProfilePanel"
@@ -272,6 +273,9 @@ export default function AnalyticsPage() {
 
             {/* Time-Based Analysis */}
             <TimeBasedAnalysis items={analyticsData.allItems} />
+
+            {/* Advanced Charts */}
+            <AdvancedCharts items={analyticsData.allItems} />
 
             {/* Wardrobe Composition */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
