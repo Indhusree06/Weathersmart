@@ -270,7 +270,7 @@ export default function AnalyticsPage() {
             </div>
 
             {/* Time-Based Analysis */}
-            <TimeBasedAnalysis items={analyticsData.items} />
+            <TimeBasedAnalysis items={analyticsData.allItems} />
 
             {/* Wardrobe Composition */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
