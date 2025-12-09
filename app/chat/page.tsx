@@ -17,6 +17,8 @@ import {
 import { cn } from "@/lib/utils"
 import { supabase, wardrobeProfileService, wardrobeService } from "@/lib/supabase"
 import { createSimpleOutfitRecommendation, analyzeColorHarmony } from "./createSimpleOutfitRecommendation"
+import { QuickFilters } from "./components/QuickFilters"
+import { VoiceInput } from "./components/VoiceInput"
 
 /* --------------------------------- Types --------------------------------- */
 interface WeatherData {
@@ -846,6 +848,14 @@ export default function ChatPage() {
                   </p>
                 </div>
 
+                {/* Quick Filters */}
+                {!isChildProfileSelected && (
+                  <QuickFilters 
+                    onFilterSelect={(occasion) => handleQuickAction(`Suggest an outfit for ${occasion}`)}
+                    disabled={isLoading}
+                  />
+                )}
+
                 <div className="flex-1 min-h-0">
                   <ScrollArea className="h-full">
                     {messages.map((m) => (
@@ -906,6 +916,18 @@ export default function ChatPage() {
                     onChange={handleInputChange}
                     placeholder="Ask me about outfits, styling, or wardrobe advice..."
                     className="flex-1 bg-slate-800 border-slate-600 text-white placeholder-slate-400 font-normal"
+                    disabled={isLoading}
+                  />
+                  <VoiceInput 
+                    onTranscript={(text) => {
+                      setInput(text)
+                      // Auto-submit after voice input
+                      setTimeout(() => {
+                        if (text.trim()) {
+                          handleQuickAction(text)
+                        }
+                      }, 100)
+                    }}
                     disabled={isLoading}
                   />
                   <Button type="submit" disabled={isLoading || !input.trim()} className="bg-blue-600 hover:bg-blue-700">
@@ -1046,6 +1068,34 @@ export default function ChatPage() {
                               disabled={!currentOutfit?.items || currentOutfit.items.length === 0}
                             >
                               🧍 Try This Outfit On
+                            </Button>
+                          </div>
+
+                          {/* Share Outfit Buttons */}
+                          <div className="mt-2 grid grid-cols-2 gap-2">
+                            <Button
+                              onClick={() => {
+                                const outfitText = currentOutfit?.items?.map((item: any) => item.name).join(', ') || 'My outfit'
+                                const shareText = `Check out my outfit: ${outfitText} (${selectedLocation} - ${weather?.temperature}°F)`
+                                navigator.clipboard.writeText(`${shareText}\n${window.location.href}`)
+                                alert('✅ Outfit link copied to clipboard!')
+                              }}
+                              className="bg-slate-700 hover:bg-slate-600 w-full text-xs"
+                              disabled={!currentOutfit?.items || currentOutfit.items.length === 0}
+                            >
+                              📋 Copy Link
+                            </Button>
+                            <Button
+                              onClick={() => {
+                                const outfitText = currentOutfit?.items?.map((item: any) => item.name).join(', ') || 'My outfit'
+                                const shareText = `Check out my outfit: ${outfitText} (${selectedLocation} - ${weather?.temperature}°F)`
+                                const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(window.location.href)}`
+                                window.open(twitterUrl, '_blank')
+                              }}
+                              className="bg-sky-600 hover:bg-sky-700 w-full text-xs"
+                              disabled={!currentOutfit?.items || currentOutfit.items.length === 0}
+                            >
+                              🐦 Share
                             </Button>
                           </div>
                         </div>
