@@ -235,7 +235,10 @@ export function AdvancedCharts({ items }: AdvancedChartsProps) {
                   label={{ value: "Price ($)", angle: -90, position: "insideLeft", fill: "#9ca3af" }}
                 />
                 <Tooltip content={<CustomTooltip />} />
-                <Legend wrapperStyle={{ color: "#cbd5e1" }} />
+                <Legend 
+                  wrapperStyle={{ paddingTop: "20px" }} 
+                  iconType="line"
+                />
                 <Scatter
                   name="Items"
                   data={bubbleData}
@@ -268,7 +271,10 @@ export function AdvancedCharts({ items }: AdvancedChartsProps) {
                   fill="#10b981"
                   fillOpacity={0.3}
                 />
-                <Legend wrapperStyle={{ color: "#cbd5e1" }} />
+                <Legend 
+                  wrapperStyle={{ paddingTop: "20px" }} 
+                  iconType="line"
+                />
                 <Tooltip
                   contentStyle={{
                     backgroundColor: "#1e293b",
@@ -322,7 +328,10 @@ export function AdvancedCharts({ items }: AdvancedChartsProps) {
                     borderRadius: "8px"
                   }}
                 />
-                <Legend wrapperStyle={{ color: "#cbd5e1" }} />
+                <Legend 
+                  wrapperStyle={{ paddingTop: "20px" }} 
+                  iconType="line"
+                />
                 <Area
                   type="monotone"
                   dataKey="value"
