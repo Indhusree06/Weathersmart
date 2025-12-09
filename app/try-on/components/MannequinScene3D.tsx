@@ -1,7 +1,7 @@
 "use client"
 
 import { Canvas } from '@react-three/fiber'
-import { OrbitControls, Environment } from '@react-three/drei'
+import { OrbitControls } from '@react-three/drei'
 import { SimpleMannequin, ClothingLayer } from './Mannequin3D_improved'
 import { Suspense } from 'react'
 
@@ -137,8 +137,7 @@ export function MannequinScene3D({ clothing }: MannequinScene3DProps) {
         autoRotate={false}
       />
 
-      {/* Optional: Add environment for better reflections */}
-      <Environment preset="studio" />
+
     </Canvas>
   )
 }
