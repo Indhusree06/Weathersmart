@@ -961,9 +961,6 @@ export default function ChatPage() {
                           <Button onClick={() => handleQuickAction("What should I wear today?")} className="bg-blue-600 hover:bg-blue-700 w-full text-sm">
                             What should I wear today?
                           </Button>
-                          <Button variant="outline" onClick={() => handleQuickAction("Family Outfits")} className="bg-slate-800 border-slate-600 text-white hover:bg-slate-700 w-full text-sm">
-                            Family Outfits
-                          </Button>
                           <Button
                             onClick={async () => {
                               try {
