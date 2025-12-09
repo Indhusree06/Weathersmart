@@ -14,6 +14,7 @@ import { InteractiveCategoryChart } from "./components/InteractiveCategoryChart"
 import { WeatherReadinessCard } from "./components/WeatherReadinessCard"
 import { TimeBasedAnalysis } from "./components/TimeBasedAnalysis"
 import { AdvancedCharts } from "./components/AdvancedCharts"
+import CostPerWearDashboard from "./components/CostPerWearDashboard"
 import { MostLeastList } from "./components/MostLeastList"
 import { AiOutfitRatingsList } from "./components/AiOutfitRatingsList"
 import { StyleProfilePanel } from "./components/StyleProfilePanel"
@@ -273,6 +274,9 @@ export default function AnalyticsPage() {
 
             {/* Time-Based Analysis */}
             <TimeBasedAnalysis items={analyticsData.allItems} />
+
+            {/* Cost-Per-Wear Dashboard */}
+            <CostPerWearDashboard items={analyticsData.allItems} />
 
             {/* Advanced Charts */}
             <AdvancedCharts items={analyticsData.allItems} />
