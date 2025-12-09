@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { SummaryCard } from "./components/SummaryCard"
 import { WardrobeCategoryChart } from "./components/WardrobeCategoryChart"
 import { WeatherReadinessCard } from "./components/WeatherReadinessCard"
+import { TimeBasedAnalysis } from "./components/TimeBasedAnalysis"
 import { MostLeastList } from "./components/MostLeastList"
 import { AiOutfitRatingsList } from "./components/AiOutfitRatingsList"
 import { StyleProfilePanel } from "./components/StyleProfilePanel"
@@ -267,6 +268,9 @@ export default function AnalyticsPage() {
                 icon={TrendingUp}
               />
             </div>
+
+            {/* Time-Based Analysis */}
+            <TimeBasedAnalysis items={analyticsData.items} />
 
             {/* Wardrobe Composition */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
