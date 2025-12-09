@@ -23,18 +23,8 @@ export type ClothingTextures = {
   outerwear?: string
 }
 
-// Dynamically import the 3D scene with SSR disabled
-const MannequinScene3DClient = dynamic(
-  () => import('./MannequinScene3DClient').then((mod) => mod.MannequinScene3DClient),
-  { 
-    ssr: false,
-    loading: () => (
-      <div className="w-full h-full flex items-center justify-center bg-slate-950 rounded-2xl">
-        <div className="text-slate-400 text-sm animate-pulse">Loading 3D Mannequin...</div>
-      </div>
-    )
-  }
-)
+// Import CSS-based 3D view (no SSR issues)
+import { MannequinCSS3D } from './MannequinCSS3D'
 
 interface MannequinCanvasProps {
   mannequinType: MannequinType
@@ -278,6 +268,11 @@ export function MannequinCanvas({
     setZoomLevel(1)
   }
 
+  const handleResetAll = () => {
+    const newSlots: MannequinSlots = {}
+    onSlotsChange(newSlots)
+  }
+
   const handleZoomIn = () => {
     setZoomLevel(prev => Math.min(prev + 0.1, 1.5))
   }
@@ -475,9 +470,13 @@ export function MannequinCanvas({
               </div>
             </div>
           ) : view3D ? (
-            /* 3D Mannequin View */
-            <div className="relative w-full h-full rounded-2xl overflow-hidden bg-slate-950 shadow-2xl border border-slate-800">
-              <MannequinScene3DClient key={canvasKey} clothing={clothingTextures} />
+            /* CSS 3D Mannequin View */
+            <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl border border-slate-800">
+              <MannequinCSS3D 
+                key={canvasKey} 
+                clothing={clothingTextures}
+                onRemoveItem={(type) => handleClear(type as WardrobeItemCategory)}
+              />
             </div>
           ) : (
             /* 2D Silhouette View with IMPROVED Clothing Overlay */
