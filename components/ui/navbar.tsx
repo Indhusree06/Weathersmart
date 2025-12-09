@@ -30,9 +30,9 @@ export function Navbar({
   userName
 }: NavbarProps) {
   return (
-    <nav className="bg-gray-800 border-b-0 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+    <nav className="bg-gray-800 border-b border-gray-700 sticky top-0 z-50">
+      <div className="w-full mx-auto px-6 sm:px-8 lg:px-12">
+        <div className="flex justify-between items-center h-16 max-w-[1600px] mx-auto">
           <div className="flex items-center space-x-8">
             <Link href="/home" className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">

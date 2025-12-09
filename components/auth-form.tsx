@@ -178,9 +178,12 @@ export function AuthForm() {
             )}
 
             {/* Demo Credentials */}
-            <div className="mt-8 text-center">
-              <p className="text-gray-500 text-sm mb-2">Demo credentials for testing:</p>
-              <p className="text-gray-400 text-xs">Email: demo@weathersmart.com | Password: demo123</p>
+            <div className="mt-8 p-4 bg-blue-900/20 border border-blue-700/50 rounded-lg">
+              <p className="text-blue-300 text-sm font-medium mb-2 text-center">Demo Credentials:</p>
+              <div className="space-y-1 text-center">
+                <p className="text-gray-300 text-sm font-mono">Email: <span className="text-white">abcd@gmail.com</span></p>
+                <p className="text-gray-300 text-sm font-mono">Password: <span className="text-white">abcdefg</span></p>
+              </div>
             </div>
           </CardContent>
         </Card>

@@ -375,6 +375,10 @@ export default function AddClothesPage() {
       fields: { name: "", description: "", color: "", condition: "good", weatherSuitability: [], seasonalUse: [], occasions: [], safetyFeatures: [] },
     }))
     setDrafts((d) => [...d, ...newDrafts])
+    // Reset file input to allow selecting the same files again
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ""
+    }
   }
 
   const patchDraft = (id: string, patch: Partial<DraftItem>) =>
