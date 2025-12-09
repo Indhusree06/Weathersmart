@@ -236,41 +236,6 @@ export default function AnalyticsPage() {
                 </div>
               </div>
             )}
-            {/* Summary Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <SummaryCard
-                title="Total Items"
-                value={analyticsData.summary.totalItems}
-                subtitle="In your wardrobe"
-                icon={Package}
-              />
-              <SummaryCard
-                title="Most Worn"
-                value={analyticsData.summary.mostWornItem?.name || "N/A"}
-                subtitle={
-                  analyticsData.summary.mostWornItem
-                    ? `${analyticsData.summary.mostWornItem.wear_count} wears`
-                    : "No data yet"
-                }
-                image={analyticsData.summary.mostWornItem?.image_url}
-              />
-              <SummaryCard
-                title="Least Worn"
-                value={analyticsData.summary.leastWornItem?.name || "N/A"}
-                subtitle={
-                  analyticsData.summary.leastWornItem
-                    ? `${analyticsData.summary.leastWornItem.wear_count} wears`
-                    : "No data yet"
-                }
-                image={analyticsData.summary.leastWornItem?.image_url}
-              />
-              <SummaryCard
-                title="Wardrobe Health"
-                value={analyticsData.summary.wardrobeHealth}
-                subtitle="Out of 100"
-                icon={TrendingUp}
-              />
-            </div>
 
             {/* Time-Based Analysis */}
             <TimeBasedAnalysis items={analyticsData.allItems} />
