@@ -218,31 +218,31 @@ export function AdvancedCharts({ items }: AdvancedChartsProps) {
         >
           {activeChart === "bubble" && (
             <ResponsiveContainer width="100%" height={400}>
-              <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
+              <ScatterChart margin={{ top: 20, right: 20, bottom: 40, left: 60 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.3} />
                 <XAxis
                   type="number"
                   dataKey="x"
                   name="Wears"
                   stroke="#9ca3af"
-                  label={{ value: "Number of Wears", position: "bottom", fill: "#9ca3af" }}
+                  label={{ value: "Number of Wears", position: "insideBottom", offset: -5, fill: "#9ca3af" }}
                 />
                 <YAxis
                   type="number"
                   dataKey="y"
                   name="Price"
                   stroke="#9ca3af"
-                  label={{ value: "Price ($)", angle: -90, position: "left", fill: "#9ca3af" }}
+                  label={{ value: "Price ($)", angle: -90, position: "insideLeft", fill: "#9ca3af" }}
                 />
                 <Tooltip content={<CustomTooltip />} />
                 <Legend wrapperStyle={{ color: "#cbd5e1" }} />
                 <Scatter
                   name="Items"
                   data={bubbleData}
-                  fill="#3b82f6"
-                  fillOpacity={0.6}
-                  stroke="#3b82f6"
-                  strokeWidth={2}
+                  fill="#8b5cf6"
+                  fillOpacity={0.7}
+                  stroke="#a78bfa"
+                  strokeWidth={1}
                 />
               </ScatterChart>
             </ResponsiveContainer>
@@ -309,11 +309,11 @@ export function AdvancedCharts({ items }: AdvancedChartsProps) {
                 <XAxis
                   dataKey="index"
                   stroke="#9ca3af"
-                  label={{ value: "Items Added", position: "bottom", fill: "#9ca3af" }}
+                  label={{ value: "Items Added", position: "insideBottom", offset: -5, fill: "#9ca3af" }}
                 />
                 <YAxis
                   stroke="#9ca3af"
-                  label={{ value: "Value ($)", angle: -90, position: "left", fill: "#9ca3af" }}
+                  label={{ value: "Value ($)", angle: -90, position: "insideLeft", fill: "#9ca3af" }}
                 />
                 <Tooltip
                   contentStyle={{
