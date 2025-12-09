@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { SummaryCard } from "./components/SummaryCard"
 import { WardrobeCategoryChart } from "./components/WardrobeCategoryChart"
+import { InteractiveCategoryChart } from "./components/InteractiveCategoryChart"
 import { WeatherReadinessCard } from "./components/WeatherReadinessCard"
 import { TimeBasedAnalysis } from "./components/TimeBasedAnalysis"
 import { MostLeastList } from "./components/MostLeastList"
@@ -274,7 +275,7 @@ export default function AnalyticsPage() {
 
             {/* Wardrobe Composition */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <WardrobeCategoryChart data={analyticsData.categoryBreakdown} />
+              <InteractiveCategoryChart data={analyticsData.categoryBreakdown} allItems={analyticsData.allItems} />
               <WeatherReadinessCard data={analyticsData.weatherReadiness} />
             </div>
 
