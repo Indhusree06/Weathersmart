@@ -14,6 +14,7 @@ import { InteractiveCategoryChart } from "./components/InteractiveCategoryChart"
 import { WeatherReadinessCard } from "./components/WeatherReadinessCard"
 import SimplifiedCostPerWear from "./components/SimplifiedCostPerWear"
 import { StyleProfilePanel } from "./components/StyleProfilePanel"
+import { OutfitHistory } from "./components/OutfitHistory"
 
 import { ArrowLeft, Package, TrendingUp, Activity, User, Download, FileText, FileSpreadsheet } from "lucide-react"
 import Link from "next/link"
@@ -258,6 +259,9 @@ export default function AnalyticsPage() {
 
             {/* Wardrobe Value - Simplified */}
             <SimplifiedCostPerWear items={analyticsData.allItems} />
+
+            {/* Outfit History */}
+            <OutfitHistory />
 
             {/* Wardrobe Composition */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

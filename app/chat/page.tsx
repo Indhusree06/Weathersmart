@@ -1205,23 +1205,45 @@ export default function ChatPage() {
                             <Button
                               onClick={async () => {
                                 try {
-                                  if (currentOutfit?.items) {
-                                    for (const outfitItem of currentOutfit.items) {
-                                      const w = currentWardrobeItems.find((i) => i.id === outfitItem.id || i.name.toLowerCase() === String(outfitItem.name).toLowerCase())
-                                      if (w) {
-                                        try {
-                                          const newWearCount = (w.wear_count || 0) + 1
-                                          const { error: updateError } = await supabase
-                                            .from('wardrobe_items')
-                                            .update({ wear_count: newWearCount, last_worn: new Date().toISOString().split('T')[0] })
-                                            .eq('id', w.id)
-                                          if (updateError) throw updateError
-                                        } catch (e) { console.error("wear update", e) }
-                                      }
-                                    }
+                                  if (!currentOutfit?.items) {
+                                    alert("No outfit selected")
+                                    return
                                   }
-                                  alert("Great choice! Outfit recorded.")
-                                } catch (e) { alert("Outfit noted! (Wear count update may have failed)") }
+
+                                  // Save outfit to history and update wear counts via API
+                                  const response = await fetch('/api/save-outfit-worn', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({
+                                      outfit: {
+                                        items: currentOutfit.items,
+                                        weather: weather ? `${weather.temperature}°F, ${weather.condition}` : null,
+                                        location: weather?.location || null,
+                                        occasion: null
+                                      },
+                                      profileId: selectedProfile === "owner" ? null : selectedProfile
+                                    })
+                                  })
+
+                                  const result = await response.json()
+                                  
+                                  if (response.ok) {
+                                    alert("✅ Great choice! Outfit saved to your history and wear counts updated.")
+                                    // Refresh wardrobe items to show updated wear counts
+                                    const { data: refreshedItems } = await supabase
+                                      .from('wardrobe_items')
+                                      .select('*')
+                                      .eq('profile_id', selectedProfile === "owner" ? user?.id : selectedProfile)
+                                    if (refreshedItems) {
+                                      setCurrentWardrobeItems(refreshedItems)
+                                    }
+                                  } else {
+                                    throw new Error(result.error || 'Failed to save outfit')
+                                  }
+                                } catch (e) {
+                                  console.error("Error saving outfit:", e)
+                                  alert("❌ Failed to save outfit. Please try again.")
+                                }
                               }}
                               className="bg-purple-600 hover:bg-purple-700 w-full text-xs"
                             >
