@@ -15,8 +15,10 @@ import { WeatherReadinessCard } from "./components/WeatherReadinessCard"
 import SimplifiedCostPerWear from "./components/SimplifiedCostPerWear"
 import { StyleProfilePanel } from "./components/StyleProfilePanel"
 
-import { ArrowLeft, Package, TrendingUp, Activity, User } from "lucide-react"
+import { ArrowLeft, Package, TrendingUp, Activity, User, Download, FileText, FileSpreadsheet } from "lucide-react"
 import Link from "next/link"
+import { exportToCSV, exportToPDF } from "@/lib/exportAnalytics"
+import { WeatherAlerts } from "@/components/WeatherAlerts"
 
 export default function AnalyticsPage() {
   const { user, loading: authLoading, signOut } = useAuth()
@@ -229,6 +231,29 @@ export default function AnalyticsPage() {
                 </div>
               </div>
             )}
+
+            {/* Weather Alerts */}
+            <WeatherAlerts />
+
+            {/* Export Buttons */}
+            <div className="flex gap-3 justify-end">
+              <Button
+                variant="outline"
+                onClick={() => exportToCSV(analyticsData.allItems)}
+                className="flex items-center gap-2"
+              >
+                <FileSpreadsheet className="w-4 h-4" />
+                Export CSV
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => exportToPDF(analyticsData.allItems, analyticsData)}
+                className="flex items-center gap-2"
+              >
+                <FileText className="w-4 h-4" />
+                Export PDF
+              </Button>
+            </div>
 
             {/* Wardrobe Value - Simplified */}
             <SimplifiedCostPerWear items={analyticsData.allItems} />
