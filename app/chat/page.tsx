@@ -238,7 +238,7 @@ export default function ChatPage() {
 
   const [currentOutfit, setCurrentOutfit] = useState<any>(null)
   const [outfitOptions, setOutfitOptions] = useState<any[]>([])
-  const [selectedOptionIndex, setSelectedOptionIndex] = useState(0)
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState<number>(0)
   const outfitDisplayRef = useRef<HTMLDivElement>(null)
   const [currentWardrobeItems, setCurrentWardrobeItems] = useState<any[]>([])
   const [wardrobeLoading, setWardrobeLoading] = useState(false)
@@ -961,7 +961,6 @@ export default function ChatPage() {
                   <QuickFilters 
                     onFilterSelect={(occasion) => handleQuickAction(`Suggest an outfit for ${occasion}`)}
                     disabled={isLoading}
-                    weather={weather}
                   />
                 )}
 
@@ -1185,14 +1184,12 @@ export default function ChatPage() {
                                     weather_suitability: weather ? `${weather.temperature}°F, ${weather.condition}` : 'N/A',
                                     style_notes: rec.reasoning.join('. '),
                                     colorHarmony: rec.colorHarmony,
-                                    score: rec.score || 75, // Ensure score exists for OutfitOptions component
-                                    reasoning: rec.reasoning
                                   }))
                                   
                                   setOutfitOptions(options)
                                   setShowMultipleOptions(true)
                                   setSelectedOptionIndex(0)
-                                  // Don't replace currentOutfit - keep original visible above options
+                                  if (options.length > 0) setCurrentOutfit(options[0])
                                 } catch (e) {
                                   console.error('Error generating options:', e)
                                   alert('Could not generate outfit options')
@@ -1207,11 +1204,6 @@ export default function ChatPage() {
                             </Button>
                             <Button
                               onClick={async () => {
-                                // Confirmation dialog
-                                if (!confirm(`Ready to wear this outfit? This will update your wardrobe stats.`)) {
-                                  return
-                                }
-                                
                                 try {
                                   if (currentOutfit?.items) {
                                     for (const outfitItem of currentOutfit.items) {
@@ -1228,7 +1220,7 @@ export default function ChatPage() {
                                       }
                                     }
                                   }
-                                  alert("Great choice! Outfit recorded. 🎉")
+                                  alert("Great choice! Outfit recorded.")
                                 } catch (e) { alert("Outfit noted! (Wear count update may have failed)") }
                               }}
                               className="bg-purple-600 hover:bg-purple-700 w-full text-xs"
@@ -1273,29 +1265,15 @@ export default function ChatPage() {
 
                           {/* Outfit Options Display */}
                           {outfitOptions.length > 0 && (
-                            <div className="mt-4 space-y-2">
+                            <div className="mt-4">
                               <OutfitOptions
                                 options={outfitOptions}
                                 selectedIndex={selectedOptionIndex}
                                 onSelect={(index) => {
                                   setSelectedOptionIndex(index)
-                                  // Update to show selected option
-                                  if (outfitOptions[index]) {
-                                    setCurrentOutfit(outfitOptions[index])
-                                  }
+                                  setCurrentOutfit(outfitOptions[index])
                                 }}
                               />
-                              <Button
-                                onClick={() => {
-                                  setOutfitOptions([])
-                                  setShowMultipleOptions(false)
-                                  setSelectedOptionIndex(0)
-                                }}
-                                variant="outline"
-                                className="w-full text-xs border-border hover:bg-muted"
-                              >
-                                ✕ Clear Options
-                              </Button>
                             </div>
                           )}
                         </div>
@@ -1398,9 +1376,9 @@ export default function ChatPage() {
                                       {currentOutfit.colorHarmony.weatherMatch}
                                     </p>
                                   </div>
-                          )}
-                        </div>
-                      </div>
+                                )}
+                              </div>
+                            </>
                           )}
                         </div>
 
@@ -1416,7 +1394,7 @@ export default function ChatPage() {
                             />
                           </div>
                         )}
-                      </>
+                      </div>
                     )}
                   </ScrollArea>
                 </div>
