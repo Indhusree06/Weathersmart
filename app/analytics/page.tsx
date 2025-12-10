@@ -126,7 +126,7 @@ export default function AnalyticsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-slate-50">
       {/* Navigation */}
       <Navbar
         navLinks={[
@@ -142,8 +142,7 @@ export default function AnalyticsPage() {
         userName={user?.email?.split("@")[0]}
       />
 
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* Main Content */}      <div className="max-w-7xl mx-auto p-6 space-y-8">g:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
           <Link href="/wardrobes">

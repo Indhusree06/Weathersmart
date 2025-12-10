@@ -49,7 +49,7 @@ export function InteractiveCategoryChart({ data, allItems }: InteractiveCategory
 
   if (data.length === 0) {
     return (
-      <Card className="border-border/50 bg-gradient-to-br from-slate-800/50 to-slate-900/50">
+      <Card className="border-slate-200 bg-white shadow-sm">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <PieChartIcon className="h-5 w-5 text-primary" />
@@ -67,7 +67,7 @@ export function InteractiveCategoryChart({ data, allItems }: InteractiveCategory
   }
 
   return (
-    <Card className="border-border/50 bg-gradient-to-br from-slate-800/50 to-slate-900/50 relative overflow-hidden">
+      <Card className="border-slate-200 bg-white shadow-sm relative overflow-hidden">
       <CardHeader>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
