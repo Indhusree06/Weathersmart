@@ -26,6 +26,38 @@ import { OutfitOptions } from "./components/OutfitOptions"
 import { EnhancedOutfitDisplay } from "./components/EnhancedOutfitDisplay"
 
 /* --------------------------------- Types --------------------------------- */
+
+// Generate natural weather message based on conditions
+function getWeatherMessage(weather: WeatherData | null): string {
+  if (!weather) return "Check the weather before you head out!";
+  
+  const temp = weather.temperature;
+  const condition = weather.condition.toLowerCase();
+  
+  // Temperature-based messages
+  if (temp < 32) {
+    if (condition.includes('snow')) return "Bundle up! It's snowing and freezing out there.";
+    return "It's freezing! Layer up with warm clothes.";
+  } else if (temp < 50) {
+    if (condition.includes('rain')) return "Cold and rainy - perfect weather for a cozy jacket!";
+    return "Chilly day ahead - don't forget your jacket!";
+  } else if (temp < 65) {
+    if (condition.includes('rain')) return "Light jacket weather with some rain expected.";
+    if (condition.includes('cloud')) return "Cool and cloudy - great layering weather!";
+    return "Pleasant and cool - perfect for light layers.";
+  } else if (temp < 75) {
+    if (condition.includes('rain')) return "Mild with showers - bring an umbrella!";
+    if (condition.includes('sun') || condition.includes('clear')) return "Beautiful day! Perfect weather for any outfit.";
+    return "Comfortable temperature - dress however you like!";
+  } else if (temp < 85) {
+    if (condition.includes('rain')) return "Warm and humid with rain - stay cool and dry!";
+    return "Warm and pleasant - time for lighter clothes!";
+  } else {
+    if (condition.includes('sun') || condition.includes('clear')) return "Hot and sunny! Keep it light and breezy.";
+    return "It's hot out there - stay cool with breathable fabrics!";
+  }
+}
+
 interface WeatherData {
   location: string
   temperature: number
@@ -811,7 +843,7 @@ export default function ChatPage() {
                   : weather
                     ? `${weather.temperature}°F, ${weather.condition}`
                     : "Weather unavailable"
-              } | Humidity: {weather && typeof weather.humidity === "number" ? `${weather.humidity}%` : "-"} | Wind: {weather && typeof weather.windSpeed === "number" ? `${weather.windSpeed} mph` : "-"} | Perfect weather for outfit planning!
+              } | Humidity: {weather && typeof weather.humidity === "number" ? `${weather.humidity}%` : "-"} | Wind: {weather && typeof weather.windSpeed === "number" ? `${weather.windSpeed} mph` : "-"} | {getWeatherMessage(weather)}
             </span>
             <span className="inline-block px-8">{weather?.description || 'partly cloudy'}</span>
           </div>
