@@ -17,9 +17,13 @@ import {
 import { cn } from "@/lib/utils"
 import { supabase, wardrobeProfileService, wardrobeService } from "@/lib/supabase"
 import { createSimpleOutfitRecommendation, analyzeColorHarmony } from "./createSimpleOutfitRecommendation"
+import { generateSmartOutfit, generateMultipleOutfits } from "@/lib/smartRecommendation"
 import { QuickFilters } from "./components/QuickFilters"
 import { VoiceInput } from "./components/VoiceInput"
 import { SwapItemButton } from "./components/SwapItemButton"
+import { OutfitRating } from "./components/OutfitRating"
+import { OutfitOptions } from "./components/OutfitOptions"
+import { EnhancedOutfitDisplay } from "./components/EnhancedOutfitDisplay"
 
 /* --------------------------------- Types --------------------------------- */
 interface WeatherData {
@@ -201,8 +205,11 @@ export default function ChatPage() {
   const [profilesLoading, setProfilesLoading] = useState(true)
 
   const [currentOutfit, setCurrentOutfit] = useState<any>(null)
+  const [outfitOptions, setOutfitOptions] = useState<any[]>([])
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState<number>(0)
   const [currentWardrobeItems, setCurrentWardrobeItems] = useState<any[]>([])
   const [wardrobeLoading, setWardrobeLoading] = useState(false)
+  const [showMultipleOptions, setShowMultipleOptions] = useState(false)
 
   const [messages, setMessages] = useState<any[]>([])
   const [input, setInput] = useState("")
@@ -1059,13 +1066,39 @@ export default function ChatPage() {
                             ))}
                           </div>
 
-                          <div className="grid grid-cols-2 gap-2 mt-3">
+                          <div className="grid grid-cols-3 gap-2 mt-3">
                             <Button
                               onClick={() => handleQuickAction(lastRequest)}
                               className="bg-green-600 hover:bg-green-700 w-full text-xs"
                               disabled={isLoading}
                             >
-                              {isLoading ? "Getting New Suggestion..." : "Get Another Suggestion"}
+                              {isLoading ? "Getting New..." : "New Outfit"}
+                            </Button>
+                            <Button
+                              onClick={async () => {
+                                setIsLoading(true)
+                                try {
+                                  const options = await generateMultipleOutfits(
+                                    currentWardrobeItems,
+                                    weather ? { temperature: weather.temperature, condition: weather.condition } : undefined,
+                                    lastRequest.toLowerCase().includes('work') ? 'work' : 'casual',
+                                    3
+                                  )
+                                  setOutfitOptions(options)
+                                  setShowMultipleOptions(true)
+                                  setSelectedOptionIndex(0)
+                                  if (options.length > 0) setCurrentOutfit(options[0])
+                                } catch (e) {
+                                  console.error('Error generating options:', e)
+                                  alert('Could not generate outfit options')
+                                } finally {
+                                  setIsLoading(false)
+                                }
+                              }}
+                              className="bg-blue-600 hover:bg-blue-700 w-full text-xs"
+                              disabled={isLoading}
+                            >
+                              {isLoading ? "Loading..." : "Show 3 Options"}
                             </Button>
                             <Button
                               onClick={async () => {
@@ -1090,7 +1123,7 @@ export default function ChatPage() {
                               }}
                               className="bg-purple-600 hover:bg-purple-700 w-full text-xs"
                             >
-                              I Choose This Outfit
+                              I'll Wear This
                             </Button>
                           </div>
 
@@ -1141,6 +1174,20 @@ export default function ChatPage() {
                               🐦 Share
                             </Button>
                           </div>
+
+                          {/* Outfit Options Display */}
+                          {showMultipleOptions && outfitOptions.length > 0 && (
+                            <div className="mt-3">
+                              <OutfitOptions
+                                options={outfitOptions}
+                                selectedIndex={selectedOptionIndex}
+                                onSelect={(index) => {
+                                  setSelectedOptionIndex(index)
+                                  setCurrentOutfit(outfitOptions[index])
+                                }}
+                              />
+                            </div>
+                          )}
                         </div>
 
                         {/* Items list */}
@@ -1244,6 +1291,19 @@ export default function ChatPage() {
                             </>
                           )}
                         </div>
+
+                        {/* Outfit Rating */}
+                        {currentOutfit && (
+                          <div className="mt-3">
+                            <OutfitRating
+                              outfitId={currentOutfit.id || `outfit-${Date.now()}`}
+                              userId={user?.id}
+                              onRatingChange={(rating) => {
+                                console.log('Outfit rated:', rating)
+                              }}
+                            />
+                          </div>
+                        )}
                       </>
                     )}
                   </ScrollArea>
