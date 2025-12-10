@@ -1171,7 +1171,12 @@ export default function ChatPage() {
                             >
                               📥 Download Outfit Report
                             </Button>
-                          </div>itOptions
+                          </div>
+
+                          {/* Outfit Options Display */}
+                          {outfitOptions.length > 0 && (
+                            <div className="mt-4">
+                              <OutfitOptions
                                 options={outfitOptions}
                                 selectedIndex={selectedOptionIndex}
                                 onSelect={(index) => {
@@ -1215,7 +1220,7 @@ export default function ChatPage() {
                               </div>
                               <div className="flex-1">
                                 <p className="text-foreground text-xs font-medium leading-tight">{item.name || 'Unknown Item'}</p>
-                                <p className="text-muted-foreground text-[11px] font-normal">{item.category || 'No category'}</p>
+                                <p className="text-muted-foreground text-[11px] font-normal">{typeof item.category === 'object' ? (item.category?.name || 'No category') : (item.category || 'No category')}</p>
                                 {typeof item.wear_count === 'number' && (
                                   <p className="text-yellow-400 text-[11px] flex items-center gap-1 font-normal">
                                     <Star className="w-3 h-3" /> Worn {item.wear_count} times
