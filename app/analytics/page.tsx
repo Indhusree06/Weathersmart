@@ -12,14 +12,8 @@ import { SummaryCard } from "./components/SummaryCard"
 
 import { InteractiveCategoryChart } from "./components/InteractiveCategoryChart"
 import { WeatherReadinessCard } from "./components/WeatherReadinessCard"
-import { TimeBasedAnalysis } from "./components/TimeBasedAnalysis"
-import { AdvancedCharts } from "./components/AdvancedCharts"
-import CostPerWearDashboard from "./components/CostPerWearDashboard"
-
-
+import SimplifiedCostPerWear from "./components/SimplifiedCostPerWear"
 import { StyleProfilePanel } from "./components/StyleProfilePanel"
-
-import { SavedOutfitsList } from "./components/SavedOutfitsList"
 
 import { ArrowLeft, Package, TrendingUp, Activity, User } from "lucide-react"
 import Link from "next/link"
@@ -237,23 +231,14 @@ export default function AnalyticsPage() {
               </div>
             )}
 
-            {/* Time-Based Analysis */}
-            <TimeBasedAnalysis items={analyticsData.allItems} />
-
-            {/* Cost-Per-Wear Dashboard */}
-            <CostPerWearDashboard items={analyticsData.allItems} />
-
-            {/* Advanced Charts */}
-            <AdvancedCharts items={analyticsData.allItems} />
+            {/* Wardrobe Value - Simplified */}
+            <SimplifiedCostPerWear items={analyticsData.allItems} />
 
             {/* Wardrobe Composition */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <InteractiveCategoryChart data={analyticsData.categoryBreakdown} allItems={analyticsData.allItems} />
               <WeatherReadinessCard data={analyticsData.weatherReadiness} />
             </div>
-
-            {/* Saved Outfits */}
-            <SavedOutfitsList outfits={analyticsData.savedOutfits} />
 
             {/* Style Profile */}
             <StyleProfilePanel profile={analyticsData.styleProfile} />
