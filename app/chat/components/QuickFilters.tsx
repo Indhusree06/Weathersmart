@@ -3,9 +3,16 @@
 import { Button } from "@/components/ui/button"
 import { Briefcase, Coffee, Heart, Sparkles, CloudRain, Sun, Snowflake } from "lucide-react"
 
+interface WeatherData {
+  temperature: number
+  condition: string
+  humidity?: number
+}
+
 interface QuickFiltersProps {
   onFilterSelect: (occasion: string) => void
   disabled?: boolean
+  weather?: WeatherData | null
 }
 
 const filters = [
@@ -18,7 +25,20 @@ const filters = [
   { label: "Cold", value: "cold weather", icon: Snowflake, color: "bg-indigo-600 hover:bg-indigo-700" },
 ]
 
-export function QuickFilters({ onFilterSelect, disabled }: QuickFiltersProps) {
+export function QuickFilters({ onFilterSelect, disabled, weather }: QuickFiltersProps) {
+  // Determine which filter should be highlighted based on weather
+  const getHighlightedFilter = () => {
+    if (!weather) return null
+    const condition = weather.condition.toLowerCase()
+    const temp = weather.temperature
+    
+    if (condition.includes('rain') || condition.includes('drizzle')) return 'rainy day'
+    if (temp > 80) return 'hot weather'
+    if (temp < 50) return 'cold weather'
+    return null
+  }
+  
+  const highlightedFilter = getHighlightedFilter()
   return (
     <div className="bg-gradient-to-r from-muted to-card rounded-lg p-4 mb-4 border border-border">
       <div className="flex items-center gap-2 mb-3">
@@ -33,7 +53,9 @@ export function QuickFilters({ onFilterSelect, disabled }: QuickFiltersProps) {
               key={filter.value}
               onClick={() => onFilterSelect(filter.value)}
               disabled={disabled}
-              className={`${filter.color} text-foreground text-xs py-2 px-3 flex items-center justify-center gap-1.5 transition-all hover:scale-105`}
+              className={`${filter.color} text-foreground text-xs py-2 px-3 flex items-center justify-center gap-1.5 transition-all hover:scale-105 ${
+                highlightedFilter === filter.value ? 'ring-2 ring-yellow-400 ring-offset-2 animate-pulse' : ''
+              }`}
             >
               <Icon className="w-3.5 h-3.5" />
               <span>{filter.label}</span>

@@ -92,17 +92,17 @@ export function OutfitOptions({ options, selectedIndex, onSelect, className }: O
             </div>
 
             {/* Score Badge */}
-            <div className="mt-2 flex items-center gap-1">
-              <div className="flex-1 h-1.5 bg-muted rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-primary rounded-full transition-all"
-                  style={{ width: `${Math.min(option.score, 100)}%` }}
-                />
+              <div className="mt-2 flex items-center gap-1">
+                <div className="flex-1 h-1.5 bg-muted rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-primary rounded-full transition-all"
+                    style={{ width: `${Math.min(option.score || 0, 100)}%` }}
+                  />
+                </div>
+                <span className="text-xs text-muted-foreground">
+                  {option.score && !isNaN(option.score) ? Math.round(option.score) : '75'}
+                </span>
               </div>
-              <span className="text-xs text-muted-foreground">
-                {Math.round(option.score)}
-              </span>
-            </div>
           </Card>
         ))}
       </div>

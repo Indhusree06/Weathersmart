@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useMemo } from "react"
+import { useState, useEffect, useMemo, useRef } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { useAuth } from "@/hooks/useAuth"
@@ -238,7 +238,8 @@ export default function ChatPage() {
 
   const [currentOutfit, setCurrentOutfit] = useState<any>(null)
   const [outfitOptions, setOutfitOptions] = useState<any[]>([])
-  const [selectedOptionIndex, setSelectedOptionIndex] = useState<number>(0)
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState(0)
+  const outfitDisplayRef = useRef<HTMLDivElement>(null)
   const [currentWardrobeItems, setCurrentWardrobeItems] = useState<any[]>([])
   const [wardrobeLoading, setWardrobeLoading] = useState(false)
   const [showMultipleOptions, setShowMultipleOptions] = useState(false)
@@ -616,6 +617,11 @@ export default function ChatPage() {
           setOutfitOptions([])
           setShowMultipleOptions(false)
           setSelectedOptionIndex(0)
+          
+          // Smooth scroll to outfit display
+          setTimeout(() => {
+            outfitDisplayRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          }, 100)
 
           if (recommendation?.reasoning) {
             setMessages((prev) => [...prev, {
@@ -955,6 +961,7 @@ export default function ChatPage() {
                   <QuickFilters 
                     onFilterSelect={(occasion) => handleQuickAction(`Suggest an outfit for ${occasion}`)}
                     disabled={isLoading}
+                    weather={weather}
                   />
                 )}
 
@@ -1054,7 +1061,23 @@ export default function ChatPage() {
 
                 <div className="flex-1 min-h-0">
                   <ScrollArea className="h-full pr-2">
-                    {!currentOutfit ? (
+                    {isLoading && !currentOutfit ? (
+                      <div className="space-y-3 animate-pulse">
+                        <div className="h-4 bg-muted rounded w-3/4"></div>
+                        <div className="bg-card rounded-lg p-3">
+                          <div className="flex gap-3">
+                            <div className="w-28 h-28 bg-muted rounded-xl"></div>
+                            <div className="w-28 h-28 bg-muted rounded-xl"></div>
+                            <div className="w-28 h-28 bg-muted rounded-xl"></div>
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <div className="h-16 bg-muted rounded-lg"></div>
+                          <div className="h-16 bg-muted rounded-lg"></div>
+                          <div className="h-16 bg-muted rounded-lg"></div>
+                        </div>
+                      </div>
+                    ) : !currentOutfit ? (
                       <div className="text-center py-8">
                         <Settings className="w-12 h-12 text-slate-600 mx-auto mb-3" />
                         <h4 className="text-foreground font-medium">No Outfit Selected</h4>
@@ -1089,7 +1112,7 @@ export default function ChatPage() {
                         </div>
                       </div>
                     ) : (
-                      <>
+                      <div ref={outfitDisplayRef}>
                         {/* Reasoning */}
                         <p className="text-foreground/80 text-xs mb-3 font-normal leading-relaxed">{currentOutfit.style_notes}</p>
 
@@ -1162,12 +1185,14 @@ export default function ChatPage() {
                                     weather_suitability: weather ? `${weather.temperature}°F, ${weather.condition}` : 'N/A',
                                     style_notes: rec.reasoning.join('. '),
                                     colorHarmony: rec.colorHarmony,
+                                    score: rec.score || 75, // Ensure score exists for OutfitOptions component
+                                    reasoning: rec.reasoning
                                   }))
                                   
                                   setOutfitOptions(options)
                                   setShowMultipleOptions(true)
                                   setSelectedOptionIndex(0)
-                                  if (options.length > 0) setCurrentOutfit(options[0])
+                                  // Don't replace currentOutfit - keep original visible above options
                                 } catch (e) {
                                   console.error('Error generating options:', e)
                                   alert('Could not generate outfit options')
@@ -1182,6 +1207,11 @@ export default function ChatPage() {
                             </Button>
                             <Button
                               onClick={async () => {
+                                // Confirmation dialog
+                                if (!confirm(`Ready to wear this outfit? This will update your wardrobe stats.`)) {
+                                  return
+                                }
+                                
                                 try {
                                   if (currentOutfit?.items) {
                                     for (const outfitItem of currentOutfit.items) {
@@ -1198,7 +1228,7 @@ export default function ChatPage() {
                                       }
                                     }
                                   }
-                                  alert("Great choice! Outfit recorded.")
+                                  alert("Great choice! Outfit recorded. 🎉")
                                 } catch (e) { alert("Outfit noted! (Wear count update may have failed)") }
                               }}
                               className="bg-purple-600 hover:bg-purple-700 w-full text-xs"
@@ -1243,15 +1273,29 @@ export default function ChatPage() {
 
                           {/* Outfit Options Display */}
                           {outfitOptions.length > 0 && (
-                            <div className="mt-4">
+                            <div className="mt-4 space-y-2">
                               <OutfitOptions
                                 options={outfitOptions}
                                 selectedIndex={selectedOptionIndex}
                                 onSelect={(index) => {
                                   setSelectedOptionIndex(index)
-                                  setCurrentOutfit(outfitOptions[index])
+                                  // Update to show selected option
+                                  if (outfitOptions[index]) {
+                                    setCurrentOutfit(outfitOptions[index])
+                                  }
                                 }}
                               />
+                              <Button
+                                onClick={() => {
+                                  setOutfitOptions([])
+                                  setShowMultipleOptions(false)
+                                  setSelectedOptionIndex(0)
+                                }}
+                                variant="outline"
+                                className="w-full text-xs border-border hover:bg-muted"
+                              >
+                                ✕ Clear Options
+                              </Button>
                             </div>
                           )}
                         </div>
@@ -1354,9 +1398,9 @@ export default function ChatPage() {
                                       {currentOutfit.colorHarmony.weatherMatch}
                                     </p>
                                   </div>
-                                )}
-                              </div>
-                            </>
+                          )}
+                        </div>
+                      </div>
                           )}
                         </div>
 
