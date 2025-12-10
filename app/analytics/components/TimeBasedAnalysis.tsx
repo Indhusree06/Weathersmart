@@ -186,14 +186,14 @@ export function TimeBasedAnalysis({ items }: TimeBasedAnalysisProps) {
           <Card className="border-blue-500/20 bg-gradient-to-br from-blue-500/10 to-blue-600/5">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total Wears</CardTitle>
-              <Activity className="h-4 w-4 text-blue-500" />
+              <Activity className="h-4 w-4 text-primary" />
             </CardHeader>
             <CardContent>
               <motion.div
                 initial={{ scale: 0.5 }}
                 animate={{ scale: 1 }}
                 transition={{ type: "spring", stiffness: 200 }}
-                className="text-2xl font-bold text-blue-600"
+                className="text-2xl font-bold text-primary"
               >
                 {stats.totalWears}
               </motion.div>
@@ -277,7 +277,7 @@ export function TimeBasedAnalysis({ items }: TimeBasedAnalysisProps) {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Activity className="h-5 w-5 text-blue-500" />
+                <Activity className="h-5 w-5 text-primary" />
                 Wear Frequency Over Time
               </CardTitle>
               <CardDescription>

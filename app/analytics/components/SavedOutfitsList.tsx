@@ -11,9 +11,9 @@ interface SavedOutfitsListProps {
 export function SavedOutfitsList({ outfits }: SavedOutfitsListProps) {
   if (outfits.length === 0) {
     return (
-      <Card className="bg-slate-800 border-slate-700 p-6">
-        <h3 className="text-lg font-semibold text-white mb-4">Saved Outfits</h3>
-        <div className="py-8 text-center text-slate-400">
+      <Card className="bg-card border-border p-6">
+        <h3 className="text-lg font-semibold text-foreground mb-4">Saved Outfits</h3>
+        <div className="py-8 text-center text-muted-foreground">
           <p>No saved outfits yet.</p>
           <p className="text-sm mt-2">Save your favorite combinations to track them here!</p>
         </div>
@@ -22,20 +22,20 @@ export function SavedOutfitsList({ outfits }: SavedOutfitsListProps) {
   }
 
   return (
-    <Card className="bg-slate-800 border-slate-700 p-6">
+    <Card className="bg-card border-border p-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-white">Saved Outfits</h3>
-        <span className="text-sm text-slate-400">{outfits.length} total</span>
+        <h3 className="text-lg font-semibold text-foreground">Saved Outfits</h3>
+        <span className="text-sm text-muted-foreground">{outfits.length} total</span>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {outfits.slice(0, 6).map((outfit) => (
           <div
             key={outfit.id}
-            className="relative group bg-slate-700/50 rounded-lg overflow-hidden hover:bg-slate-700 transition-colors border border-slate-600"
+            className="relative group bg-muted/50 rounded-lg overflow-hidden hover:bg-muted transition-colors border border-border"
           >
             {/* Outfit Image/Placeholder */}
-            <div className="aspect-square bg-slate-600 flex items-center justify-center">
+            <div className="aspect-square bg-muted/80 flex items-center justify-center">
               {outfit.image_url ? (
                 <img
                   src={outfit.image_url}
@@ -43,7 +43,7 @@ export function SavedOutfitsList({ outfits }: SavedOutfitsListProps) {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <div className="text-slate-400 text-center p-4">
+                <div className="text-muted-foreground text-center p-4">
                   <div className="text-4xl mb-2">👔</div>
                   <p className="text-xs">No preview</p>
                 </div>
@@ -53,7 +53,7 @@ export function SavedOutfitsList({ outfits }: SavedOutfitsListProps) {
             {/* Outfit Info */}
             <div className="p-3">
               <div className="flex items-start justify-between mb-2">
-                <h4 className="text-sm font-medium text-white truncate flex-1">
+                <h4 className="text-sm font-medium text-foreground truncate flex-1">
                   {outfit.name || "Unnamed Outfit"}
                 </h4>
                 {outfit.is_favorite && (
@@ -62,7 +62,7 @@ export function SavedOutfitsList({ outfits }: SavedOutfitsListProps) {
               </div>
 
               {outfit.occasion && (
-                <p className="text-xs text-slate-400 mb-2">{outfit.occasion}</p>
+                <p className="text-xs text-muted-foreground mb-2">{outfit.occasion}</p>
               )}
 
               <div className="flex items-center justify-between text-xs text-slate-500">
@@ -81,7 +81,7 @@ export function SavedOutfitsList({ outfits }: SavedOutfitsListProps) {
 
       {outfits.length > 6 && (
         <div className="mt-4 text-center">
-          <p className="text-sm text-slate-400">
+          <p className="text-sm text-muted-foreground">
             Showing 6 of {outfits.length} outfits
           </p>
         </div>

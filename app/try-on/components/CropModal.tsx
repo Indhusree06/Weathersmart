@@ -163,16 +163,16 @@ export function CropModal({ imageUrl, itemName, currentCrop, onSave, onClose }: 
 
   return (
     <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-      <div className="bg-slate-900 rounded-2xl border border-slate-700 max-w-4xl w-full max-h-[90vh] overflow-auto">
+      <div className="bg-background rounded-2xl border border-border max-w-4xl w-full max-h-[90vh] overflow-auto">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-slate-700">
+        <div className="flex items-center justify-between p-6 border-b border-border">
           <div className="flex items-center space-x-3">
             <Crop className="w-5 h-5 text-cyan-400" />
-            <h2 className="text-xl font-bold text-white">Crop {itemName}</h2>
+            <h2 className="text-xl font-bold text-foreground">Crop {itemName}</h2>
           </div>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-white transition-colors"
+            className="text-muted-foreground hover:text-foreground transition-colors"
           >
             <X className="w-6 h-6" />
           </button>
@@ -186,23 +186,23 @@ export function CropModal({ imageUrl, itemName, currentCrop, onSave, onClose }: 
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
             onMouseLeave={handleMouseUp}
-            className="border-2 border-slate-700 rounded-lg cursor-crosshair max-w-full"
+            className="border-2 border-border rounded-lg cursor-crosshair max-w-full"
           />
         </div>
 
         {/* Instructions */}
         <div className="px-6 pb-4">
-          <p className="text-sm text-slate-400 text-center">
+          <p className="text-sm text-muted-foreground text-center">
             Click and drag to select the area you want to display on the mannequin
           </p>
         </div>
 
         {/* Actions */}
-        <div className="flex items-center justify-end space-x-3 p-6 border-t border-slate-700">
+        <div className="flex items-center justify-end space-x-3 p-6 border-t border-border">
           <Button
             variant="outline"
             onClick={handleReset}
-            className="border-slate-600 text-slate-300 hover:bg-slate-800"
+            className="border-border text-foreground/80 hover:bg-card"
           >
             <RotateCcw className="w-4 h-4 mr-2" />
             Reset
@@ -210,13 +210,13 @@ export function CropModal({ imageUrl, itemName, currentCrop, onSave, onClose }: 
           <Button
             variant="outline"
             onClick={onClose}
-            className="border-slate-600 text-slate-300 hover:bg-slate-800"
+            className="border-border text-foreground/80 hover:bg-card"
           >
             Cancel
           </Button>
           <Button
             onClick={handleSave}
-            className="bg-cyan-600 hover:bg-cyan-700 text-white"
+            className="bg-cyan-600 hover:bg-cyan-700 text-foreground"
           >
             <Crop className="w-4 h-4 mr-2" />
             Apply Crop

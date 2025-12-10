@@ -78,7 +78,7 @@ export function VoiceInput({ onTranscript, disabled }: VoiceInputProps) {
         isListening
           ? "bg-red-600 hover:bg-red-700 animate-pulse"
           : "bg-purple-600 hover:bg-purple-700"
-      } text-white transition-all`}
+      } text-foreground transition-all`}
       title={isListening ? "Stop listening" : "Start voice input"}
     >
       {isListening ? (

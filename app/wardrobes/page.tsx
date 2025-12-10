@@ -341,12 +341,12 @@ export default function WardrobesPage() {
   const getRelationIcon = (relation?: string) => {
     switch (relation) {
       case "self":
-        return <UserCheck className="w-4 h-4 text-blue-400" />
+        return <UserCheck className="w-4 h-4 text-primary" />
       case "spouse":
       case "partner":
         return <Heart className="w-4 h-4 text-pink-400" />
       case "child":
-        return <Baby className="w-4 h-4 text-blue-400" />
+        return <Baby className="w-4 h-4 text-primary" />
       case "parent":
         return <User className="w-4 h-4 text-green-400" />
       default:
@@ -674,7 +674,7 @@ export default function WardrobesPage() {
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center">
         <div className="text-center">
           <div className="w-8 h-8 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-white">Loading...</p>
+          <p className="text-foreground">Loading...</p>
         </div>
       </div>
     )
@@ -686,9 +686,9 @@ export default function WardrobesPage() {
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center">
         <div className="text-center max-w-md mx-auto p-6">
           <AlertCircle className="w-12 h-12 text-red-400 mx-auto mb-4" />
-          <h2 className="text-xl font-semibold text-white mb-2">Authentication Error</h2>
+          <h2 className="text-xl font-semibold text-foreground mb-2">Authentication Error</h2>
           <p className="text-gray-300 mb-4">{authError}</p>
-          <Button onClick={() => router.push("/auth")} className="bg-blue-500 hover:bg-blue-600 text-white">
+          <Button onClick={() => router.push("/auth")} className="bg-primary hover:bg-primary text-foreground">
             Go to Login
           </Button>
         </div>
@@ -736,7 +736,7 @@ export default function WardrobesPage() {
                       className="w-full h-full object-cover rounded-2xl border-2 border-blue-500 shadow-lg"
                     />
                   ) : (
-                    <div className="w-32 h-32 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center text-white font-bold text-3xl shadow-lg">
+                    <div className="w-32 h-32 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center text-foreground font-bold text-3xl shadow-lg">
                       {wardrobes
                         .find((w) => w.relation === "self" || w.isOwner)
                         ?.name?.charAt(0)
@@ -768,13 +768,13 @@ export default function WardrobesPage() {
                         setShowEditDialog(true)
                       }
                     }}
-                    className="absolute -bottom-2 -right-2 w-10 h-10 bg-blue-500 hover:bg-blue-600 rounded-xl flex items-center justify-center text-white transition-colors shadow-lg"
+                    className="absolute -bottom-2 -right-2 w-10 h-10 bg-primary hover:bg-primary rounded-xl flex items-center justify-center text-foreground transition-colors shadow-lg"
                     title="Edit profile"
                   >
                     <Edit className="w-5 h-5" />
                   </button>
                 </div>
-                <h2 className="text-2xl font-semibold text-white mb-2">
+                <h2 className="text-2xl font-semibold text-foreground mb-2">
                   {wardrobes.find((w) => w.relation === "self" || w.isOwner)?.name || "My Profile"}
                 </h2>
                 <p className="text-gray-400 text-sm">
@@ -788,7 +788,7 @@ export default function WardrobesPage() {
                         router.push(`/wardrobe?profile=${selfProfile.id}`);
                       }
                     }}
-                    className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 text-sm rounded-lg flex items-center mx-auto"
+                    className="bg-primary hover:bg-primary text-foreground px-6 py-2 text-sm rounded-lg flex items-center mx-auto"
                   >
                     <Eye className="w-4 h-4 mr-1.5" />
                     View Wardrobe
@@ -801,7 +801,7 @@ export default function WardrobesPage() {
                 <div className="w-32 h-32 bg-gray-700 border-2 border-dashed border-gray-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
                   <User className="w-12 h-12 text-gray-400" />
                 </div>
-                <h2 className="text-2xl font-semibold text-white mb-4">Create Your Profile</h2>
+                <h2 className="text-2xl font-semibold text-foreground mb-4">Create Your Profile</h2>
                 <p className="text-gray-300 mb-6 text-lg">Set up your profile with your name, photo, and details</p>
                 <Button
                   onClick={() => {
@@ -812,7 +812,7 @@ export default function WardrobesPage() {
                     })
                     setShowAddDialog(true)
                   }}
-                  className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 text-lg rounded-xl"
+                  className="bg-primary hover:bg-primary text-foreground px-8 py-3 text-lg rounded-xl"
                 >
                   <Plus className="w-5 h-5 mr-2" />
                   Create My Profile
@@ -823,7 +823,7 @@ export default function WardrobesPage() {
 
           {/* My Family Wardrobe Section */}
           <div className="mb-8">
-            <h2 className="text-3xl font-bold text-white mb-12 text-center">Choose your profile</h2>
+            <h2 className="text-3xl font-bold text-foreground mb-12 text-center">Choose your profile</h2>
 
             <div className="flex items-center justify-center gap-12 flex-wrap max-w-4xl mx-auto">
               {/* Add Family Member Button */}
@@ -855,7 +855,7 @@ export default function WardrobesPage() {
                       <div className="relative group">
                         <button
                           onClick={() => router.push(`/wardrobe?profile=${wardrobe.id}`)}
-                          className="w-32 h-32 rounded-2xl flex items-center justify-center text-white font-semibold text-2xl mb-4 hover:scale-105 transition-all duration-200 shadow-lg overflow-hidden"
+                          className="w-32 h-32 rounded-2xl flex items-center justify-center text-foreground font-semibold text-2xl mb-4 hover:scale-105 transition-all duration-200 shadow-lg overflow-hidden"
                           style={{
                             background: `linear-gradient(135deg, ${
                               ["#3B82F6", "#8B5CF6", "#EC4899", "#10B981", "#F59E0B", "#EF4444"][index % 6]
@@ -875,7 +875,7 @@ export default function WardrobesPage() {
                         {/* Edit button */}
                         <button
                           onClick={() => openEditDialog(wardrobe)}
-                          className="absolute -top-2 -right-2 w-8 h-8 bg-gray-600 hover:bg-gray-500 rounded-xl flex items-center justify-center text-white transition-colors opacity-0 group-hover:opacity-100 shadow-lg"
+                          className="absolute -top-2 -right-2 w-8 h-8 bg-gray-600 hover:bg-gray-500 rounded-xl flex items-center justify-center text-foreground transition-colors opacity-0 group-hover:opacity-100 shadow-lg"
                           title="Edit profile"
                         >
                           <Edit className="w-4 h-4" />
@@ -884,7 +884,7 @@ export default function WardrobesPage() {
                         {wardrobe.relation !== "self" && !wardrobe.isOwner && (
                           <button
                             onClick={() => handleDeleteProfile(wardrobe.id)}
-                            className="absolute -top-2 -left-2 w-8 h-8 bg-red-600 hover:bg-red-500 rounded-xl flex items-center justify-center text-white transition-colors opacity-0 group-hover:opacity-100 shadow-lg"
+                            className="absolute -top-2 -left-2 w-8 h-8 bg-red-600 hover:bg-red-500 rounded-xl flex items-center justify-center text-foreground transition-colors opacity-0 group-hover:opacity-100 shadow-lg"
                             title="Delete profile"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -892,7 +892,7 @@ export default function WardrobesPage() {
                         )}
                       </div>
                       <div className="flex flex-col items-center space-y-1 w-full max-w-[140px]">
-                        <p className="text-white font-medium text-lg truncate w-full text-center">{wardrobe.name}</p>
+                        <p className="text-foreground font-medium text-lg truncate w-full text-center">{wardrobe.name}</p>
                         <p className="text-gray-400 text-sm text-center leading-tight whitespace-nowrap">
                           {getRelationshipDisplayName(wardrobe.relation)}
                           {wardrobe.dateOfBirth && (
@@ -911,7 +911,7 @@ export default function WardrobesPage() {
                         <p className="text-gray-500 text-xs">{wardrobe.itemCount || 0} items</p>
                         <button
                           onClick={() => router.push(`/wardrobe?profile=${wardrobe.id}`)}
-                          className="mt-2 bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 text-xs rounded-lg flex items-center"
+                          className="mt-2 bg-primary hover:bg-primary text-foreground px-3 py-1 text-xs rounded-lg flex items-center"
                         >
                           <Eye className="w-3 h-3 mr-1" />
                           View Wardrobe
@@ -927,7 +927,7 @@ export default function WardrobesPage() {
 
       {/* Add Family Member Dialog */}
       <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
-        <DialogContent className="bg-gray-800 border-gray-700 text-white max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="bg-gray-800 border-gray-700 text-foreground max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Users className="w-5 h-5" />
@@ -981,7 +981,7 @@ export default function WardrobesPage() {
                       variant="outline"
                       size="sm"
                       onClick={() => document.getElementById("profile-picture")?.click()}
-                      className="bg-gray-700 hover:bg-gray-600 border-gray-600 text-white"
+                      className="bg-gray-700 hover:bg-gray-600 border-gray-600 text-foreground"
                     >
                       Choose Image
                     </Button>
@@ -1002,7 +1002,7 @@ export default function WardrobesPage() {
                 onChange={(e) => setNewProfile({ ...newProfile, name: e.target.value })}
                 placeholder={newProfile.relation === "self" ? "Enter your display name" : "Enter name"}
                 required
-                className="mt-2 bg-gray-700 border-gray-600 text-white"
+                className="mt-2 bg-gray-700 border-gray-600 text-foreground"
               />
               {errors.name && <p className="text-red-400 text-sm mt-1">{errors.name}</p>}
             </div>
@@ -1017,10 +1017,10 @@ export default function WardrobesPage() {
                   value={newProfile.relation}
                   onValueChange={(value) => setNewProfile({ ...newProfile, relation: value })}
                 >
-                  <SelectTrigger className="mt-2 bg-gray-700 border-gray-600 text-white">
+                  <SelectTrigger className="mt-2 bg-gray-700 border-gray-600 text-foreground">
                     <SelectValue placeholder="Select relationship" />
                   </SelectTrigger>
-                  <SelectContent className="bg-gray-800 text-white border-gray-700">
+                  <SelectContent className="bg-gray-800 text-foreground border-gray-700">
                     {RELATIONSHIPS.filter((rel) => rel !== "self").map((relation) => (
                       <SelectItem key={relation} value={relation}>
                         <div className="flex items-center gap-2">
@@ -1048,7 +1048,7 @@ export default function WardrobesPage() {
                   onChange={(e) => setNewProfile({ ...newProfile, dateOfBirth: e.target.value })}
                   required
                   max={new Date().toISOString().split("T")[0]}
-                  className="mt-2 bg-gray-700 border-gray-600 text-white"
+                  className="mt-2 bg-gray-700 border-gray-600 text-foreground"
                 />
                 {errors.dateOfBirth && <p className="text-red-400 text-sm mt-1">{errors.dateOfBirth}</p>}
               </div>
@@ -1066,7 +1066,7 @@ export default function WardrobesPage() {
                   onChange={(e) => setNewProfile({ ...newProfile, age: e.target.value })}
                   placeholder="Enter age"
                   required
-                  className="mt-2 bg-gray-700 border-gray-600 text-white"
+                  className="mt-2 bg-gray-700 border-gray-600 text-foreground"
                 />
                 {errors.age && <p className="text-red-400 text-sm mt-1">{errors.age}</p>}
               </div>
@@ -1081,10 +1081,10 @@ export default function WardrobesPage() {
                 value={newProfile.gender}
                 onValueChange={(value) => setNewProfile({ ...newProfile, gender: value })}
               >
-                <SelectTrigger className="mt-2 bg-gray-700 border-gray-600 text-white">
+                <SelectTrigger className="mt-2 bg-gray-700 border-gray-600 text-foreground">
                   <SelectValue placeholder="Select gender" />
                 </SelectTrigger>
-                <SelectContent className="bg-gray-800 text-white border-gray-700">
+                <SelectContent className="bg-gray-800 text-foreground border-gray-700">
                   <SelectItem value="male">Male</SelectItem>
                   <SelectItem value="female">Female</SelectItem>
                   <SelectItem value="non-binary">Non-binary</SelectItem>
@@ -1096,7 +1096,7 @@ export default function WardrobesPage() {
 
             {/* Submit Buttons */}
             <div className="flex gap-3 pt-4">
-              <Button type="submit" disabled={isSubmitting} className="bg-blue-500 hover:bg-blue-600 text-white">
+              <Button type="submit" disabled={isSubmitting} className="bg-primary hover:bg-primary text-foreground">
                 {isSubmitting ? (
                   <>
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
@@ -1113,7 +1113,7 @@ export default function WardrobesPage() {
                 type="button"
                 variant="outline"
                 onClick={() => setShowAddDialog(false)}
-                className="border-gray-600 hover:bg-gray-700 bg-transparent text-white"
+                className="border-gray-600 hover:bg-gray-700 bg-transparent text-foreground"
               >
                 Cancel
               </Button>
@@ -1124,7 +1124,7 @@ export default function WardrobesPage() {
 
       {/* Edit Profile Dialog */}
       <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
-        <DialogContent className="bg-gray-800 border-gray-700 text-white max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="bg-gray-800 border-gray-700 text-foreground max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Edit className="w-5 h-5" />
@@ -1174,7 +1174,7 @@ export default function WardrobesPage() {
                       variant="outline"
                       size="sm"
                       onClick={() => document.getElementById("edit-profile-picture")?.click()}
-                      className="bg-gray-700 hover:bg-gray-600 border-gray-600 text-white"
+                      className="bg-gray-700 hover:bg-gray-600 border-gray-600 text-foreground"
                     >
                       Choose Image
                     </Button>
@@ -1194,7 +1194,7 @@ export default function WardrobesPage() {
                 onChange={(e) => setEditProfile({ ...editProfile, name: e.target.value })}
                 placeholder="Enter name"
                 required
-                className="mt-2 bg-gray-700 border-gray-600 text-white"
+                className="mt-2 bg-gray-700 border-gray-600 text-foreground"
               />
               {errors.name && <p className="text-red-400 text-sm mt-1">{errors.name}</p>}
             </div>
@@ -1208,10 +1208,10 @@ export default function WardrobesPage() {
                 value={editProfile.relation}
                 onValueChange={(value) => setEditProfile({ ...editProfile, relation: value })}
               >
-                <SelectTrigger className="mt-2 bg-gray-700 border-gray-600 text-white">
+                <SelectTrigger className="mt-2 bg-gray-700 border-gray-600 text-foreground">
                   <SelectValue placeholder="Select relationship" />
                 </SelectTrigger>
-                <SelectContent className="bg-gray-800 text-white border-gray-700">
+                <SelectContent className="bg-gray-800 text-foreground border-gray-700">
                   {RELATIONSHIPS.map((relation) => (
                     <SelectItem key={relation} value={relation}>
                       <div className="flex items-center gap-2">
@@ -1238,7 +1238,7 @@ export default function WardrobesPage() {
                   onChange={(e) => setEditProfile({ ...editProfile, dateOfBirth: e.target.value })}
                   required
                   max={new Date().toISOString().split("T")[0]}
-                  className="mt-2 bg-gray-700 border-gray-600 text-white"
+                  className="mt-2 bg-gray-700 border-gray-600 text-foreground"
                 />
                 {errors.dateOfBirth && <p className="text-red-400 text-sm mt-1">{errors.dateOfBirth}</p>}
               </div>
@@ -1256,7 +1256,7 @@ export default function WardrobesPage() {
                   onChange={(e) => setEditProfile({ ...editProfile, age: e.target.value })}
                   placeholder="Enter age"
                   required
-                  className="mt-2 bg-gray-700 border-gray-600 text-white"
+                  className="mt-2 bg-gray-700 border-gray-600 text-foreground"
                 />
                 {errors.age && <p className="text-red-400 text-sm mt-1">{errors.age}</p>}
               </div>
@@ -1271,10 +1271,10 @@ export default function WardrobesPage() {
                 value={editProfile.gender}
                 onValueChange={(value) => setEditProfile({ ...editProfile, gender: value })}
               >
-                <SelectTrigger className="mt-2 bg-gray-700 border-gray-600 text-white">
+                <SelectTrigger className="mt-2 bg-gray-700 border-gray-600 text-foreground">
                   <SelectValue placeholder="Select gender" />
                 </SelectTrigger>
-                <SelectContent className="bg-gray-800 text-white border-gray-700">
+                <SelectContent className="bg-gray-800 text-foreground border-gray-700">
                   <SelectItem value="male">Male</SelectItem>
                   <SelectItem value="female">Female</SelectItem>
                   <SelectItem value="non-binary">Non-binary</SelectItem>
@@ -1286,7 +1286,7 @@ export default function WardrobesPage() {
 
             {/* Submit Buttons */}
             <div className="flex gap-3 pt-4">
-              <Button type="submit" disabled={isSubmitting} className="bg-blue-500 hover:bg-blue-600 text-white">
+              <Button type="submit" disabled={isSubmitting} className="bg-primary hover:bg-primary text-foreground">
                 {isSubmitting ? (
                   <>
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
@@ -1303,7 +1303,7 @@ export default function WardrobesPage() {
                 type="button"
                 variant="outline"
                 onClick={() => setShowEditDialog(false)}
-                className="border-gray-600 hover:bg-gray-700 bg-transparent text-white"
+                className="border-gray-600 hover:bg-gray-700 bg-transparent text-foreground"
               >
                 Cancel
               </Button>
@@ -1314,7 +1314,7 @@ export default function WardrobesPage() {
 
       {/* Profile Picture Upload Dialog */}
       <Dialog open={showProfilePictureDialog} onOpenChange={setShowProfilePictureDialog}>
-        <DialogContent className="bg-gray-800 border-gray-700 text-white max-w-md">
+        <DialogContent className="bg-gray-800 border-gray-700 text-foreground max-w-md">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Camera className="w-5 h-5" />
@@ -1364,7 +1364,7 @@ export default function WardrobesPage() {
                       variant="outline"
                       size="sm"
                       onClick={() => document.getElementById("main-profile-picture")?.click()}
-                      className="bg-gray-700 hover:bg-gray-600 border-gray-600 text-white"
+                      className="bg-gray-700 hover:bg-gray-600 border-gray-600 text-foreground"
                     >
                       Choose Image
                     </Button>
@@ -1378,7 +1378,7 @@ export default function WardrobesPage() {
               <Button
                 onClick={handleProfilePictureUpload}
                 disabled={isSubmitting || !profilePictureFile}
-                className="bg-blue-500 hover:bg-blue-600 text-white flex-1"
+                className="bg-primary hover:bg-primary text-foreground flex-1"
               >
                 {isSubmitting ? (
                   <>
@@ -1400,7 +1400,7 @@ export default function WardrobesPage() {
                   setProfilePicturePreview(null)
                   setProfilePictureFile(null)
                 }}
-                className="border-gray-600 hover:bg-gray-700 bg-transparent text-white"
+                className="border-gray-600 hover:bg-gray-700 bg-transparent text-foreground"
               >
                 Cancel
               </Button>

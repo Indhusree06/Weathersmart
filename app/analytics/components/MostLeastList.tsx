@@ -17,14 +17,14 @@ export function MostLeastList({ type, items }: MostLeastListProps) {
     : "All your items are being worn regularly!"
 
   return (
-    <Card className="bg-slate-800 border-slate-700 p-6">
+    <Card className="bg-card border-border p-6">
       <div className="flex items-center space-x-2 mb-4">
         <Icon className={`w-5 h-5 ${type === "most" ? "text-green-400" : "text-amber-400"}`} />
-        <h3 className="text-lg font-semibold text-white">{title}</h3>
+        <h3 className="text-lg font-semibold text-foreground">{title}</h3>
       </div>
 
       {items.length === 0 ? (
-        <div className="py-8 text-center text-slate-400">
+        <div className="py-8 text-center text-muted-foreground">
           <p>{emptyMessage}</p>
         </div>
       ) : (
@@ -32,9 +32,9 @@ export function MostLeastList({ type, items }: MostLeastListProps) {
           {items.map((item) => (
             <div
               key={item.id}
-              className="flex items-center space-x-4 p-3 bg-slate-700/50 rounded-lg hover:bg-slate-700 transition-colors"
+              className="flex items-center space-x-4 p-3 bg-muted/50 rounded-lg hover:bg-muted transition-colors"
             >
-              <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-slate-600 flex-shrink-0">
+              <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-muted/80 flex-shrink-0">
                 {item.image_url ? (
                   <img
                     src={item.image_url}
@@ -42,19 +42,19 @@ export function MostLeastList({ type, items }: MostLeastListProps) {
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-slate-400 text-xs">
+                  <div className="w-full h-full flex items-center justify-center text-muted-foreground text-xs">
                     No image
                   </div>
                 )}
               </div>
 
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-white truncate">{item.name}</p>
-                <p className="text-xs text-slate-400 truncate">
+                <p className="text-sm font-medium text-foreground truncate">{item.name}</p>
+                <p className="text-xs text-muted-foreground truncate">
                   {item.category?.name || "Uncategorized"}
                 </p>
                 <div className="flex items-center space-x-2 mt-1">
-                  <span className="text-xs text-slate-300">
+                  <span className="text-xs text-foreground/80">
                     {item.wear_count} {item.wear_count === 1 ? "wear" : "wears"}
                   </span>
                   {item.last_worn && (

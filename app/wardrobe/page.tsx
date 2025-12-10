@@ -550,7 +550,7 @@ export default function WardrobePage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center">
-        <div className="text-white">Loading...</div>
+        <div className="text-foreground">Loading...</div>
       </div>
     )
   }
@@ -560,7 +560,7 @@ export default function WardrobePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-foreground">
       {/* Navigation */}
       <Navbar 
         navLinks={[
@@ -593,14 +593,14 @@ export default function WardrobePage() {
               <Button
                 onClick={handleBackToChat}
                 variant="outline"
-                className="bg-transparent border-purple-600 text-purple-400 hover:bg-purple-600 hover:text-white"
+                className="bg-transparent border-purple-600 text-purple-400 hover:bg-purple-600 hover:text-foreground"
               >
                 <MessageCircle className="w-4 h-4 mr-2" />
                 Back to AI Chat
               </Button>
             )}
             <Link href={`/add-clothes?profile=${selectedProfile.id}`}>
-              <Button className="bg-purple-600 hover:bg-purple-700 text-white">
+              <Button className="bg-purple-600 hover:bg-purple-700 text-foreground">
                 <Plus className="w-4 h-4 mr-2" />
                 Add New Item
               </Button>
@@ -618,11 +618,11 @@ export default function WardrobePage() {
           <div className="mb-6">
             <div className="bg-blue-900/20 border border-blue-600/30 rounded-lg p-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-blue-600/20 rounded-lg flex items-center justify-center">
-                  <Filter className="w-5 h-5 text-blue-400" />
+                <div className="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center">
+                  <Filter className="w-5 h-5 text-primary" />
                 </div>
                 <div>
-                  <h3 className="text-white font-medium">Filtered View Active</h3>
+                  <h3 className="text-foreground font-medium">Filtered View Active</h3>
                   <p className="text-blue-200 text-sm">
                     {highlightedItemId ? "Showing recommended item" : "Some filters are applied"}
                   </p>
@@ -633,7 +633,7 @@ export default function WardrobePage() {
                   onClick={handleViewFullWardrobe}
                   variant="outline"
                   size="sm"
-                  className="bg-transparent border-blue-600 text-blue-400 hover:bg-blue-600 hover:text-white"
+                  className="bg-transparent border-blue-600 text-primary hover:bg-primary hover:text-foreground"
                 >
                   <Grid3X3 className="w-4 h-4 mr-2" />
                   View Full Wardrobe
@@ -642,7 +642,7 @@ export default function WardrobePage() {
                   onClick={() => setSearchTerm("")}
                   variant="ghost"
                   size="sm"
-                  className="text-gray-400 hover:text-white"
+                  className="text-gray-400 hover:text-foreground"
                 >
                   <X className="w-4 h-4" />
                 </Button>
@@ -656,7 +656,7 @@ export default function WardrobePage() {
           <CardContent className="p-6">
             <div className="flex items-center gap-2 mb-4">
               <Filter className="w-5 h-5 text-gray-400" />
-              <h2 className="text-lg font-semibold text-white">Filters & Sorting</h2>
+              <h2 className="text-lg font-semibold text-foreground">Filters & Sorting</h2>
             </div>
 
             {/* Search */}
@@ -667,12 +667,12 @@ export default function WardrobePage() {
                   placeholder="Search items..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 bg-gray-700/50 border-gray-600 text-white placeholder-gray-400"
+                  className="pl-10 bg-gray-700/50 border-gray-600 text-foreground placeholder-gray-400"
                 />
                 {searchTerm && (
                   <button
                     onClick={() => setSearchTerm("")}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-foreground"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -685,15 +685,15 @@ export default function WardrobePage() {
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">Category</label>
                 <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                  <SelectTrigger className="bg-gray-700/50 border-gray-600 text-white">
+                  <SelectTrigger className="bg-gray-700/50 border-gray-600 text-foreground">
                     <SelectValue placeholder="All Categories" />
                   </SelectTrigger>
                   <SelectContent className="bg-gray-800 border-gray-700">
-                    <SelectItem value="all" className="text-white">
+                    <SelectItem value="all" className="text-foreground">
                       All Categories
                     </SelectItem>
                     {categories.map((category) => (
-                      <SelectItem key={category} value={category} className="text-white">
+                      <SelectItem key={category} value={category} className="text-foreground">
                         {category}
                       </SelectItem>
                     ))}
@@ -704,15 +704,15 @@ export default function WardrobePage() {
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">Color</label>
                 <Select value={selectedColor} onValueChange={setSelectedColor}>
-                  <SelectTrigger className="bg-gray-700/50 border-gray-600 text-white">
+                  <SelectTrigger className="bg-gray-700/50 border-gray-600 text-foreground">
                     <SelectValue placeholder="All Colors" />
                   </SelectTrigger>
                   <SelectContent className="bg-gray-800 border-gray-700">
-                    <SelectItem value="all" className="text-white">
+                    <SelectItem value="all" className="text-foreground">
                       All Colors
                     </SelectItem>
                     {colors.map((color) => (
-                      <SelectItem key={color} value={color} className="text-white">
+                      <SelectItem key={color} value={color} className="text-foreground">
                         {color}
                       </SelectItem>
                     ))}
@@ -723,15 +723,15 @@ export default function WardrobePage() {
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">Condition</label>
                 <Select value={selectedCondition} onValueChange={setSelectedCondition}>
-                  <SelectTrigger className="bg-gray-700/50 border-gray-600 text-white">
+                  <SelectTrigger className="bg-gray-700/50 border-gray-600 text-foreground">
                     <SelectValue placeholder="All Conditions" />
                   </SelectTrigger>
                   <SelectContent className="bg-gray-800 border-gray-700">
-                    <SelectItem value="all" className="text-white">
+                    <SelectItem value="all" className="text-foreground">
                       All Conditions
                     </SelectItem>
                     {conditions.map((condition) => (
-                      <SelectItem key={condition} value={condition} className="text-white">
+                      <SelectItem key={condition} value={condition} className="text-foreground">
                         {condition}
                       </SelectItem>
                     ))}
@@ -742,29 +742,29 @@ export default function WardrobePage() {
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">Sort By</label>
                 <Select value={sortBy} onValueChange={setSortBy}>
-                  <SelectTrigger className="bg-gray-700/50 border-gray-600 text-white">
+                  <SelectTrigger className="bg-gray-700/50 border-gray-600 text-foreground">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent className="bg-gray-800 border-gray-700">
-                    <SelectItem value="newest" className="text-white">
+                    <SelectItem value="newest" className="text-foreground">
                       Newest First
                     </SelectItem>
-                    <SelectItem value="oldest" className="text-white">
+                    <SelectItem value="oldest" className="text-foreground">
                       Oldest First
                     </SelectItem>
-                    <SelectItem value="name" className="text-white">
+                    <SelectItem value="name" className="text-foreground">
                       Name A-Z
                     </SelectItem>
-                    <SelectItem value="category" className="text-white">
+                    <SelectItem value="category" className="text-foreground">
                       Category
                     </SelectItem>
-                    <SelectItem value="wear_count" className="text-white">
+                    <SelectItem value="wear_count" className="text-foreground">
                       Most Worn
                     </SelectItem>
-                    <SelectItem value="price_high" className="text-white">
+                    <SelectItem value="price_high" className="text-foreground">
                       Price High-Low
                     </SelectItem>
-                    <SelectItem value="price_low" className="text-white">
+                    <SelectItem value="price_low" className="text-foreground">
                       Price Low-High
                     </SelectItem>
                   </SelectContent>
@@ -824,14 +824,14 @@ export default function WardrobePage() {
                 <Button
                   onClick={handleViewFullWardrobe}
                   variant="outline"
-                  className="bg-transparent border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white"
+                  className="bg-transparent border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-foreground"
                 >
                   <Grid3X3 className="w-4 h-4 mr-2" />
                   View Full Wardrobe
                 </Button>
               )}
               <Link href={`/add-clothes?profile=${selectedProfile.id}`}>
-                <Button className="bg-purple-600 hover:bg-purple-700 text-white">
+                <Button className="bg-purple-600 hover:bg-purple-700 text-foreground">
                   <Plus className="w-4 h-4 mr-2" />
                   Add First Item
                 </Button>
@@ -871,7 +871,7 @@ export default function WardrobePage() {
                       <button
                         onClick={() => toggleFavorite(item.id, item.is_favorite)}
                         className={`absolute top-2 right-2 p-1 rounded-full transition-colors ${
-                          item.is_favorite ? "bg-red-500 text-white" : "bg-gray-800/80 text-gray-400 hover:text-red-400"
+                          item.is_favorite ? "bg-red-500 text-foreground" : "bg-gray-800/80 text-gray-400 hover:text-red-400"
                         }`}
                       >
                         <Heart className={`w-4 h-4 ${item.is_favorite ? "fill-current" : ""}`} />
@@ -880,21 +880,21 @@ export default function WardrobePage() {
                       {/* More options */}
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <button className="absolute top-2 left-2 p-1 bg-gray-800/80 rounded-full text-gray-400 hover:text-white transition-colors">
+                          <button className="absolute top-2 left-2 p-1 bg-gray-800/80 rounded-full text-gray-400 hover:text-foreground transition-colors">
                             <MoreVertical className="w-4 h-4" />
                           </button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="bg-gray-800 border-gray-700">
                           <DropdownMenuItem 
                             onClick={() => handleViewItem(item)}
-                            className="text-white hover:bg-gray-700"
+                            className="text-foreground hover:bg-gray-700"
                           >
                             <Eye className="w-4 h-4 mr-2" />
                             View Details
                           </DropdownMenuItem>
                           <DropdownMenuItem 
                             onClick={() => handleEditItem(item)}
-                            className="text-white hover:bg-gray-700"
+                            className="text-foreground hover:bg-gray-700"
                           >
                             <Edit className="w-4 h-4 mr-2" />
                             Edit Item
@@ -912,7 +912,7 @@ export default function WardrobePage() {
 
                     {/* Item Details */}
                     <div className="space-y-2">
-                      <h3 className="font-semibold text-white truncate">{item.name}</h3>
+                      <h3 className="font-semibold text-foreground truncate">{item.name}</h3>
 
                       {/* Tags */}
                       <div className="flex flex-wrap gap-1">
@@ -958,7 +958,7 @@ export default function WardrobePage() {
                             item.condition === "new"
                               ? "border-green-600 text-green-400"
                               : item.condition === "excellent"
-                                ? "border-blue-600 text-blue-400"
+                                ? "border-blue-600 text-primary"
                                 : "border-gray-600 text-gray-400"
                           }`}
                         >

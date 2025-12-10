@@ -46,8 +46,8 @@ export function MannequinCSS3D({ clothing, onRemoveItem }: MannequinCSS3DProps) 
     <div className="relative w-full h-full bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800 overflow-hidden">
       {/* Control Panel */}
       <div className="absolute top-4 right-4 z-20 space-y-2">
-        <div className="bg-slate-800/90 backdrop-blur-sm rounded-lg border border-slate-700 p-3 space-y-2">
-          <p className="text-xs text-slate-300 font-medium">Rotation Controls</p>
+        <div className="bg-card/90 backdrop-blur-sm rounded-lg border border-border p-3 space-y-2">
+          <p className="text-xs text-foreground/80 font-medium">Rotation Controls</p>
           
           {/* Horizontal rotation */}
           <div className="flex items-center justify-center space-x-2">
@@ -55,7 +55,7 @@ export function MannequinCSS3D({ clothing, onRemoveItem }: MannequinCSS3DProps) 
               size="sm"
               variant="outline"
               onClick={handleRotateLeft}
-              className="border-slate-600 text-slate-300 hover:bg-slate-700"
+              className="border-border text-foreground/80 hover:bg-muted"
             >
               ←
             </Button>
@@ -63,7 +63,7 @@ export function MannequinCSS3D({ clothing, onRemoveItem }: MannequinCSS3DProps) 
               size="sm"
               variant="outline"
               onClick={handleRotateRight}
-              className="border-slate-600 text-slate-300 hover:bg-slate-700"
+              className="border-border text-foreground/80 hover:bg-muted"
             >
               →
             </Button>
@@ -75,7 +75,7 @@ export function MannequinCSS3D({ clothing, onRemoveItem }: MannequinCSS3DProps) 
               size="sm"
               variant="outline"
               onClick={handleRotateUp}
-              className="border-slate-600 text-slate-300 hover:bg-slate-700 w-12"
+              className="border-border text-foreground/80 hover:bg-muted w-12"
             >
               ↑
             </Button>
@@ -83,7 +83,7 @@ export function MannequinCSS3D({ clothing, onRemoveItem }: MannequinCSS3DProps) 
               size="sm"
               variant="outline"
               onClick={handleRotateDown}
-              className="border-slate-600 text-slate-300 hover:bg-slate-700 w-12"
+              className="border-border text-foreground/80 hover:bg-muted w-12"
             >
               ↓
             </Button>
@@ -93,7 +93,7 @@ export function MannequinCSS3D({ clothing, onRemoveItem }: MannequinCSS3DProps) 
             size="sm"
             variant="outline"
             onClick={handleReset}
-            className="w-full border-slate-600 text-slate-300 hover:bg-slate-700"
+            className="w-full border-border text-foreground/80 hover:bg-muted"
           >
             <RotateCcw className="w-3 h-3 mr-2" />
             Reset View
@@ -235,7 +235,7 @@ export function MannequinCSS3D({ clothing, onRemoveItem }: MannequinCSS3DProps) 
                     onClick={() => onRemoveItem('outerwear')}
                     className="absolute -top-2 -right-2 w-8 h-8 bg-red-600 hover:bg-red-700 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-lg z-30"
                   >
-                    <X className="w-4 h-4 text-white" />
+                    <X className="w-4 h-4 text-foreground" />
                   </button>
                 )}
               </div>
@@ -270,7 +270,7 @@ export function MannequinCSS3D({ clothing, onRemoveItem }: MannequinCSS3DProps) 
                     onClick={() => onRemoveItem('top')}
                     className="absolute -top-2 -right-2 w-8 h-8 bg-red-600 hover:bg-red-700 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-lg z-30"
                   >
-                    <X className="w-4 h-4 text-white" />
+                    <X className="w-4 h-4 text-foreground" />
                   </button>
                 )}
               </div>
@@ -305,7 +305,7 @@ export function MannequinCSS3D({ clothing, onRemoveItem }: MannequinCSS3DProps) 
                     onClick={() => onRemoveItem('bottom')}
                     className="absolute -top-2 -right-2 w-8 h-8 bg-red-600 hover:bg-red-700 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-lg z-30"
                   >
-                    <X className="w-4 h-4 text-white" />
+                    <X className="w-4 h-4 text-foreground" />
                   </button>
                 )}
               </div>
@@ -340,7 +340,7 @@ export function MannequinCSS3D({ clothing, onRemoveItem }: MannequinCSS3DProps) 
                     onClick={() => onRemoveItem('shoes')}
                     className="absolute -top-2 -right-2 w-8 h-8 bg-red-600 hover:bg-red-700 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-lg z-30"
                   >
-                    <X className="w-4 h-4 text-white" />
+                    <X className="w-4 h-4 text-foreground" />
                   </button>
                 )}
               </div>
@@ -350,8 +350,8 @@ export function MannequinCSS3D({ clothing, onRemoveItem }: MannequinCSS3DProps) 
       </div>
 
       {/* Instructions */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 bg-slate-800/90 backdrop-blur-sm rounded-full px-6 py-2 border border-slate-700">
-        <p className="text-sm text-slate-300">
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 bg-card/90 backdrop-blur-sm rounded-full px-6 py-2 border border-border">
+        <p className="text-sm text-foreground/80">
           ↔️ Use arrow buttons to rotate • Hover over items to remove
         </p>
       </div>

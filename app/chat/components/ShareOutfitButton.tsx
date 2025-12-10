@@ -106,23 +106,23 @@ export function ShareOutfitButton({ outfit, weather, location }: ShareOutfitButt
         <Button
           variant="outline"
           size="sm"
-          className="bg-slate-700 hover:bg-slate-600 border-slate-600 text-white w-full"
+          className="bg-muted hover:bg-muted/80 border-border text-foreground w-full"
         >
           <Share2 className="w-4 h-4 mr-2" />
           Share Outfit
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-48 bg-slate-800 border-slate-700">
+      <DropdownMenuContent align="end" className="w-48 bg-card border-border">
         <DropdownMenuItem
           onClick={handleShareNative}
-          className="text-slate-200 hover:bg-slate-700 cursor-pointer"
+          className="text-foreground hover:bg-muted cursor-pointer"
         >
           <Share2 className="w-4 h-4 mr-2" />
           Share...
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={handleCopyLink}
-          className="text-slate-200 hover:bg-slate-700 cursor-pointer"
+          className="text-foreground hover:bg-muted cursor-pointer"
         >
           {copied ? (
             <>
@@ -138,7 +138,7 @@ export function ShareOutfitButton({ outfit, weather, location }: ShareOutfitButt
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={handleExportImage}
-          className="text-slate-200 hover:bg-slate-700 cursor-pointer"
+          className="text-foreground hover:bg-muted cursor-pointer"
         >
           <Download className="w-4 h-4 mr-2" />
           Export as Image

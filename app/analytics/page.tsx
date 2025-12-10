@@ -123,7 +123,7 @@ export default function AnalyticsPage() {
   if (authLoading || !user) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center">
-        <div className="text-white text-center">
+        <div className="text-foreground text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
           <p>Loading...</p>
         </div>
@@ -153,7 +153,7 @@ export default function AnalyticsPage() {
         {/* Header */}
         <div className="mb-8">
           <Link href="/wardrobes">
-            <Button variant="ghost" className="text-slate-300 hover:text-white hover:bg-slate-800 mb-4">
+            <Button variant="ghost" className="text-foreground/80 hover:text-foreground hover:bg-card mb-4">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Wardrobes
             </Button>
@@ -161,11 +161,11 @@ export default function AnalyticsPage() {
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-4">
             <div className="flex items-center space-x-3">
               <div className="p-3 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl">
-                <Activity className="w-8 h-8 text-white" />
+                <Activity className="w-8 h-8 text-foreground" />
               </div>
               <div>
-                <h1 className="text-4xl font-bold text-white">Analytics</h1>
-                <p className="text-slate-400 mt-1">
+                <h1 className="text-4xl font-bold text-foreground">Analytics</h1>
+                <p className="text-muted-foreground mt-1">
                   Insights about your wardrobe, style and outfit usage
                 </p>
               </div>
@@ -173,23 +173,23 @@ export default function AnalyticsPage() {
 
             {/* Profile Selector */}
             {!loadingProfiles && profiles.length > 0 && (
-              <div className="flex items-center space-x-3 bg-slate-800 border border-slate-700 rounded-lg px-4 py-3">
-                <User className="w-5 h-5 text-slate-400" />
+              <div className="flex items-center space-x-3 bg-card border border-border rounded-lg px-4 py-3">
+                <User className="w-5 h-5 text-muted-foreground" />
                 <div>
-                  <label className="text-xs text-slate-400 mb-1 block">Profile</label>
+                  <label className="text-xs text-muted-foreground mb-1 block">Profile</label>
                   <Select value={selectedProfileId || "all"} onValueChange={handleProfileChange}>
-                    <SelectTrigger className="w-[200px] bg-slate-700 border-slate-600 text-white">
+                    <SelectTrigger className="w-[200px] bg-muted border-border text-foreground">
                       <SelectValue placeholder="Select profile" />
                     </SelectTrigger>
-                    <SelectContent className="bg-slate-800 border-slate-700">
-                      <SelectItem value="all" className="text-white hover:bg-slate-700">
+                    <SelectContent className="bg-card border-border">
+                      <SelectItem value="all" className="text-foreground hover:bg-muted">
                         Main Wardrobe
                       </SelectItem>
                       {profiles.map((profile) => (
                         <SelectItem 
                           key={profile.id} 
                           value={profile.id}
-                          className="text-white hover:bg-slate-700"
+                          className="text-foreground hover:bg-muted"
                         >
                           {profile.name} {profile.is_owner && "(You)"}
                         </SelectItem>
@@ -206,7 +206,7 @@ export default function AnalyticsPage() {
         {analyticsData.loading && (
           <div className="text-center py-12">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
-            <p className="text-slate-400">Loading analytics...</p>
+            <p className="text-muted-foreground">Loading analytics...</p>
           </div>
         )}
 
@@ -226,9 +226,9 @@ export default function AnalyticsPage() {
                 <div className="flex items-center space-x-3">
                   <User className="w-5 h-5 text-purple-400" />
                   <div>
-                    <p className="text-sm text-slate-300">
+                    <p className="text-sm text-foreground/80">
                       Viewing analytics for:{" "}
-                      <span className="font-semibold text-white">
+                      <span className="font-semibold text-foreground">
                         {profiles.find(p => p.id === selectedProfileId)?.name || "Profile"}
                       </span>
                     </p>

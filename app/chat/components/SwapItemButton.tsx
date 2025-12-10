@@ -57,7 +57,7 @@ export function SwapItemButton({
         size="sm"
         onClick={() => setIsOpen(true)}
         disabled={isLoading}
-        className="absolute top-2 right-2 bg-slate-800/90 hover:bg-slate-700 text-white border border-slate-600 backdrop-blur-sm z-10"
+        className="absolute top-2 right-2 bg-card/90 hover:bg-muted text-foreground border border-border backdrop-blur-sm z-10"
       >
         {isLoading ? (
           <Loader2 className="w-3 h-3 animate-spin" />
@@ -68,10 +68,10 @@ export function SwapItemButton({
       </Button>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="bg-slate-800 border-slate-600 text-white max-w-2xl max-h-[80vh] overflow-y-auto">
+        <DialogContent className="bg-card border-border text-foreground max-w-2xl max-h-[80vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="text-white">Swap {currentItem.name}</DialogTitle>
-            <DialogDescription className="text-slate-400">
+            <DialogTitle className="text-foreground">Swap {currentItem.name}</DialogTitle>
+            <DialogDescription className="text-muted-foreground">
               Choose an alternative item from your wardrobe
             </DialogDescription>
           </DialogHeader>
@@ -85,10 +85,10 @@ export function SwapItemButton({
                   "relative group rounded-lg overflow-hidden border-2 transition-all hover:scale-105",
                   selectedItem?.id === item.id
                     ? "border-blue-500 ring-2 ring-blue-500"
-                    : "border-slate-600 hover:border-slate-400"
+                    : "border-border hover:border-slate-400"
                 )}
               >
-                <div className="aspect-square bg-slate-700 relative">
+                <div className="aspect-square bg-muted relative">
                   {item.image_url ? (
                     <img
                       src={item.image_url}
@@ -102,18 +102,18 @@ export function SwapItemButton({
                   )}
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all" />
                 </div>
-                <div className="p-3 bg-slate-900">
-                  <p className="text-sm font-medium truncate text-white">{item.name}</p>
+                <div className="p-3 bg-background">
+                  <p className="text-sm font-medium truncate text-foreground">{item.name}</p>
                   {item.category && (
-                    <p className="text-xs text-slate-400 truncate">{item.category}</p>
+                    <p className="text-xs text-muted-foreground truncate">{item.category}</p>
                   )}
                   {item.color && (
                     <div className="flex items-center mt-1 space-x-1">
                       <div
-                        className="w-3 h-3 rounded-full border border-slate-600"
+                        className="w-3 h-3 rounded-full border border-border"
                         style={{ backgroundColor: item.color }}
                       />
-                      <span className="text-xs text-slate-400 capitalize truncate">{item.color}</span>
+                      <span className="text-xs text-muted-foreground capitalize truncate">{item.color}</span>
                     </div>
                   )}
                   <p className="text-xs text-slate-500 mt-1">
@@ -125,7 +125,7 @@ export function SwapItemButton({
           </div>
 
           {alternativeItems.length === 0 && (
-            <div className="text-center py-8 text-slate-400">
+            <div className="text-center py-8 text-muted-foreground">
               <RefreshCw className="w-12 h-12 mx-auto mb-2 opacity-50" />
               <p>No alternative items available in this category</p>
             </div>

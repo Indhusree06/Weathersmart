@@ -20,39 +20,39 @@ export default function LandingPage() {
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
-                <Sparkles className="w-6 h-6 text-white" />
+              <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+                <Sparkles className="w-6 h-6 text-foreground" />
               </div>
-              <span className="text-2xl font-bold text-blue-500">Weather Smart</span>
+              <span className="text-2xl font-bold text-primary">Weather Smart</span>
             </div>
             <div className="hidden md:flex items-center space-x-8">
               <button
                 onClick={() => setActiveSection("audience")}
-                className={`text-sm font-medium ${activeSection === "audience" ? "text-blue-500" : "text-gray-600 hover:text-blue-500"}`}
+                className={`text-sm font-medium ${activeSection === "audience" ? "text-primary" : "text-gray-600 hover:text-primary"}`}
               >
                 Our audience
               </button>
               <button
                 onClick={() => setActiveSection("features")}
-                className={`text-sm font-medium ${activeSection === "features" ? "text-blue-500" : "text-gray-600 hover:text-blue-500"}`}
+                className={`text-sm font-medium ${activeSection === "features" ? "text-primary" : "text-gray-600 hover:text-primary"}`}
               >
                 Features
               </button>
               <button
                 onClick={() => setActiveSection("how")}
-                className={`text-sm font-medium ${activeSection === "how" ? "text-blue-500" : "text-gray-600 hover:text-blue-500"}`}
+                className={`text-sm font-medium ${activeSection === "how" ? "text-primary" : "text-gray-600 hover:text-primary"}`}
               >
                 How it works
               </button>
             </div>
             <div className="flex items-center space-x-4">
               <Link href="/auth">
-                <Button variant="outline" className="border-blue-500 text-blue-500 hover:bg-blue-50 bg-transparent">
+                <Button variant="outline" className="border-blue-500 text-primary hover:bg-blue-50 bg-transparent">
                   Sign In
                 </Button>
               </Link>
               <Link href="/auth">
-                <Button className="bg-blue-500 hover:bg-blue-600 text-white">Get Started</Button>
+                <Button className="bg-primary hover:bg-primary text-foreground">Get Started</Button>
               </Link>
             </div>
           </div>
@@ -66,7 +66,7 @@ export default function LandingPage() {
             <div className="md:w-1/2 mb-10 md:mb-0">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
                 Your AI-Powered <br />
-                <span className="text-blue-500">Wardrobe Assistant</span>
+                <span className="text-primary">Wardrobe Assistant</span>
               </h1>
               <p className="text-lg text-gray-600 mb-8 max-w-lg">
                 Transform your wardrobe with intelligent outfit recommendations based on weather, occasion, and your
@@ -74,7 +74,7 @@ export default function LandingPage() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link href="/auth">
-                  <Button className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 text-lg font-medium">
+                  <Button className="bg-primary hover:bg-primary text-foreground px-8 py-3 text-lg font-medium">
                     Get Started Free
                     <ArrowRight className="ml-2 w-5 h-5" />
                   </Button>
@@ -107,8 +107,8 @@ export default function LandingPage() {
                       <div className="p-6">
                         <div className="flex justify-between items-center mb-6">
                           <div className="flex items-center space-x-3">
-                            <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
-                              <Sparkles className="w-5 h-5 text-white" />
+                            <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+                              <Sparkles className="w-5 h-5 text-foreground" />
                             </div>
                             <span className="text-lg font-semibold text-gray-800">Weather Smart</span>
                           </div>
@@ -219,7 +219,7 @@ export default function LandingPage() {
               },
             ].map((step, index) => (
               <div key={index} className="text-center">
-                <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-lg mx-auto mb-4">
+                <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-foreground font-bold text-lg mx-auto mb-4">
                   {step.step}
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">{step.title}</h3>
@@ -233,13 +233,13 @@ export default function LandingPage() {
       {/* CTA Section */}
       <section className="py-20">
         <div className="container mx-auto px-6">
-          <div className="bg-blue-500 rounded-2xl p-12 text-center">
-            <h2 className="text-3xl font-bold text-white mb-6">Ready to Transform Your Style?</h2>
+          <div className="bg-primary rounded-2xl p-12 text-center">
+            <h2 className="text-3xl font-bold text-foreground mb-6">Ready to Transform Your Style?</h2>
             <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
               Join thousands of users who have revolutionized their wardrobe with AI-powered styling.
             </p>
             <Link href="/auth">
-              <Button className="bg-white text-blue-500 hover:bg-blue-50 px-8 py-3 text-lg font-medium">
+              <Button className="bg-white text-primary hover:bg-blue-50 px-8 py-3 text-lg font-medium">
                 Get Started Free
               </Button>
             </Link>
@@ -252,23 +252,23 @@ export default function LandingPage() {
         <div className="container mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center space-x-3 mb-6 md:mb-0">
-              <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-                <Sparkles className="w-4 h-4 text-white" />
+              <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                <Sparkles className="w-4 h-4 text-foreground" />
               </div>
-              <span className="text-xl font-bold text-blue-500">Weather Smart</span>
+              <span className="text-xl font-bold text-primary">Weather Smart</span>
             </div>
 
             <div className="flex flex-wrap justify-center gap-6 mb-6 md:mb-0">
-              <a href="#" className="text-gray-600 hover:text-blue-500 transition-colors">
+              <a href="#" className="text-gray-600 hover:text-primary transition-colors">
                 About
               </a>
-              <a href="#" className="text-gray-600 hover:text-blue-500 transition-colors">
+              <a href="#" className="text-gray-600 hover:text-primary transition-colors">
                 Features
               </a>
-              <a href="#" className="text-gray-600 hover:text-blue-500 transition-colors">
+              <a href="#" className="text-gray-600 hover:text-primary transition-colors">
                 Pricing
               </a>
-              <a href="#" className="text-gray-600 hover:text-blue-500 transition-colors">
+              <a href="#" className="text-gray-600 hover:text-primary transition-colors">
                 Contact
               </a>
             </div>

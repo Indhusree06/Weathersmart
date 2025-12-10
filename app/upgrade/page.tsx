@@ -454,7 +454,7 @@ export default function UpgradePage() {
                 <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
                   <Sparkles className="w-4 h-4 text-black" />
                 </div>
-                <h1 className="text-2xl font-bold text-white">Upgrade to Premium</h1>
+                <h1 className="text-2xl font-bold text-foreground">Upgrade to Premium</h1>
               </div>
             </div>
           </div>
@@ -471,7 +471,7 @@ export default function UpgradePage() {
                   step === "plan" ? "bg-white" : "bg-gray-700"
                 }`}
               >
-                <span className={`font-bold ${step === "plan" ? "text-black" : "text-white"}`}>1</span>
+                <span className={`font-bold ${step === "plan" ? "text-black" : "text-foreground"}`}>1</span>
               </div>
               <span className="text-sm mt-2 text-gray-400">Plan</span>
             </div>
@@ -483,7 +483,7 @@ export default function UpgradePage() {
                 }`}
               >
                 <span
-                  className={`font-bold ${step === "profiles" || step === "success" ? "text-black" : "text-white"}`}
+                  className={`font-bold ${step === "profiles" || step === "success" ? "text-black" : "text-foreground"}`}
                 >
                   2
                 </span>
@@ -497,7 +497,7 @@ export default function UpgradePage() {
                   step === "success" ? "bg-white" : "bg-gray-700"
                 }`}
               >
-                <span className={`font-bold ${step === "success" ? "text-black" : "text-white"}`}>3</span>
+                <span className={`font-bold ${step === "success" ? "text-black" : "text-foreground"}`}>3</span>
               </div>
               <span className="text-sm mt-2 text-gray-400">Done</span>
             </div>
@@ -508,7 +508,7 @@ export default function UpgradePage() {
         {step === "plan" && (
           <div className="max-w-3xl mx-auto">
             <div className="text-center mb-10">
-              <h2 className="text-3xl font-bold text-white mb-4">Upgrade to Premium Family</h2>
+              <h2 className="text-3xl font-bold text-foreground mb-4">Upgrade to Premium Family</h2>
               <p className="text-gray-400">
                 Manage wardrobes for your entire family and get personalized recommendations for everyone you care about
               </p>
@@ -518,11 +518,11 @@ export default function UpgradePage() {
               <CardContent className="p-8">
                 <div className="flex items-center justify-between mb-6">
                   <div>
-                    <h3 className="text-2xl font-bold text-white">Premium Family</h3>
+                    <h3 className="text-2xl font-bold text-foreground">Premium Family</h3>
                     <p className="text-gray-400">Advanced styling for families</p>
                   </div>
                   <div className="text-right">
-                    <div className="text-3xl font-bold text-white">$9.99</div>
+                    <div className="text-3xl font-bold text-foreground">$9.99</div>
                     <div className="text-sm text-gray-400">per month</div>
                   </div>
                 </div>
@@ -530,49 +530,49 @@ export default function UpgradePage() {
                 <div className="space-y-4">
                   <div className="flex items-start gap-3">
                     <div className="w-5 h-5 mt-0.5 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex-shrink-0 flex items-center justify-center">
-                      <Check className="w-3 h-3 text-white" />
+                      <Check className="w-3 h-3 text-foreground" />
                     </div>
                     <span className="text-gray-300">Everything in Free Plan</span>
                   </div>
                   <div className="flex items-start gap-3">
                     <div className="w-5 h-5 mt-0.5 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex-shrink-0 flex items-center justify-center">
-                      <Check className="w-3 h-3 text-white" />
+                      <Check className="w-3 h-3 text-foreground" />
                     </div>
                     <span className="text-gray-300">Up to 5 family wardrobes</span>
                   </div>
                   <div className="flex items-start gap-3">
                     <div className="w-5 h-5 mt-0.5 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex-shrink-0 flex items-center justify-center">
-                      <Check className="w-3 h-3 text-white" />
+                      <Check className="w-3 h-3 text-foreground" />
                     </div>
                     <span className="text-gray-300">Kids, spouse, friends profiles</span>
                   </div>
                   <div className="flex items-start gap-3">
                     <div className="w-5 h-5 mt-0.5 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex-shrink-0 flex items-center justify-center">
-                      <Check className="w-3 h-3 text-white" />
+                      <Check className="w-3 h-3 text-foreground" />
                     </div>
                     <span className="text-gray-300">Age & gender-appropriate recommendations</span>
                   </div>
                   <div className="flex items-start gap-3">
                     <div className="w-5 h-5 mt-0.5 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex-shrink-0 flex items-center justify-center">
-                      <Check className="w-3 h-3 text-white" />
+                      <Check className="w-3 h-3 text-foreground" />
                     </div>
                     <span className="text-gray-300">Weather essentials tracking for kids</span>
                   </div>
                   <div className="flex items-start gap-3">
                     <div className="w-5 h-5 mt-0.5 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex-shrink-0 flex items-center justify-center">
-                      <Check className="w-3 h-3 text-white" />
+                      <Check className="w-3 h-3 text-foreground" />
                     </div>
                     <span className="text-gray-300">School & university wardrobe management</span>
                   </div>
                   <div className="flex items-start gap-3">
                     <div className="w-5 h-5 mt-0.5 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex-shrink-0 flex items-center justify-center">
-                      <Check className="w-3 h-3 text-white" />
+                      <Check className="w-3 h-3 text-foreground" />
                     </div>
                     <span className="text-gray-300">Advanced AI styling engine</span>
                   </div>
                   <div className="flex items-start gap-3">
                     <div className="w-5 h-5 mt-0.5 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex-shrink-0 flex items-center justify-center">
-                      <Check className="w-3 h-3 text-white" />
+                      <Check className="w-3 h-3 text-foreground" />
                     </div>
                     <span className="text-gray-300">Priority customer support</span>
                   </div>
@@ -583,7 +583,7 @@ export default function UpgradePage() {
             <div className="flex justify-center">
               <Button
                 onClick={() => setStep("profiles")}
-                className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white shadow-lg px-8 py-6 text-lg font-semibold"
+                className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-foreground shadow-lg px-8 py-6 text-lg font-semibold"
               >
                 Continue to Create Profiles
               </Button>
@@ -595,7 +595,7 @@ export default function UpgradePage() {
         {step === "profiles" && (
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-10">
-              <h2 className="text-3xl font-bold text-white mb-4">Create Family Profiles</h2>
+              <h2 className="text-3xl font-bold text-foreground mb-4">Create Family Profiles</h2>
               <p className="text-gray-400">
                 Add detailed profiles for family members with age and gender-specific features
               </p>
@@ -604,7 +604,7 @@ export default function UpgradePage() {
             {/* Existing profiles */}
             {profiles.length > 0 && (
               <div className="mb-8">
-                <h3 className="text-xl font-semibold text-white mb-4">Existing Profiles</h3>
+                <h3 className="text-xl font-semibold text-foreground mb-4">Existing Profiles</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
                   {profiles.map((profile) => (
                     <Card key={profile.id} className="bg-gray-800/80 backdrop-blur-xl border-gray-700">
@@ -618,13 +618,13 @@ export default function UpgradePage() {
                                 className="w-full h-full object-cover rounded-full"
                               />
                             ) : (
-                              <span className="text-lg font-bold text-white">
+                              <span className="text-lg font-bold text-foreground">
                                 {profile.name.charAt(0).toUpperCase()}
                               </span>
                             )}
                           </div>
                           <div>
-                            <h4 className="text-white font-medium">{profile.name}</h4>
+                            <h4 className="text-foreground font-medium">{profile.name}</h4>
                             <p className="text-gray-400 text-sm">
                               {profile.relation} • {profile.age} years old
                             </p>
@@ -653,7 +653,7 @@ export default function UpgradePage() {
                           <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center">
                             {getAgeIcon(age)}
                           </div>
-                          <h3 className="text-xl font-bold text-white">
+                          <h3 className="text-xl font-bold text-foreground">
                             Profile {index + 1}
                             {profile.name && ` - ${profile.name}`}
                             {age > 0 && <span className="text-sm font-normal text-gray-400 ml-2">({ageCategory})</span>}
@@ -665,7 +665,7 @@ export default function UpgradePage() {
                             onClick={() => removeProfileForm(index)}
                             variant="outline"
                             size="sm"
-                            className="border-red-600 text-red-400 hover:bg-red-600 hover:text-white"
+                            className="border-red-600 text-red-400 hover:bg-red-600 hover:text-foreground"
                           >
                             <Trash2 className="w-4 h-4" />
                           </Button>
@@ -712,7 +712,7 @@ export default function UpgradePage() {
                                       onClick={() => document.getElementById(`image-${index}`)?.click()}
                                       variant="ghost"
                                       size="sm"
-                                      className="text-xs text-gray-400 hover:text-white p-1 h-auto"
+                                      className="text-xs text-gray-400 hover:text-foreground p-1 h-auto"
                                     >
                                       Add Photo
                                     </Button>
@@ -731,7 +731,7 @@ export default function UpgradePage() {
                               value={profile.name}
                               onChange={(e) => handleProfileChange(index, "name", e.target.value)}
                               placeholder="Enter full name"
-                              className="mt-2 bg-gray-700 border-gray-600 text-white"
+                              className="mt-2 bg-gray-700 border-gray-600 text-foreground"
                               required
                             />
                           </div>
@@ -745,10 +745,10 @@ export default function UpgradePage() {
                               value={profile.relation}
                               onValueChange={(value) => handleProfileChange(index, "relation", value)}
                             >
-                              <SelectTrigger className="mt-2 bg-gray-700 border-gray-600 text-white">
+                              <SelectTrigger className="mt-2 bg-gray-700 border-gray-600 text-foreground">
                                 <SelectValue placeholder="Select relationship" />
                               </SelectTrigger>
-                              <SelectContent className="bg-gray-800 text-white border-gray-700">
+                              <SelectContent className="bg-gray-800 text-foreground border-gray-700">
                                 {FAMILY_RELATIONS.map((relation) => (
                                   <SelectItem key={relation.value} value={relation.value}>
                                     {relation.label}
@@ -770,7 +770,7 @@ export default function UpgradePage() {
                               value={profile.age}
                               onChange={(e) => handleProfileChange(index, "age", e.target.value)}
                               placeholder="Enter age"
-                              className="mt-2 bg-gray-700 border-gray-600 text-white"
+                              className="mt-2 bg-gray-700 border-gray-600 text-foreground"
                               required
                             />
                           </div>
@@ -791,7 +791,7 @@ export default function UpgradePage() {
                                     <RadioGroupItem
                                       value={gender.value}
                                       id={`gender-${gender.value}-${index}`}
-                                      className="border-gray-600 text-white"
+                                      className="border-gray-600 text-foreground"
                                     />
                                     <Label
                                       htmlFor={`gender-${gender.value}-${index}`}
@@ -817,7 +817,7 @@ export default function UpgradePage() {
                                     handleProfileChange(index, "sizePreferences.topSize", e.target.value)
                                   }
                                   placeholder={isChild ? "8Y" : "M"}
-                                  className="mt-1 bg-gray-700 border-gray-600 text-white text-sm"
+                                  className="mt-1 bg-gray-700 border-gray-600 text-foreground text-sm"
                                 />
                               </div>
                               <div>
@@ -828,7 +828,7 @@ export default function UpgradePage() {
                                     handleProfileChange(index, "sizePreferences.bottomSize", e.target.value)
                                   }
                                   placeholder={isChild ? "8Y" : "32"}
-                                  className="mt-1 bg-gray-700 border-gray-600 text-white text-sm"
+                                  className="mt-1 bg-gray-700 border-gray-600 text-foreground text-sm"
                                 />
                               </div>
                               <div>
@@ -839,7 +839,7 @@ export default function UpgradePage() {
                                     handleProfileChange(index, "sizePreferences.shoeSize", e.target.value)
                                   }
                                   placeholder={isChild ? "2Y" : "9"}
-                                  className="mt-1 bg-gray-700 border-gray-600 text-white text-sm"
+                                  className="mt-1 bg-gray-700 border-gray-600 text-foreground text-sm"
                                 />
                               </div>
                             </div>
@@ -851,7 +851,7 @@ export default function UpgradePage() {
                                   handleProfileChange(index, "sizePreferences.preferredBrands", e.target.value)
                                 }
                                 placeholder="e.g., Nike, Zara, H&M"
-                                className="mt-1 bg-gray-700 border-gray-600 text-white text-sm"
+                                className="mt-1 bg-gray-700 border-gray-600 text-foreground text-sm"
                               />
                             </div>
                           </div>
@@ -862,7 +862,7 @@ export default function UpgradePage() {
                           {/* Education Information - Show for ages 3-25 */}
                           {age >= 3 && age <= 25 && (
                             <div className="bg-blue-900/20 rounded-lg p-4 border border-blue-600/30">
-                              <h4 className="text-white font-medium mb-3 flex items-center gap-2">
+                              <h4 className="text-foreground font-medium mb-3 flex items-center gap-2">
                                 <GraduationCap className="w-4 h-4" />
                                 Education Information
                               </h4>
@@ -893,10 +893,10 @@ export default function UpgradePage() {
                                       value={profile.educationType}
                                       onValueChange={(value) => handleProfileChange(index, "educationType", value)}
                                     >
-                                      <SelectTrigger className="mt-1 bg-gray-700 border-gray-600 text-white text-sm">
+                                      <SelectTrigger className="mt-1 bg-gray-700 border-gray-600 text-foreground text-sm">
                                         <SelectValue placeholder="Select education type" />
                                       </SelectTrigger>
-                                      <SelectContent className="bg-gray-800 text-white border-gray-700">
+                                      <SelectContent className="bg-gray-800 text-foreground border-gray-700">
                                         {EDUCATION_TYPES.map((type) => (
                                           <SelectItem key={type.value} value={type.value}>
                                             {type.label}
@@ -923,7 +923,7 @@ export default function UpgradePage() {
                                           ? "Enter university name"
                                           : "Enter school name"
                                       }
-                                      className="mt-1 bg-gray-700 border-gray-600 text-white text-sm"
+                                      className="mt-1 bg-gray-700 border-gray-600 text-foreground text-sm"
                                     />
                                   </div>
 
@@ -937,7 +937,7 @@ export default function UpgradePage() {
                                           handleProfileChange(index, "educationInfo.course", e.target.value)
                                         }
                                         placeholder="e.g., Computer Science, Business"
-                                        className="mt-1 bg-gray-700 border-gray-600 text-white text-sm"
+                                        className="mt-1 bg-gray-700 border-gray-600 text-foreground text-sm"
                                       />
                                     </div>
                                   )}
@@ -953,7 +953,7 @@ export default function UpgradePage() {
                                       placeholder={
                                         profile.educationType === "university" ? "e.g., 2nd Year" : "e.g., Grade 10"
                                       }
-                                      className="mt-1 bg-gray-700 border-gray-600 text-white text-sm"
+                                      className="mt-1 bg-gray-700 border-gray-600 text-foreground text-sm"
                                     />
                                   </div>
 
@@ -983,7 +983,7 @@ export default function UpgradePage() {
                                         handleProfileChange(index, "educationInfo.dresscode", e.target.value)
                                       }
                                       placeholder="Any specific dress code requirements..."
-                                      className="mt-1 bg-gray-700 border-gray-600 text-white text-sm"
+                                      className="mt-1 bg-gray-700 border-gray-600 text-foreground text-sm"
                                       rows={2}
                                     />
                                   </div>
@@ -995,7 +995,7 @@ export default function UpgradePage() {
                           {/* Weather Essentials for Kids and Young Adults - Show for ages 0-25 */}
                           {age > 0 && age < 26 && (
                             <div className="bg-green-900/20 rounded-lg p-4 border border-green-600/30">
-                              <h4 className="text-white font-medium mb-3 flex items-center gap-2">
+                              <h4 className="text-foreground font-medium mb-3 flex items-center gap-2">
                                 <Cloud className="w-4 h-4" />
                                 Weather Essentials Needed
                               </h4>
@@ -1032,7 +1032,7 @@ export default function UpgradePage() {
 
                           {/* Age Category Info */}
                           <div className="bg-gray-700/30 rounded-lg p-4 border border-gray-600/30">
-                            <h4 className="text-white font-medium mb-2 flex items-center gap-2">
+                            <h4 className="text-foreground font-medium mb-2 flex items-center gap-2">
                               {getAgeIcon(age)}
                               Age Category: {ageCategory.charAt(0).toUpperCase() + ageCategory.slice(1)}
                             </h4>
@@ -1065,7 +1065,7 @@ export default function UpgradePage() {
                   type="button"
                   onClick={addProfileForm}
                   variant="outline"
-                  className="border-gray-600 hover:bg-gray-700 bg-transparent text-white"
+                  className="border-gray-600 hover:bg-gray-700 bg-transparent text-foreground"
                 >
                   <Plus className="w-4 h-4 mr-2" />
                   Add Another Profile
@@ -1085,7 +1085,7 @@ export default function UpgradePage() {
               <Button
                 onClick={handleSubmitProfiles}
                 disabled={loading || newProfiles.every((p) => !p.name.trim())}
-                className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white shadow-lg"
+                className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-foreground shadow-lg"
               >
                 {loading ? (
                   <>
@@ -1104,9 +1104,9 @@ export default function UpgradePage() {
         {step === "success" && (
           <div className="max-w-2xl mx-auto text-center">
             <div className="w-20 h-20 bg-gradient-to-r from-green-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Check className="w-10 h-10 text-white" />
+              <Check className="w-10 h-10 text-foreground" />
             </div>
-            <h2 className="text-3xl font-bold text-white mb-4">Welcome to Premium Family!</h2>
+            <h2 className="text-3xl font-bold text-foreground mb-4">Welcome to Premium Family!</h2>
             <p className="text-gray-400 mb-8">
               Your family profiles have been created successfully. You can now manage wardrobes for everyone and get
               personalized, age and gender-appropriate recommendations.
@@ -1120,7 +1120,7 @@ export default function UpgradePage() {
               <Link href="/home">
                 <Button
                   variant="outline"
-                  className="border-gray-600 hover:bg-gray-700 bg-transparent text-white w-full"
+                  className="border-gray-600 hover:bg-gray-700 bg-transparent text-foreground w-full"
                 >
                   Go to Dashboard
                 </Button>

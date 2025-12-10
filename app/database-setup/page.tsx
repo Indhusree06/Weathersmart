@@ -143,7 +143,7 @@ export default function DatabaseSetupPage() {
       case "error":
         return <XCircle className="h-5 w-5 text-red-500" />
       case "running":
-        return <Clock className="h-5 w-5 text-blue-500 animate-spin" />
+        return <Clock className="h-5 w-5 text-primary animate-spin" />
       default:
         return <div className="h-5 w-5 rounded-full border-2 border-gray-300" />
     }
@@ -271,7 +271,7 @@ export default function DatabaseSetupPage() {
                       <li>Manage weather essentials</li>
                       <li>
                         Test the system at{" "}
-                        <a href="/test-db" className="text-blue-600 underline">
+                        <a href="/test-db" className="text-primary underline">
                           /test-db
                         </a>
                       </li>
@@ -298,7 +298,7 @@ export default function DatabaseSetupPage() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
-                  <Users className="h-5 w-5 text-blue-500" />
+                  <Users className="h-5 w-5 text-primary" />
                   <span>Multi-User Support</span>
                 </CardTitle>
               </CardHeader>

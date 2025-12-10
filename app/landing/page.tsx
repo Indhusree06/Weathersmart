@@ -306,24 +306,24 @@ export default function LandingPage() {
               <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
                 <Sparkles className="w-6 h-6 text-black" />
               </div>
-              <span className="text-2xl font-bold text-white">Weather Smart</span>
+              <span className="text-2xl font-bold text-foreground">Weather Smart</span>
             </div>
             <div className="hidden md:flex items-center space-x-8">
               <button
                 onClick={() => scrollToSection("audience")}
-                className={`text-sm font-medium transition-colors ${activeSection === "audience" ? "text-white" : "text-gray-400 hover:text-white"}`}
+                className={`text-sm font-medium transition-colors ${activeSection === "audience" ? "text-foreground" : "text-gray-400 hover:text-foreground"}`}
               >
                 Our audience
               </button>
               <button
                 onClick={() => scrollToSection("features")}
-                className={`text-sm font-medium transition-colors ${activeSection === "features" ? "text-white" : "text-gray-400 hover:text-white"}`}
+                className={`text-sm font-medium transition-colors ${activeSection === "features" ? "text-foreground" : "text-gray-400 hover:text-foreground"}`}
               >
                 Features
               </button>
               <button
                 onClick={() => scrollToSection("how")}
-                className={`text-sm font-medium transition-colors ${activeSection === "how" ? "text-white" : "text-gray-400 hover:text-white"}`}
+                className={`text-sm font-medium transition-colors ${activeSection === "how" ? "text-foreground" : "text-gray-400 hover:text-foreground"}`}
               >
                 How it works
               </button>
@@ -332,7 +332,7 @@ export default function LandingPage() {
               <Link href="/auth">
                 <Button
                   variant="outline"
-                  className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white bg-transparent"
+                  className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-foreground bg-transparent"
                 >
                   Sign In
                 </Button>
@@ -354,7 +354,7 @@ export default function LandingPage() {
         <div className="container mx-auto px-6 relative z-10">
           <div className="flex flex-col items-center justify-center gap-12">
             <div className="text-center">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">Weather Smart</h1>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-4">Weather Smart</h1>
               <p className="text-lg md:text-xl text-gray-300 mb-6 max-w-3xl mx-auto">
                 Your AI-powered Outfit Selector with intelligent outfit recommendations based on weather, occasion, and
                 your personal style
@@ -376,7 +376,7 @@ export default function LandingPage() {
       <section id="audience" className="py-20 bg-gray-900">
         <div className="container mx-auto px-6">
           <div className="text-center">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Made for families</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Made for families</h2>
             <p className="text-lg text-gray-400 max-w-2xl mx-auto mb-12">
               Weather Smart helps busy moms manage wardrobes for the whole family and empowers teens to develop their
               own style
@@ -388,7 +388,7 @@ export default function LandingPage() {
                 <button
                   onClick={() => handleAudienceChange("moms")}
                   className={`px-6 py-3 rounded-md text-sm font-medium transition-all duration-200 ${
-                    audienceType === "moms" ? "bg-white text-black shadow-sm" : "text-gray-400 hover:text-white"
+                    audienceType === "moms" ? "bg-white text-black shadow-sm" : "text-gray-400 hover:text-foreground"
                   }`}
                 >
                   For Moms
@@ -396,7 +396,7 @@ export default function LandingPage() {
                 <button
                   onClick={() => handleAudienceChange("teens")}
                   className={`px-6 py-3 rounded-md text-sm font-medium transition-all duration-200 ${
-                    audienceType === "teens" ? "bg-white text-black shadow-sm" : "text-gray-400 hover:text-white"
+                    audienceType === "teens" ? "bg-white text-black shadow-sm" : "text-gray-400 hover:text-foreground"
                   }`}
                 >
                   For Teens
@@ -410,43 +410,43 @@ export default function LandingPage() {
                 {audienceType === "moms" ? (
                   <>
                     <div className="text-left">
-                      <h3 className="text-2xl font-semibold text-white mb-4">For Busy Moms</h3>
+                      <h3 className="text-2xl font-semibold text-foreground mb-4">For Busy Moms</h3>
                       <ul className="space-y-3 text-gray-400">
                         <li className="flex items-start">
-                          <span className="text-white mr-2">•</span>
+                          <span className="text-foreground mr-2">•</span>
                           Simplify morning routines for the entire family
                         </li>
                         <li className="flex items-start">
-                          <span className="text-white mr-2">•</span>
+                          <span className="text-foreground mr-2">•</span>
                           Get outfit suggestions for school, activities, and special occasions
                         </li>
                         <li className="flex items-start">
-                          <span className="text-white mr-2">•</span>
+                          <span className="text-foreground mr-2">•</span>
                           Manage multiple wardrobes from one convenient app
                         </li>
                         <li className="flex items-start">
-                          <span className="text-white mr-2">•</span>
+                          <span className="text-foreground mr-2">•</span>
                           Save time and reduce daily decision fatigue
                         </li>
                       </ul>
                     </div>
                     <div className="text-left">
-                      <h3 className="text-2xl font-semibold text-white mb-4">Family Benefits</h3>
+                      <h3 className="text-2xl font-semibold text-foreground mb-4">Family Benefits</h3>
                       <ul className="space-y-3 text-gray-400">
                         <li className="flex items-start">
-                          <span className="text-white mr-2">•</span>
+                          <span className="text-foreground mr-2">•</span>
                           Coordinate outfits for the whole family
                         </li>
                         <li className="flex items-start">
-                          <span className="text-white mr-2">•</span>
+                          <span className="text-foreground mr-2">•</span>
                           Weather-appropriate clothing suggestions
                         </li>
                         <li className="flex items-start">
-                          <span className="text-white mr-2">•</span>
+                          <span className="text-foreground mr-2">•</span>
                           Special occasion outfit planning
                         </li>
                         <li className="flex items-start">
-                          <span className="text-white mr-2">•</span>
+                          <span className="text-foreground mr-2">•</span>
                           Track what everyone wore and when
                         </li>
                       </ul>
@@ -455,43 +455,43 @@ export default function LandingPage() {
                 ) : (
                   <>
                     <div className="text-left">
-                      <h3 className="text-2xl font-semibold text-white mb-4">For Teens</h3>
+                      <h3 className="text-2xl font-semibold text-foreground mb-4">For Teens</h3>
                       <ul className="space-y-3 text-gray-400">
                         <li className="flex items-start">
-                          <span className="text-white mr-2">•</span>
+                          <span className="text-foreground mr-2">•</span>
                           Discover and develop your personal style
                         </li>
                         <li className="flex items-start">
-                          <span className="text-white mr-2">•</span>
+                          <span className="text-foreground mr-2">•</span>
                           Get age-appropriate outfit recommendations
                         </li>
                         <li className="flex items-start">
-                          <span className="text-white mr-2">•</span>
+                          <span className="text-foreground mr-2">•</span>
                           Build confidence through better styling choices
                         </li>
                         <li className="flex items-start">
-                          <span className="text-white mr-2">•</span>
+                          <span className="text-foreground mr-2">•</span>
                           Learn to mix and match existing wardrobe pieces
                         </li>
                       </ul>
                     </div>
                     <div className="text-left">
-                      <h3 className="text-2xl font-semibold text-white mb-4">Style Development</h3>
+                      <h3 className="text-2xl font-semibold text-foreground mb-4">Style Development</h3>
                       <ul className="space-y-3 text-gray-400">
                         <li className="flex items-start">
-                          <span className="text-white mr-2">•</span>
+                          <span className="text-foreground mr-2">•</span>
                           Explore different fashion trends safely
                         </li>
                         <li className="flex items-start">
-                          <span className="text-white mr-2">•</span>
+                          <span className="text-foreground mr-2">•</span>
                           Get inspiration from style influencers
                         </li>
                         <li className="flex items-start">
-                          <span className="text-white mr-2">•</span>
+                          <span className="text-foreground mr-2">•</span>
                           Budget-friendly outfit combinations
                         </li>
                         <li className="flex items-start">
-                          <span className="text-white mr-2">•</span>
+                          <span className="text-foreground mr-2">•</span>
                           Share looks with friends for feedback
                         </li>
                       </ul>
@@ -535,7 +535,7 @@ export default function LandingPage() {
             className="absolute top-1/2 left-6 transform -translate-y-1/2 bg-black/40 hover:bg-black/60 backdrop-blur-sm rounded-full p-3 shadow-lg z-20 transition-all"
             aria-label="Previous slide"
           >
-            <ChevronLeft className="w-6 h-6 text-white" />
+            <ChevronLeft className="w-6 h-6 text-foreground" />
           </button>
 
           <button
@@ -543,7 +543,7 @@ export default function LandingPage() {
             className="absolute top-1/2 right-6 transform -translate-y-1/2 bg-black/40 hover:bg-black/60 backdrop-blur-sm rounded-full p-3 shadow-lg z-20 transition-all"
             aria-label="Next slide"
           >
-            <ChevronRight className="w-6 h-6 text-white" />
+            <ChevronRight className="w-6 h-6 text-foreground" />
           </button>
 
           {/* Navigation Dots */}
@@ -566,7 +566,7 @@ export default function LandingPage() {
       <section id="features" className="py-20 bg-black">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Why families love Weather Smart</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Why families love Weather Smart</h2>
             <p className="text-lg text-gray-400 max-w-2xl mx-auto">
               Real solutions for real wardrobe challenges that busy families face every day
             </p>
@@ -575,7 +575,7 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             <div className="bg-gray-900 rounded-xl p-8 shadow-sm border border-gray-800 hover:bg-gray-800 transition-colors">
               <div className="w-12 h-12 bg-gray-800 rounded-lg flex items-center justify-center mb-6">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -584,7 +584,7 @@ export default function LandingPage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-white mb-4">Never guess the weather again</h3>
+              <h3 className="text-xl font-semibold text-foreground mb-4">Never guess the weather again</h3>
               <p className="text-gray-400 leading-relaxed">
                 No more sending kids to school in shorts when it's 45°F. Get outfit suggestions that actually match the
                 weather forecast, so everyone stays comfortable all day.
@@ -593,7 +593,7 @@ export default function LandingPage() {
 
             <div className="bg-gray-900 rounded-xl p-8 shadow-sm border border-gray-800 hover:bg-gray-800 transition-colors">
               <div className="w-12 h-12 bg-gray-800 rounded-lg flex items-center justify-center mb-6">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -602,7 +602,7 @@ export default function LandingPage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-white mb-4">Cut morning chaos in half</h3>
+              <h3 className="text-xl font-semibold text-foreground mb-4">Cut morning chaos in half</h3>
               <p className="text-gray-400 leading-relaxed">
                 Stop the daily "I have nothing to wear" meltdowns. Plan outfits the night before or get instant
                 suggestions when you're running late.
@@ -611,7 +611,7 @@ export default function LandingPage() {
 
             <div className="bg-gray-900 rounded-xl p-8 shadow-sm border border-gray-800 hover:bg-gray-800 transition-colors">
               <div className="w-12 h-12 bg-gray-800 rounded-lg flex items-center justify-center mb-6">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -620,7 +620,7 @@ export default function LandingPage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-white mb-4">Rediscover clothes you forgot you had</h3>
+              <h3 className="text-xl font-semibold text-foreground mb-4">Rediscover clothes you forgot you had</h3>
               <p className="text-gray-400 leading-relaxed">
                 That cute top buried in the back of the closet? Weather Smart remembers it and suggests new ways to wear
                 it. Make the most of what you already own.
@@ -632,7 +632,7 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto mt-12">
             <div className="bg-gray-900 rounded-xl p-8 shadow-sm border border-gray-800 hover:bg-gray-800 transition-colors">
               <div className="w-12 h-12 bg-gray-800 rounded-lg flex items-center justify-center mb-6">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -641,7 +641,7 @@ export default function LandingPage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-white mb-4">Perfect for the whole family</h3>
+              <h3 className="text-xl font-semibold text-foreground mb-4">Perfect for the whole family</h3>
               <p className="text-gray-400 leading-relaxed">
                 Manage everyone's wardrobe in one place. From toddler tantrums to teenage fashion crises, get
                 age-appropriate suggestions for every family member.
@@ -650,7 +650,7 @@ export default function LandingPage() {
 
             <div className="bg-gray-900 rounded-xl p-8 shadow-sm border border-gray-800 hover:bg-gray-800 transition-colors">
               <div className="w-12 h-12 bg-gray-800 rounded-lg flex items-center justify-center mb-6">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -659,7 +659,7 @@ export default function LandingPage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-white mb-4">Explore and Mix</h3>
+              <h3 className="text-xl font-semibold text-foreground mb-4">Explore and Mix</h3>
               <p className="text-gray-400 leading-relaxed">
                 Easily explore different fashion trends and mix and match pieces from your wardrobe to create unique
                 outfits.
@@ -673,7 +673,7 @@ export default function LandingPage() {
       <section id="how" className="py-20 bg-gray-900">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">How it works</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">How it works</h2>
             <p className="text-lg text-gray-400 max-w-2xl mx-auto">
               Getting started with Weather Smart is simple and takes just a few minutes
             </p>
@@ -684,7 +684,7 @@ export default function LandingPage() {
               <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-6">
                 <Upload className="w-8 h-8 text-black" />
               </div>
-              <h3 className="text-xl font-semibold text-white mb-3">1. Upload Your Photos</h3>
+              <h3 className="text-xl font-semibold text-foreground mb-3">1. Upload Your Photos</h3>
               <p className="text-gray-400 leading-relaxed">
                 Take photos of your clothes and upload them to create your digital wardrobe. Our app makes it easy to
                 organize everything by category, color, and season.
@@ -693,9 +693,9 @@ export default function LandingPage() {
 
             <div className="text-center">
               <div className="w-16 h-16 bg-gray-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Tag className="w-8 h-8 text-white" />
+                <Tag className="w-8 h-8 text-foreground" />
               </div>
-              <h3 className="text-xl font-semibold text-white mb-3">2. Add Your Tags</h3>
+              <h3 className="text-xl font-semibold text-foreground mb-3">2. Add Your Tags</h3>
               <p className="text-gray-400 leading-relaxed">
                 Tag your items with details like color, style, occasion, and season. This helps our AI understand your
                 preferences and suggest the perfect combinations.
@@ -704,9 +704,9 @@ export default function LandingPage() {
 
             <div className="text-center">
               <div className="w-16 h-16 bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Zap className="w-8 h-8 text-white" />
+                <Zap className="w-8 h-8 text-foreground" />
               </div>
-              <h3 className="text-xl font-semibold text-white mb-3">3. Get Smart Suggestions</h3>
+              <h3 className="text-xl font-semibold text-foreground mb-3">3. Get Smart Suggestions</h3>
               <p className="text-gray-400 leading-relaxed">
                 Receive personalized outfit recommendations based on weather, occasion, and your style preferences.
                 Getting dressed has never been easier!
@@ -727,7 +727,7 @@ export default function LandingPage() {
             className="w-full h-full object-cover opacity-70"
           />
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="text-center text-white">
+            <div className="text-center text-foreground">
               <h3 className="text-2xl md:text-3xl font-bold mb-2">Your Style Journey Starts Here</h3>
               <p className="text-lg opacity-90">Discover the perfect outfit for every occasion</p>
             </div>

@@ -158,9 +158,9 @@ export default function CheckOutfitStoragePage() {
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-3 mb-4">
             <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
-              <Database className="w-6 h-6 text-white" />
+              <Database className="w-6 h-6 text-foreground" />
             </div>
-            <h1 className="text-3xl font-bold text-white">AI Outfit Storage Integration Check</h1>
+            <h1 className="text-3xl font-bold text-foreground">AI Outfit Storage Integration Check</h1>
           </div>
           <p className="text-gray-400">
             Diagnostic tool to check if your AI outfit picker is properly connected to your wardrobe database
@@ -170,7 +170,7 @@ export default function CheckOutfitStoragePage() {
         {/* Progress Overview */}
         <Card className="mb-8 border-gray-700 bg-gray-800/80 backdrop-blur-xl">
           <CardHeader>
-            <CardTitle className="text-white flex items-center gap-2">
+            <CardTitle className="text-foreground flex items-center gap-2">
               <Zap className="w-5 h-5" />
               Integration Status
             </CardTitle>
@@ -203,7 +203,7 @@ export default function CheckOutfitStoragePage() {
                     <div className="text-sm text-gray-400">Errors</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-blue-400">{summary.total}</div>
+                    <div className="text-2xl font-bold text-primary">{summary.total}</div>
                     <div className="text-sm text-gray-400">Total</div>
                   </div>
                 </div>
@@ -222,7 +222,7 @@ export default function CheckOutfitStoragePage() {
                     <div className="flex items-center gap-3">
                       {getStatusIcon(result)}
                       <div>
-                        <h3 className="font-medium text-white">{result.component}</h3>
+                        <h3 className="font-medium text-foreground">{result.component}</h3>
                         {result.details && <p className="text-sm text-gray-400">{result.details}</p>}
                         {result.error && <p className="text-sm text-red-400">Error: {result.error}</p>}
                       </div>
@@ -247,7 +247,7 @@ export default function CheckOutfitStoragePage() {
         {/* Action Buttons */}
         <Card className="mb-8 border-gray-700 bg-gray-800/80 backdrop-blur-xl">
           <CardHeader>
-            <CardTitle className="text-white">Actions</CardTitle>
+            <CardTitle className="text-foreground">Actions</CardTitle>
             <CardDescription className="text-gray-400">Test and fix your AI outfit picker integration</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -256,7 +256,7 @@ export default function CheckOutfitStoragePage() {
                 onClick={runCheck}
                 disabled={loading}
                 variant="outline"
-                className="border-gray-600 hover:bg-gray-700 bg-transparent text-white"
+                className="border-gray-600 hover:bg-gray-700 bg-transparent text-foreground"
               >
                 {loading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
                 Re-check Status
@@ -266,7 +266,7 @@ export default function CheckOutfitStoragePage() {
                 <Button
                   onClick={runFix}
                   disabled={fixing}
-                  className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white"
+                  className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-foreground"
                 >
                   {fixing ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
                   Fix Integration Issues
@@ -277,7 +277,7 @@ export default function CheckOutfitStoragePage() {
                 onClick={testChatIntegration}
                 disabled={testingChat}
                 variant="outline"
-                className="border-gray-600 hover:bg-gray-700 bg-transparent text-white"
+                className="border-gray-600 hover:bg-gray-700 bg-transparent text-foreground"
               >
                 {testingChat ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
                 Test Chat Integration
@@ -319,7 +319,7 @@ export default function CheckOutfitStoragePage() {
         {/* What This Enables */}
         <Card className="border-gray-700 bg-gray-800/80 backdrop-blur-xl">
           <CardHeader>
-            <CardTitle className="text-white flex items-center gap-2">
+            <CardTitle className="text-foreground flex items-center gap-2">
               <Shirt className="w-5 h-5" />
               What AI Integration Enables
             </CardTitle>
@@ -327,23 +327,23 @@ export default function CheckOutfitStoragePage() {
           <CardContent>
             <div className="grid md:grid-cols-3 gap-4">
               <div className="flex items-start gap-3">
-                <Bot className="w-5 h-5 text-blue-400 mt-1" />
+                <Bot className="w-5 h-5 text-primary mt-1" />
                 <div>
-                  <h4 className="font-medium text-white">Smart Recommendations</h4>
+                  <h4 className="font-medium text-foreground">Smart Recommendations</h4>
                   <p className="text-sm text-gray-400">AI uses your actual wardrobe items for suggestions</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
                 <Users className="w-5 h-5 text-green-400 mt-1" />
                 <div>
-                  <h4 className="font-medium text-white">Family Wardrobes</h4>
+                  <h4 className="font-medium text-foreground">Family Wardrobes</h4>
                   <p className="text-sm text-gray-400">Manage outfits for multiple family members</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
                 <Tags className="w-5 h-5 text-purple-400 mt-1" />
                 <div>
-                  <h4 className="font-medium text-white">Outfit Organization</h4>
+                  <h4 className="font-medium text-foreground">Outfit Organization</h4>
                   <p className="text-sm text-gray-400">Save and categorize complete outfits</p>
                 </div>
               </div>

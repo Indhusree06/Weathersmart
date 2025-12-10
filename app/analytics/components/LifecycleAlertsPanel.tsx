@@ -146,7 +146,7 @@ export function LifecycleAlertsPanel({ items }: LifecycleAlertsPanelProps) {
     switch (severity) {
       case "high": return "border-red-500/30 bg-red-500/10"
       case "medium": return "border-amber-500/30 bg-amber-500/10"
-      default: return "border-blue-500/30 bg-blue-500/10"
+      default: return "border-blue-500/30 bg-primary/10"
     }
   }
 
@@ -154,17 +154,17 @@ export function LifecycleAlertsPanel({ items }: LifecycleAlertsPanelProps) {
     switch (severity) {
       case "high": return <AlertCircle className="w-5 h-5 text-red-400" />
       case "medium": return <TrendingUp className="w-5 h-5 text-amber-400" />
-      default: return <Heart className="w-5 h-5 text-blue-400" />
+      default: return <Heart className="w-5 h-5 text-primary" />
     }
   }
 
   if (alerts.length === 0) {
     return (
-      <Card className="bg-slate-800 border-slate-700 p-6">
-        <h3 className="text-lg font-semibold text-white mb-4">Lifecycle Alerts</h3>
+      <Card className="bg-card border-border p-6">
+        <h3 className="text-lg font-semibold text-foreground mb-4">Lifecycle Alerts</h3>
         <div className="py-8 text-center">
           <Heart className="w-12 h-12 text-green-400 mx-auto mb-3" />
-          <p className="text-slate-300">All items are in good lifecycle status!</p>
+          <p className="text-foreground/80">All items are in good lifecycle status!</p>
           <p className="text-sm text-slate-500 mt-2">
             No items need attention for donation, repair, or replacement.
           </p>
@@ -174,10 +174,10 @@ export function LifecycleAlertsPanel({ items }: LifecycleAlertsPanelProps) {
   }
 
   return (
-    <Card className="bg-slate-800 border-slate-700 p-6">
+    <Card className="bg-card border-border p-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-white">Lifecycle Alerts</h3>
-        <span className="text-sm text-slate-400">{alerts.length} item{alerts.length !== 1 ? 's' : ''} need attention</span>
+        <h3 className="text-lg font-semibold text-foreground">Lifecycle Alerts</h3>
+        <span className="text-sm text-muted-foreground">{alerts.length} item{alerts.length !== 1 ? 's' : ''} need attention</span>
       </div>
 
       <div className="space-y-3 max-h-[600px] overflow-y-auto pr-2">
@@ -188,7 +188,7 @@ export function LifecycleAlertsPanel({ items }: LifecycleAlertsPanelProps) {
           >
             <div className="flex items-start space-x-4">
               {/* Item Image */}
-              <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-slate-600 flex-shrink-0">
+              <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-muted/80 flex-shrink-0">
                 {alert.item.image_url ? (
                   <img
                     src={alert.item.image_url}
@@ -196,7 +196,7 @@ export function LifecycleAlertsPanel({ items }: LifecycleAlertsPanelProps) {
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-slate-400 text-xs">
+                  <div className="w-full h-full flex items-center justify-center text-muted-foreground text-xs">
                     No image
                   </div>
                 )}
@@ -206,8 +206,8 @@ export function LifecycleAlertsPanel({ items }: LifecycleAlertsPanelProps) {
               <div className="flex-1 min-w-0">
                 <div className="flex items-start justify-between mb-2">
                   <div>
-                    <p className="text-sm font-medium text-white truncate">{alert.item.name}</p>
-                    <p className="text-xs text-slate-400">
+                    <p className="text-sm font-medium text-foreground truncate">{alert.item.name}</p>
+                    <p className="text-xs text-muted-foreground">
                       {alert.item.category?.name || "Uncategorized"}
                     </p>
                   </div>
@@ -217,14 +217,14 @@ export function LifecycleAlertsPanel({ items }: LifecycleAlertsPanelProps) {
                 {/* Reasons */}
                 <div className="space-y-1 mb-3">
                   {alert.reasons.map((reason, idx) => (
-                    <p key={idx} className="text-xs text-slate-300">
+                    <p key={idx} className="text-xs text-foreground/80">
                       • {reason}
                     </p>
                   ))}
                 </div>
 
                 {/* Stats */}
-                <div className="flex flex-wrap gap-3 text-xs text-slate-400 mb-3">
+                <div className="flex flex-wrap gap-3 text-xs text-muted-foreground mb-3">
                   <span>{alert.item.wear_count || 0} wears</span>
                   {alert.costPerWear > 0 && (
                     <span>CPW: ${alert.costPerWear.toFixed(2)}</span>
@@ -239,7 +239,7 @@ export function LifecycleAlertsPanel({ items }: LifecycleAlertsPanelProps) {
                   <Button
                     size="sm"
                     variant="outline"
-                    className="text-xs h-7 bg-slate-700 hover:bg-slate-600 text-slate-200 border-slate-600"
+                    className="text-xs h-7 bg-muted hover:bg-muted/80 text-foreground border-border"
                     onClick={() => handleDismiss(alert.item.id)}
                   >
                     <Heart className="w-3 h-3 mr-1" />
@@ -248,7 +248,7 @@ export function LifecycleAlertsPanel({ items }: LifecycleAlertsPanelProps) {
                   <Button
                     size="sm"
                     variant="outline"
-                    className="text-xs h-7 bg-slate-700 hover:bg-slate-600 text-slate-200 border-slate-600"
+                    className="text-xs h-7 bg-muted hover:bg-muted/80 text-foreground border-border"
                     onClick={() => handleDismiss(alert.item.id)}
                   >
                     <Recycle className="w-3 h-3 mr-1" />
@@ -262,9 +262,9 @@ export function LifecycleAlertsPanel({ items }: LifecycleAlertsPanelProps) {
       </div>
 
       {/* Summary Stats */}
-      <div className="mt-6 p-4 bg-slate-700/30 rounded-lg">
-        <p className="text-xs text-slate-400 mb-2">💡 Lifecycle Tips</p>
-        <div className="space-y-1 text-xs text-slate-300">
+      <div className="mt-6 p-4 bg-muted/30 rounded-lg">
+        <p className="text-xs text-muted-foreground mb-2">💡 Lifecycle Tips</p>
+        <div className="space-y-1 text-xs text-foreground/80">
           <p>• Items with 50+ wears may need replacement</p>
           <p>• Never worn items for 3+ months? Consider donating</p>
           <p>• High cost/wear items ($5+) aren't providing good value</p>

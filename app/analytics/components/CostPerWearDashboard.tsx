@@ -123,11 +123,11 @@ export default function CostPerWearDashboard({ items }: CostPerWearDashboardProp
     if (active && payload && payload.length) {
       const data = payload[0].payload;
       return (
-        <div className="bg-slate-800 border border-slate-600 rounded-lg p-3 shadow-lg">
-          <p className="font-semibold text-white mb-1">{data.name}</p>
-          <p className="text-sm text-slate-300">Price: ${data.price}</p>
-          <p className="text-sm text-slate-300">Wears: {data.wearCount}</p>
-          <p className="text-sm text-slate-300">Cost/Wear: ${data.cpw}</p>
+        <div className="bg-card border border-border rounded-lg p-3 shadow-lg">
+          <p className="font-semibold text-foreground mb-1">{data.name}</p>
+          <p className="text-sm text-foreground/80">Price: ${data.price}</p>
+          <p className="text-sm text-foreground/80">Wears: {data.wearCount}</p>
+          <p className="text-sm text-foreground/80">Cost/Wear: ${data.cpw}</p>
           <p className="text-sm font-semibold" style={{ color: data.color }}>
             {data.valueRating} Value
           </p>
@@ -149,8 +149,8 @@ export default function CostPerWearDashboard({ items }: CostPerWearDashboardProp
           <DollarSign className="w-6 h-6 text-green-400" />
         </div>
         <div>
-          <h2 className="text-2xl font-bold text-white">Cost-Per-Wear Analysis</h2>
-          <p className="text-slate-400">Understand the true value of your wardrobe</p>
+          <h2 className="text-2xl font-bold text-foreground">Cost-Per-Wear Analysis</h2>
+          <p className="text-muted-foreground">Understand the true value of your wardrobe</p>
         </div>
       </div>
 
@@ -158,49 +158,49 @@ export default function CostPerWearDashboard({ items }: CostPerWearDashboardProp
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <motion.div
           whileHover={{ scale: 1.02 }}
-          className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl p-4 border border-slate-700"
+          className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl p-4 border border-border"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-slate-400 text-sm">Avg Cost/Wear</span>
+            <span className="text-muted-foreground text-sm">Avg Cost/Wear</span>
             <DollarSign className="w-4 h-4 text-green-400" />
           </div>
-          <p className="text-2xl font-bold text-white">${avgCPW.toFixed(2)}</p>
+          <p className="text-2xl font-bold text-foreground">${avgCPW.toFixed(2)}</p>
           <p className="text-xs text-slate-500 mt-1">Per wear across wardrobe</p>
         </motion.div>
 
         <motion.div
           whileHover={{ scale: 1.02 }}
-          className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl p-4 border border-slate-700"
+          className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl p-4 border border-border"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-slate-400 text-sm">Total Spent</span>
-            <TrendingUp className="w-4 h-4 text-blue-400" />
+            <span className="text-muted-foreground text-sm">Total Spent</span>
+            <TrendingUp className="w-4 h-4 text-primary" />
           </div>
-          <p className="text-2xl font-bold text-white">${totalSpent.toFixed(2)}</p>
+          <p className="text-2xl font-bold text-foreground">${totalSpent.toFixed(2)}</p>
           <p className="text-xs text-slate-500 mt-1">On {itemsWithCPW.length} items</p>
         </motion.div>
 
         <motion.div
           whileHover={{ scale: 1.02 }}
-          className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl p-4 border border-slate-700"
+          className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl p-4 border border-border"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-slate-400 text-sm">Unworn Items</span>
+            <span className="text-muted-foreground text-sm">Unworn Items</span>
             <AlertCircle className="w-4 h-4 text-orange-400" />
           </div>
-          <p className="text-2xl font-bold text-white">{unwornCount}</p>
+          <p className="text-2xl font-bold text-foreground">{unwornCount}</p>
           <p className="text-xs text-slate-500 mt-1">${unwornValue.toFixed(2)} value</p>
         </motion.div>
 
         <motion.div
           whileHover={{ scale: 1.02 }}
-          className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl p-4 border border-slate-700"
+          className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl p-4 border border-border"
         >
           <div className="flex items-center justify-between mb-2">
-            <span className="text-slate-400 text-sm">Total Wears</span>
+            <span className="text-muted-foreground text-sm">Total Wears</span>
             <TrendingDown className="w-4 h-4 text-purple-400" />
           </div>
-          <p className="text-2xl font-bold text-white">{totalWears}</p>
+          <p className="text-2xl font-bold text-foreground">{totalWears}</p>
           <p className="text-xs text-slate-500 mt-1">Across all items</p>
         </motion.div>
       </div>
@@ -211,8 +211,8 @@ export default function CostPerWearDashboard({ items }: CostPerWearDashboardProp
           onClick={() => setSelectedValue(null)}
           className={`px-4 py-2 rounded-lg font-medium transition-all ${
             selectedValue === null
-              ? "bg-purple-500 text-white"
-              : "bg-slate-800 text-slate-300 hover:bg-slate-700"
+              ? "bg-purple-500 text-foreground"
+              : "bg-card text-foreground/80 hover:bg-muted"
           }`}
         >
           All Items
@@ -223,8 +223,8 @@ export default function CostPerWearDashboard({ items }: CostPerWearDashboardProp
             onClick={() => setSelectedValue(rating)}
             className={`px-4 py-2 rounded-lg font-medium transition-all ${
               selectedValue === rating
-                ? "text-white"
-                : "bg-slate-800 text-slate-300 hover:bg-slate-700"
+                ? "text-foreground"
+                : "bg-card text-foreground/80 hover:bg-muted"
             }`}
             style={
               selectedValue === rating
@@ -238,8 +238,8 @@ export default function CostPerWearDashboard({ items }: CostPerWearDashboardProp
       </div>
 
       {/* Scatter Plot */}
-      <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-xl p-6 border border-slate-700">
-        <h3 className="text-lg font-semibold text-white mb-4">
+      <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-xl p-6 border border-border">
+        <h3 className="text-lg font-semibold text-foreground mb-4">
           Value Distribution
         </h3>
         <ResponsiveContainer width="100%" height={400}>
@@ -269,14 +269,14 @@ export default function CostPerWearDashboard({ items }: CostPerWearDashboardProp
             </Scatter>
           </ScatterChart>
         </ResponsiveContainer>
-        <p className="text-sm text-slate-400 mt-4 text-center">
+        <p className="text-sm text-muted-foreground mt-4 text-center">
           💡 Lower and to the right = better value. Items worn more with lower cost per wear are your best investments.
         </p>
       </div>
 
       {/* Value Distribution Bar Chart */}
-      <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-xl p-6 border border-slate-700">
-        <h3 className="text-lg font-semibold text-white mb-4">
+      <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-xl p-6 border border-border">
+        <h3 className="text-lg font-semibold text-foreground mb-4">
           Value Rating Distribution
         </h3>
         <ResponsiveContainer width="100%" height={300}>
@@ -313,26 +313,26 @@ export default function CostPerWearDashboard({ items }: CostPerWearDashboardProp
         <div className="bg-gradient-to-br from-green-900/20 to-slate-900/50 rounded-xl p-6 border border-green-700/30">
           <div className="flex items-center gap-2 mb-4">
             <TrendingUp className="w-5 h-5 text-green-400" />
-            <h3 className="text-lg font-semibold text-white">Best Value Items</h3>
+            <h3 className="text-lg font-semibold text-foreground">Best Value Items</h3>
           </div>
           <div className="space-y-3">
             {bestValue.map((item, index) => (
               <div
                 key={item.id}
-                className="flex items-center justify-between bg-slate-800/50 rounded-lg p-3"
+                className="flex items-center justify-between bg-card/50 rounded-lg p-3"
               >
                 <div className="flex items-center gap-3">
                   <span className="text-2xl font-bold text-green-400">#{index + 1}</span>
                   <div>
-                    <p className="font-medium text-white text-sm">{item.name}</p>
-                    <p className="text-xs text-slate-400">
+                    <p className="font-medium text-foreground text-sm">{item.name}</p>
+                    <p className="text-xs text-muted-foreground">
                       {item.wearCount} wears • ${item.price}
                     </p>
                   </div>
                 </div>
                 <div className="text-right">
                   <p className="text-lg font-bold text-green-400">${item.cpw}</p>
-                  <p className="text-xs text-slate-400">per wear</p>
+                  <p className="text-xs text-muted-foreground">per wear</p>
                 </div>
               </div>
             ))}
@@ -343,26 +343,26 @@ export default function CostPerWearDashboard({ items }: CostPerWearDashboardProp
         <div className="bg-gradient-to-br from-red-900/20 to-slate-900/50 rounded-xl p-6 border border-red-700/30">
           <div className="flex items-center gap-2 mb-4">
             <TrendingDown className="w-5 h-5 text-red-400" />
-            <h3 className="text-lg font-semibold text-white">Needs More Wear</h3>
+            <h3 className="text-lg font-semibold text-foreground">Needs More Wear</h3>
           </div>
           <div className="space-y-3">
             {worstValue.map((item, index) => (
               <div
                 key={item.id}
-                className="flex items-center justify-between bg-slate-800/50 rounded-lg p-3"
+                className="flex items-center justify-between bg-card/50 rounded-lg p-3"
               >
                 <div className="flex items-center gap-3">
                   <span className="text-2xl font-bold text-red-400">#{index + 1}</span>
                   <div>
-                    <p className="font-medium text-white text-sm">{item.name}</p>
-                    <p className="text-xs text-slate-400">
+                    <p className="font-medium text-foreground text-sm">{item.name}</p>
+                    <p className="text-xs text-muted-foreground">
                       {item.wearCount} wears • ${item.price}
                     </p>
                   </div>
                 </div>
                 <div className="text-right">
                   <p className="text-lg font-bold text-red-400">${item.cpw}</p>
-                  <p className="text-xs text-slate-400">per wear</p>
+                  <p className="text-xs text-muted-foreground">per wear</p>
                 </div>
               </div>
             ))}
@@ -372,8 +372,8 @@ export default function CostPerWearDashboard({ items }: CostPerWearDashboardProp
 
       {/* Insights */}
       <div className="bg-gradient-to-br from-blue-900/20 to-slate-900/50 rounded-xl p-6 border border-blue-700/30">
-        <h3 className="text-lg font-semibold text-white mb-4">💡 Value Insights</h3>
-        <div className="space-y-3 text-slate-300">
+        <h3 className="text-lg font-semibold text-foreground mb-4">💡 Value Insights</h3>
+        <div className="space-y-3 text-foreground/80">
           {unwornCount > 0 && (
             <p>
               • You have <span className="font-semibold text-orange-400">{unwornCount} unworn items</span> worth ${unwornValue.toFixed(2)}. 

@@ -42,9 +42,9 @@ export function AiOutfitRatingsList({ outfits, onRate }: AiOutfitRatingsListProp
 
   if (outfits.length === 0) {
     return (
-      <Card className="bg-slate-800 border-slate-700 p-6">
-        <h3 className="text-lg font-semibold text-white mb-4">AI Outfit Ratings</h3>
-        <div className="py-8 text-center text-slate-400">
+      <Card className="bg-card border-border p-6">
+        <h3 className="text-lg font-semibold text-foreground mb-4">AI Outfit Ratings</h3>
+        <div className="py-8 text-center text-muted-foreground">
           <p>No AI-generated outfits yet.</p>
           <p className="text-sm mt-2">Visit the AI Outfit Picker to get personalized recommendations!</p>
         </div>
@@ -53,25 +53,25 @@ export function AiOutfitRatingsList({ outfits, onRate }: AiOutfitRatingsListProp
   }
 
   return (
-    <Card className="bg-slate-800 border-slate-700 p-6">
-      <h3 className="text-lg font-semibold text-white mb-4">AI Outfit Ratings</h3>
+    <Card className="bg-card border-border p-6">
+      <h3 className="text-lg font-semibold text-foreground mb-4">AI Outfit Ratings</h3>
 
       {/* Aggregate Stats */}
-      <div className="grid grid-cols-2 gap-4 mb-6 p-4 bg-slate-700/30 rounded-lg">
+      <div className="grid grid-cols-2 gap-4 mb-6 p-4 bg-muted/30 rounded-lg">
         <div>
-          <p className="text-xs text-slate-400 mb-1">Average Rating</p>
-          <p className="text-2xl font-bold text-white flex items-center">
+          <p className="text-xs text-muted-foreground mb-1">Average Rating</p>
+          <p className="text-2xl font-bold text-foreground flex items-center">
             <Star className="w-5 h-5 text-yellow-400 mr-1 fill-yellow-400" />
             {averageRating}
           </p>
         </div>
         <div>
-          <p className="text-xs text-slate-400 mb-1">Total Outfits</p>
-          <p className="text-2xl font-bold text-white">{outfits.length}</p>
+          <p className="text-xs text-muted-foreground mb-1">Total Outfits</p>
+          <p className="text-2xl font-bold text-foreground">{outfits.length}</p>
         </div>
         <div className="col-span-2">
-          <p className="text-xs text-slate-400 mb-1">💡 Insight</p>
-          <p className="text-sm text-slate-300">{insight}</p>
+          <p className="text-xs text-muted-foreground mb-1">💡 Insight</p>
+          <p className="text-sm text-foreground/80">{insight}</p>
         </div>
       </div>
 
@@ -80,7 +80,7 @@ export function AiOutfitRatingsList({ outfits, onRate }: AiOutfitRatingsListProp
         {outfits.slice(0, 10).map((outfit) => (
           <div
             key={outfit.id}
-            className="p-4 bg-slate-700/50 rounded-lg border border-slate-600"
+            className="p-4 bg-muted/50 rounded-lg border border-border"
           >
             {/* Outfit Preview */}
             <div className="flex items-start space-x-4 mb-4">
@@ -89,7 +89,7 @@ export function AiOutfitRatingsList({ outfits, onRate }: AiOutfitRatingsListProp
                   outfit.items.slice(0, 4).map((item) => (
                     <div
                       key={item.id}
-                      className="w-16 h-16 rounded-lg overflow-hidden bg-slate-600 flex-shrink-0"
+                      className="w-16 h-16 rounded-lg overflow-hidden bg-muted/80 flex-shrink-0"
                     >
                       {item.image_url ? (
                         <img
@@ -98,19 +98,19 @@ export function AiOutfitRatingsList({ outfits, onRate }: AiOutfitRatingsListProp
                           className="w-full h-full object-cover"
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center text-slate-400 text-xs">
+                        <div className="w-full h-full flex items-center justify-center text-muted-foreground text-xs">
                           {item.name.slice(0, 2).toUpperCase()}
                         </div>
                       )}
                     </div>
                   ))
                 ) : (
-                  <div className="text-sm text-slate-400">No items available</div>
+                  <div className="text-sm text-muted-foreground">No items available</div>
                 )}
               </div>
 
               <div className="flex-shrink-0">
-                <div className="flex items-center space-x-1 text-xs text-slate-400">
+                <div className="flex items-center space-x-1 text-xs text-muted-foreground">
                   <Calendar className="w-3 h-3" />
                   <span>{new Date(outfit.created_at).toLocaleDateString()}</span>
                 </div>
@@ -125,10 +125,10 @@ export function AiOutfitRatingsList({ outfits, onRate }: AiOutfitRatingsListProp
             {/* Rating Slider */}
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <label className="text-sm font-medium text-slate-300">
+                <label className="text-sm font-medium text-foreground/80">
                   Rate this outfit
                 </label>
-                <span className="text-lg font-bold text-white">
+                <span className="text-lg font-bold text-foreground">
                   {ratings[outfit.id] || 5}/10
                 </span>
               </div>
@@ -148,7 +148,7 @@ export function AiOutfitRatingsList({ outfits, onRate }: AiOutfitRatingsListProp
 
             {/* AI Response (if available) */}
             {outfit.ai_response && (
-              <div className="mt-3 p-3 bg-slate-600/30 rounded text-xs text-slate-300">
+              <div className="mt-3 p-3 bg-muted/80/30 rounded text-xs text-foreground/80">
                 {outfit.ai_response.slice(0, 150)}
                 {outfit.ai_response.length > 150 && "..."}
               </div>

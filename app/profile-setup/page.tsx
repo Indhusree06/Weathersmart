@@ -104,11 +104,11 @@ export default function ProfileSetupPage() {
                 <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
                   <Sparkles className="w-5 h-5 text-black" />
                 </div>
-                <span className="text-xl font-bold text-white">Weather Smart</span>
+                <span className="text-xl font-bold text-foreground">Weather Smart</span>
               </div>
 
               <div className="hidden md:flex items-center space-x-6">
-                <div className="text-blue-400 border-b-2 border-blue-400 pb-2 flex items-center space-x-2">
+                <div className="text-primary border-b-2 border-blue-400 pb-2 flex items-center space-x-2">
                   <User className="w-4 h-4" />
                   <span>My Profile</span>
                 </div>
@@ -130,12 +130,12 @@ export default function ProfileSetupPage() {
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-3">
                 <Avatar className="w-8 h-8">
-                  <AvatarFallback className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-sm">
+                  <AvatarFallback className="bg-gradient-to-r from-cyan-500 to-blue-500 text-foreground text-sm">
                     {userInitial}
                   </AvatarFallback>
                 </Avatar>
                 <div className="hidden sm:block">
-                  <p className="text-sm font-medium text-white">{user.email?.split("@")[0]}</p>
+                  <p className="text-sm font-medium text-foreground">{user.email?.split("@")[0]}</p>
                   <p className="text-xs text-gray-400">{user.email}</p>
                 </div>
               </div>
@@ -157,10 +157,10 @@ export default function ProfileSetupPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex items-center justify-center space-x-4">
           <div className="flex items-center">
-            <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-medium">
+            <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-foreground text-sm font-medium">
               1
             </div>
-            <span className="ml-2 text-blue-400 font-medium">My Profile</span>
+            <span className="ml-2 text-primary font-medium">My Profile</span>
           </div>
           <div className="w-16 h-0.5 bg-gray-600"></div>
           <div className="flex items-center">
@@ -191,7 +191,7 @@ export default function ProfileSetupPage() {
         <Card className="bg-gray-800/80 backdrop-blur-xl border-gray-700 shadow-2xl">
           <CardContent className="p-8">
             <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold text-white mb-2">Welcome to Weather Smart!</h1>
+              <h1 className="text-3xl font-bold text-foreground mb-2">Welcome to Weather Smart!</h1>
               <p className="text-gray-400">Let's set up your profile and start building your smart wardrobe</p>
             </div>
 
@@ -237,7 +237,7 @@ export default function ProfileSetupPage() {
                     type="button"
                     variant="link"
                     onClick={() => document.getElementById("profile-picture")?.click()}
-                    className="text-blue-400 hover:text-blue-300"
+                    className="text-primary hover:text-blue-300"
                   >
                     <Upload className="w-4 h-4 mr-2" />
                     Update Profile Picture
@@ -257,7 +257,7 @@ export default function ProfileSetupPage() {
                   placeholder="Enter your display name"
                   value={displayName}
                   onChange={(e) => setDisplayName(e.target.value)}
-                  className="mt-2 h-12 bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:border-blue-400 focus:ring-blue-400"
+                  className="mt-2 h-12 bg-gray-700 border-gray-600 text-foreground placeholder-gray-400 focus:border-blue-400 focus:ring-blue-400"
                 />
               </div>
 
@@ -272,7 +272,7 @@ export default function ProfileSetupPage() {
                   placeholder="Tell us about your style preferences..."
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="mt-2 bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:border-blue-400 focus:ring-blue-400 min-h-[100px]"
+                  className="mt-2 bg-gray-700 border-gray-600 text-foreground placeholder-gray-400 focus:border-blue-400 focus:ring-blue-400 min-h-[100px]"
                 />
               </div>
 
@@ -281,7 +281,7 @@ export default function ProfileSetupPage() {
                 <Button
                   onClick={handleSaveProfile}
                   disabled={loading || !displayName.trim()}
-                  className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-medium"
+                  className="w-full h-12 bg-primary hover:bg-primary/90 text-foreground font-medium"
                 >
                   {loading ? (
                     <>
@@ -296,7 +296,7 @@ export default function ProfileSetupPage() {
                 <Button
                   onClick={handleCreateWardrobe}
                   disabled={loading}
-                  className="w-full h-12 bg-green-600 hover:bg-green-700 text-white font-medium"
+                  className="w-full h-12 bg-green-600 hover:bg-green-700 text-foreground font-medium"
                 >
                   {loading ? (
                     <>

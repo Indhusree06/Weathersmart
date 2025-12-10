@@ -13,16 +13,16 @@ interface SummaryCardProps {
 
 export function SummaryCard({ title, value, subtitle, icon: Icon, image }: SummaryCardProps) {
   return (
-    <Card className="bg-slate-800 border-slate-700 p-6">
+    <Card className="bg-card border-border p-6">
       <div className="flex items-start justify-between">
         <div className="flex-1">
-          <p className="text-sm text-slate-400 mb-1">{title}</p>
-          <p className="text-3xl font-bold text-white mb-1">{value}</p>
+          <p className="text-sm text-muted-foreground mb-1">{title}</p>
+          <p className="text-3xl font-bold text-foreground mb-1">{value}</p>
           {subtitle && <p className="text-xs text-slate-500">{subtitle}</p>}
         </div>
         {Icon && (
-          <div className="ml-4 p-3 bg-slate-700 rounded-lg">
-            <Icon className="w-6 h-6 text-slate-300" />
+          <div className="ml-4 p-3 bg-muted rounded-lg">
+            <Icon className="w-6 h-6 text-foreground/80" />
           </div>
         )}
         {image && (

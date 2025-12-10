@@ -13,18 +13,18 @@ const COLORS = ["#3b82f6", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6", "#ec4899"
 export function WardrobeCategoryChart({ data }: WardrobeCategoryChartProps) {
   if (data.length === 0) {
     return (
-      <Card className="bg-slate-800 border-slate-700 p-6">
-        <h3 className="text-lg font-semibold text-white mb-4">Wardrobe Categories</h3>
+      <Card className="bg-card border-border p-6">
+        <h3 className="text-lg font-semibold text-foreground mb-4">Wardrobe Categories</h3>
         <div className="h-64 flex items-center justify-center">
-          <p className="text-slate-400">No items in your wardrobe yet</p>
+          <p className="text-muted-foreground">No items in your wardrobe yet</p>
         </div>
       </Card>
     )
   }
 
   return (
-    <Card className="bg-slate-800 border-slate-700 p-6">
-      <h3 className="text-lg font-semibold text-white mb-4">Wardrobe Categories</h3>
+    <Card className="bg-card border-border p-6">
+      <h3 className="text-lg font-semibold text-foreground mb-4">Wardrobe Categories</h3>
       <ResponsiveContainer width="100%" height={300}>
         <PieChart>
           <Pie

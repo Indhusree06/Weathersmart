@@ -749,8 +749,8 @@ export default function ChatPage() {
   /* ---------------------------------- UI ---------------------------------- */
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
-        <div className="flex items-center space-x-2 text-white">
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="flex items-center space-x-2 text-foreground">
           <Loader2 className="w-6 h-6 animate-spin" />
           <span>Loading...</span>
         </div>
@@ -760,7 +760,7 @@ export default function ChatPage() {
   if (!user) return null
 
   return (
-    <div className="min-h-screen bg-slate-900">
+    <div className="min-h-screen bg-background">
       {/* Navbar */}
       <Navbar 
         navLinks={[
@@ -777,9 +777,9 @@ export default function ChatPage() {
       />
 
       {/* Weather Ticker */}
-      <div className="bg-blue-600 px-6 py-2">
+      <div className="bg-primary px-6 py-2">
         <div className="overflow-hidden">
-          <div className="animate-scroll whitespace-nowrap text-sm text-white font-medium">
+          <div className="animate-scroll whitespace-nowrap text-sm text-foreground font-medium">
             <span className="inline-block px-8">
               {selectedLocation}: {
                 weatherLoading
@@ -795,26 +795,26 @@ export default function ChatPage() {
       </div>
 
       {/* Controls Row */}
-      <div className="bg-slate-800">
+      <div className="bg-card">
         <div className="container mx-auto px-6 pt-6">
           <div className="grid grid-cols-12 gap-4">
             {/* Location */}
             <div className="col-span-12 md:col-span-6">
               <div className="flex items-center space-x-2 mb-2">
-                <MapPin className="w-4 h-4 text-slate-400" />
-                <span className="text-white text-sm font-medium">Location</span>
+                <MapPin className="w-4 h-4 text-muted-foreground" />
+                <span className="text-foreground text-sm font-medium">Location</span>
               </div>
               <Popover open={mainLocationOpen} onOpenChange={setMainLocationOpen}>
                 <PopoverTrigger asChild>
-                  <Button variant="outline" className="w-full justify-between bg-slate-800 border-slate-600 text-white hover:bg-slate-700">
+                  <Button variant="outline" className="w-full justify-between bg-card border-border text-foreground hover:bg-muted">
                     {selectedLocation}
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-80 p-0 bg-slate-800 border-slate-600">
-                  <Command className="bg-slate-800">
-                    <CommandInput placeholder="Search cities..." value={mainSearchQuery} onValueChange={setMainSearchQuery} className="text-white" />
-                    <CommandEmpty className="text-slate-400 p-4">No cities found.</CommandEmpty>
+                <PopoverContent className="w-80 p-0 bg-card border-border">
+                  <Command className="bg-card">
+                    <CommandInput placeholder="Search cities..." value={mainSearchQuery} onValueChange={setMainSearchQuery} className="text-foreground" />
+                    <CommandEmpty className="text-muted-foreground p-4">No cities found.</CommandEmpty>
                     <CommandGroup>
                       <CommandList className="max-h-60">
                         {mainFilteredLocations.map((l) => (
@@ -822,7 +822,7 @@ export default function ChatPage() {
                             key={`loc-${l.city}-${l.state}`}
                             value={`${l.city}, ${l.state}`}
                             onSelect={() => handleMainLocationSelect(`${l.city}, ${l.state}`)}
-                            className="text-white hover:bg-slate-700 cursor-pointer"
+                            className="text-foreground hover:bg-muted cursor-pointer"
                           >
                             <Check className={cn("mr-2 h-4 w-4", selectedLocation === `${l.city}, ${l.state}` ? "opacity-100" : "opacity-0")} />
                             {l.city}, {l.state}
@@ -838,16 +838,16 @@ export default function ChatPage() {
             {/* Wardrobe */}
             <div className="col-span-12 md:col-span-6">
               <div className="flex items-center space-x-2 mb-2">
-                <User className="w-4 h-4 text-slate-400" />
-                <span className="text-white text-sm font-medium">Wardrobe</span>
+                <User className="w-4 h-4 text-muted-foreground" />
+                <span className="text-foreground text-sm font-medium">Wardrobe</span>
               </div>
               <Select value={selectedProfile} onValueChange={setSelectedProfile}>
-                <SelectTrigger className="w-full bg-slate-800 border-slate-600 text-white">
+                <SelectTrigger className="w-full bg-card border-border text-foreground">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-slate-800 border-slate-600">
+                <SelectContent className="bg-card border-border">
                   {profilesLoading ? (
-                    <SelectItem value="loading" className="text-slate-400" disabled>
+                    <SelectItem value="loading" className="text-muted-foreground" disabled>
                       <div className="flex items-center space-x-2">
                         <Loader2 className="w-4 h-4 animate-spin" />
                         <span>Loading profiles...</span>
@@ -856,7 +856,7 @@ export default function ChatPage() {
                   ) : wardrobeProfiles.length > 0 ? (
                     <>
                       {wardrobeProfiles.map((p) => (
-                        <SelectItem key={p.id} value={p.relationship === "self" ? "owner" : p.id} className="text-white hover:bg-slate-700">
+                        <SelectItem key={p.id} value={p.relationship === "self" ? "owner" : p.id} className="text-foreground hover:bg-muted">
                           <div className="flex items-center space-x-2">
                             <User className="w-4 h-4" />
                             <span>
@@ -866,12 +866,12 @@ export default function ChatPage() {
                           </div>
                         </SelectItem>
                       ))}
-                      <SelectItem value="family" className="text-white hover:bg-slate-700">
+                      <SelectItem value="family" className="text-foreground hover:bg-muted">
                         <div className="flex items-center space-x-2"><Users className="w-4 h-4" /><span>All Family Members</span></div>
                       </SelectItem>
                     </>
                   ) : (
-                    <SelectItem value="owner" className="text-white hover:bg-slate-700">
+                    <SelectItem value="owner" className="text-foreground hover:bg-muted">
                       <div className="flex items-center space-x-2"><User className="w-4 h-4" /><span>My Wardrobe</span></div>
                     </SelectItem>
                   )}
@@ -884,9 +884,9 @@ export default function ChatPage() {
           <div className="grid grid-cols-12 gap-6 mt-4 pb-8">
             {/* Chat (left) */}
             <section className="col-span-12 lg:col-span-7">
-              <div className="bg-slate-900 rounded-lg p-4 h-[72vh] flex flex-col">
+              <div className="bg-background rounded-lg p-4 h-[72vh] flex flex-col">
                 <div className="mb-2">
-                  <p className="text-slate-300 text-sm font-normal leading-relaxed">
+                  <p className="text-foreground/80 text-sm font-normal leading-relaxed">
                     {isChildProfileSelected 
                       ? `Hi! I'm here to help pick outfits for ${selectedProfileName}! 🌈 Tell me what ${selectedProfileName} is doing today and I'll suggest something cute and weather-appropriate.`
                       : "Hi! I'm your AI Outfit Picker. Tell me your plans and I'll suggest an outfit that matches the weather, occasion, and your wardrobe."
@@ -906,13 +906,13 @@ export default function ChatPage() {
                   <ScrollArea className="h-full">
                     {messages.map((m) => (
                       <div key={m.id} className="mb-3">
-                        <div className={`${m.role === "user" ? "bg-blue-600 text-white ml-auto max-w-md" : "bg-slate-700 text-white max-w-2xl"} rounded-lg px-3 py-2 text-sm font-normal leading-relaxed`}>
+                        <div className={`${m.role === "user" ? "bg-primary text-foreground ml-auto max-w-md" : "bg-muted text-foreground max-w-2xl"} rounded-lg px-3 py-2 text-sm font-normal leading-relaxed`}>
                           {typeof m.content === 'string' ? m.content : JSON.stringify(m.content)}
                         </div>
                       </div>
                     ))}
                     {isLoading && (
-                      <div className="bg-slate-700 text-white max-w-2xl rounded-lg px-3 py-2 flex items-center space-x-2 text-sm font-normal">
+                      <div className="bg-muted text-foreground max-w-2xl rounded-lg px-3 py-2 flex items-center space-x-2 text-sm font-normal">
                         <Loader2 className="w-4 h-4 animate-spin" />
                         <span>Thinking...</span>
                       </div>
@@ -924,32 +924,32 @@ export default function ChatPage() {
                   {isChildProfileSelected ? (
                     <>
                       {/* Child-specific buttons */}
-                      <Button variant="outline" size="sm" onClick={() => handleQuickAction(`What should ${selectedProfileName} wear to school today?`)} className="bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700">
+                      <Button variant="outline" size="sm" onClick={() => handleQuickAction(`What should ${selectedProfileName} wear to school today?`)} className="bg-card border-border text-foreground/80 hover:bg-muted">
                         🎒 School outfit
                       </Button>
-                      <Button variant="outline" size="sm" onClick={() => handleQuickAction(`Suggest a playground outfit for ${selectedProfileName}`)} className="bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700">
+                      <Button variant="outline" size="sm" onClick={() => handleQuickAction(`Suggest a playground outfit for ${selectedProfileName}`)} className="bg-card border-border text-foreground/80 hover:bg-muted">
                         🛝 Playground
                       </Button>
-                      <Button variant="outline" size="sm" onClick={() => handleQuickAction(`What should ${selectedProfileName} wear to a playdate?`)} className="bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700">
+                      <Button variant="outline" size="sm" onClick={() => handleQuickAction(`What should ${selectedProfileName} wear to a playdate?`)} className="bg-card border-border text-foreground/80 hover:bg-muted">
                         🧸 Playdate
                       </Button>
-                      <Button variant="outline" size="sm" onClick={() => handleQuickAction(`What's good for ${selectedProfileName} in this weather?`)} className="bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700">
+                      <Button variant="outline" size="sm" onClick={() => handleQuickAction(`What's good for ${selectedProfileName} in this weather?`)} className="bg-card border-border text-foreground/80 hover:bg-muted">
                         🌤️ Weather outfit
                       </Button>
                     </>
                   ) : (
                     <>
                       {/* Adult buttons */}
-                      <Button variant="outline" size="sm" onClick={() => handleQuickAction("What should I wear today?")} className="bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700">
+                      <Button variant="outline" size="sm" onClick={() => handleQuickAction("What should I wear today?")} className="bg-card border-border text-foreground/80 hover:bg-muted">
                         What should I wear today?
                       </Button>
-                      <Button variant="outline" size="sm" onClick={() => handleQuickAction("Suggest a work outfit")} className="bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700">
+                      <Button variant="outline" size="sm" onClick={() => handleQuickAction("Suggest a work outfit")} className="bg-card border-border text-foreground/80 hover:bg-muted">
                         Suggest a work outfit
                       </Button>
-                      <Button variant="outline" size="sm" onClick={() => handleQuickAction("Show me weekend casual looks")} className="bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700">
+                      <Button variant="outline" size="sm" onClick={() => handleQuickAction("Show me weekend casual looks")} className="bg-card border-border text-foreground/80 hover:bg-muted">
                         Weekend casual
                       </Button>
-                      <Button variant="outline" size="sm" onClick={() => handleQuickAction("What's good for this weather?")} className="bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700">
+                      <Button variant="outline" size="sm" onClick={() => handleQuickAction("What's good for this weather?")} className="bg-card border-border text-foreground/80 hover:bg-muted">
                         Weather outfit
                       </Button>
                     </>
@@ -961,7 +961,7 @@ export default function ChatPage() {
                     value={input}
                     onChange={handleInputChange}
                     placeholder="Ask me about outfits, styling, or wardrobe advice..."
-                    className="flex-1 bg-slate-800 border-slate-600 text-white placeholder-slate-400 font-normal"
+                    className="flex-1 bg-card border-border text-foreground placeholder-slate-400 font-normal"
                     disabled={isLoading}
                   />
                   <VoiceInput 
@@ -976,7 +976,7 @@ export default function ChatPage() {
                     }}
                     disabled={isLoading}
                   />
-                  <Button type="submit" disabled={isLoading || !input.trim()} className="bg-blue-600 hover:bg-blue-700">
+                  <Button type="submit" disabled={isLoading || !input.trim()} className="bg-primary hover:bg-primary/90">
                     <Send className="w-4 h-4" />
                   </Button>
                 </form>
@@ -985,10 +985,10 @@ export default function ChatPage() {
 
             {/* Recommendation (right) */}
             <aside className="col-span-12 lg:col-span-5">
-              <div className="bg-slate-900 rounded-lg p-4 h-[72vh] flex flex-col overflow-hidden">
+              <div className="bg-background rounded-lg p-4 h-[72vh] flex flex-col overflow-hidden">
                 <div className="flex items-center justify-between mb-2">
-                  <h3 className="text-white text-sm font-semibold">Recommended Outfit</h3>
-                  <span className="text-[11px] text-slate-400 flex items-center gap-1 font-normal">
+                  <h3 className="text-foreground text-sm font-semibold">Recommended Outfit</h3>
+                  <span className="text-[11px] text-muted-foreground flex items-center gap-1 font-normal">
                     <Cloud className="w-3 h-3" />
                     {selectedLocation}{
                       weatherLoading ? " | Loading..." : weather ? ` | ${weather.temperature}°F | ${weather.condition}` : ""
@@ -1001,10 +1001,10 @@ export default function ChatPage() {
                     {!currentOutfit ? (
                       <div className="text-center py-8">
                         <Settings className="w-12 h-12 text-slate-600 mx-auto mb-3" />
-                        <h4 className="text-white font-medium">No Outfit Selected</h4>
-                        <p className="text-slate-400 text-xs mt-1 font-normal leading-relaxed">Ask me to pick an outfit and I'll show you recommendations from your actual wardrobe items.</p>
+                        <h4 className="text-foreground font-medium">No Outfit Selected</h4>
+                        <p className="text-muted-foreground text-xs mt-1 font-normal leading-relaxed">Ask me to pick an outfit and I'll show you recommendations from your actual wardrobe items.</p>
                         <div className="space-y-2 mt-4">
-                          <Button onClick={() => handleQuickAction("What should I wear today?")} className="bg-blue-600 hover:bg-blue-700 w-full text-sm">
+                          <Button onClick={() => handleQuickAction("What should I wear today?")} className="bg-primary hover:bg-primary/90 w-full text-sm">
                             What should I wear today?
                           </Button>
                           <Button
@@ -1021,12 +1021,12 @@ export default function ChatPage() {
                               } catch { alert("Error adding sample items") }
                             }}
                             variant="outline"
-                            className="bg-green-600 border-green-500 text-white hover:bg-green-700 w-full text-sm"
+                            className="bg-green-600 border-green-500 text-foreground hover:bg-green-700 w-full text-sm"
                           >
                             Add Sample Wardrobe Items
                           </Button>
                           <Link href="/add-clothes">
-                            <Button variant="outline" className="bg-slate-800 border-slate-600 text-white hover:bg-slate-700 w-full text-sm">
+                            <Button variant="outline" className="bg-card border-border text-foreground hover:bg-muted w-full text-sm">
                               Add Items to Wardrobe
                             </Button>
                           </Link>
@@ -1035,14 +1035,14 @@ export default function ChatPage() {
                     ) : (
                       <>
                         {/* Reasoning */}
-                        <p className="text-slate-300 text-xs mb-3 font-normal leading-relaxed">{currentOutfit.style_notes}</p>
+                        <p className="text-foreground/80 text-xs mb-3 font-normal leading-relaxed">{currentOutfit.style_notes}</p>
 
                         {/* Preview row */}
-                        <div className="bg-slate-800 rounded-lg p-3 mb-3">
+                        <div className="bg-card rounded-lg p-3 mb-3">
                           <div className="flex items-center gap-3 overflow-x-auto no-scrollbar">
                             {Array.isArray(currentOutfit.items) && currentOutfit.items.map((item: any, idx: number) => (
                               <div key={`preview-${item.id || idx}`} className="relative shrink-0">
-                                <div className="w-28 h-28 bg-slate-700 rounded-xl overflow-hidden flex items-center justify-center">
+                                <div className="w-28 h-28 bg-muted rounded-xl overflow-hidden flex items-center justify-center">
                                   {/* eslint-disable-next-line @next/next/no-img-element */}
                                   <img
                                     src={item.image?.startsWith("http") ? item.image : `${typeof window !== 'undefined' ? window.location.origin : ""}${item.image}`}
@@ -1050,9 +1050,9 @@ export default function ChatPage() {
                                     className="w-full h-full object-cover"
                                     onError={(ev) => { (ev.target as HTMLImageElement).style.display = "none" }}
                                   />
-                                  {!item.image && <Shirt className="w-7 h-7 text-slate-400" />}
+                                  {!item.image && <Shirt className="w-7 h-7 text-muted-foreground" />}
                                 </div>
-                                <div className="absolute -bottom-1 -right-1 bg-slate-900 rounded-full p-[3px] shadow-md">
+                                <div className="absolute -bottom-1 -right-1 bg-background rounded-full p-[3px] shadow-md">
                                   <div className="w-4 h-4 rounded-full" style={{ backgroundColor: item._hex ?? colorForItemDot(item.color) }} />
                                 </div>
                               </div>
@@ -1123,7 +1123,7 @@ export default function ChatPage() {
                                 navigator.clipboard.writeText(`${shareText}\n${window.location.href}`)
                                 alert('✅ Outfit link copied to clipboard!')
                               }}
-                              className="bg-slate-700 hover:bg-slate-600 w-full text-xs"
+                              className="bg-muted hover:bg-muted/80 w-full text-xs"
                               disabled={!currentOutfit?.items || currentOutfit.items.length === 0}
                             >
                               📋 Copy Link
@@ -1148,7 +1148,7 @@ export default function ChatPage() {
                           {Array.isArray(currentOutfit.items) && currentOutfit.items.map((item: any, index: number) => (
                             <div
                               key={item.id || `item-${index}`}
-                              className="bg-slate-800 rounded-lg p-2 flex items-center gap-3 hover:bg-slate-700 transition-colors cursor-pointer relative"
+                              className="bg-card rounded-lg p-2 flex items-center gap-3 hover:bg-muted transition-colors cursor-pointer relative"
                               onClick={() => {
                                 const profileParam = selectedProfile === "owner" ? wardrobeProfiles.find((p) => p.relationship === "self")?.id : selectedProfile
                                 const match = currentWardrobeItems.find((wi) => wi.name.toLowerCase().includes(String(item.name).toLowerCase()) || String(item.name).toLowerCase().includes(wi.name.toLowerCase()))
@@ -1161,7 +1161,7 @@ export default function ChatPage() {
                                 alternativeItems={getAlternativeItems(item)}
                                 onSwap={(newItem) => handleSwapItem(item, newItem)}
                               />
-                              <div className="w-14 h-14 rounded-md overflow-hidden bg-slate-700 flex items-center justify-center">
+                              <div className="w-14 h-14 rounded-md overflow-hidden bg-muted flex items-center justify-center">
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img
                                   src={item.image?.startsWith("http") ? item.image : `${typeof window !== 'undefined' ? window.location.origin : ""}${item.image}`}
@@ -1169,11 +1169,11 @@ export default function ChatPage() {
                                   className="w-full h-full object-cover"
                                   onError={(ev) => { (ev.target as HTMLImageElement).style.display = "none" }}
                                 />
-                                {!item.image && <Shirt className="w-5 h-5 text-slate-400" />}
+                                {!item.image && <Shirt className="w-5 h-5 text-muted-foreground" />}
                               </div>
                               <div className="flex-1">
-                                <p className="text-white text-xs font-medium leading-tight">{item.name || 'Unknown Item'}</p>
-                                <p className="text-slate-400 text-[11px] font-normal">{item.category || 'No category'}</p>
+                                <p className="text-foreground text-xs font-medium leading-tight">{item.name || 'Unknown Item'}</p>
+                                <p className="text-muted-foreground text-[11px] font-normal">{item.category || 'No category'}</p>
                                 {typeof item.wear_count === 'number' && (
                                   <p className="text-yellow-400 text-[11px] flex items-center gap-1 font-normal">
                                     <Star className="w-3 h-3" /> Worn {item.wear_count} times
@@ -1188,54 +1188,54 @@ export default function ChatPage() {
                         {/* Weather & Occasion */}
                         <div className="text-left space-y-1 mb-3">
                           <div className="flex items-center text-[11px]">
-                            <Cloud className="w-3 h-3 text-slate-400 mr-2" />
-                            <span className="text-slate-300">
+                            <Cloud className="w-3 h-3 text-muted-foreground mr-2" />
+                            <span className="text-foreground/80">
                               {typeof currentOutfit.weather_suitability === 'string' ? currentOutfit.weather_suitability : 'Any weather'}
                             </span>
                           </div>
                           <div className="flex items-center text-[11px]">
-                            <User className="w-3 h-3 text-slate-400 mr-2" />
-                            <span className="text-slate-300 capitalize">
+                            <User className="w-3 h-3 text-muted-foreground mr-2" />
+                            <span className="text-foreground/80 capitalize">
                               {typeof currentOutfit.occasion === 'string' ? currentOutfit.occasion : 'casual'}
                             </span>
                           </div>
                         </div>
 
                         {/* Color Harmony */}
-                        <div className="bg-slate-800 rounded-lg p-3">
-                          <h5 className="text-white text-sm font-medium flex items-center gap-2 mb-2">
+                        <div className="bg-card rounded-lg p-3">
+                          <h5 className="text-foreground text-sm font-medium flex items-center gap-2 mb-2">
                             <Palette className="w-4 h-4" /> Color Harmony
                           </h5>
 
                           <div className="flex gap-2 mb-2">
                             {uniqueItemColors.length === 0 ? (
-                              <span className="text-slate-400 text-xs">No colors detected.</span>
+                              <span className="text-muted-foreground text-xs">No colors detected.</span>
                             ) : uniqueItemColors.map((c, i) => (
                               <div key={i} className="flex flex-col items-center">
-                                <div className="w-8 h-8 rounded-full border border-slate-700" style={{ backgroundColor: c.hex }} />
-                                <span className="text-[10px] text-slate-400 mt-1">{c.name.length > 10 ? c.name.slice(0, 10) + "…" : c.name}</span>
+                                <div className="w-8 h-8 rounded-full border border-border" style={{ backgroundColor: c.hex }} />
+                                <span className="text-[10px] text-muted-foreground mt-1">{c.name.length > 10 ? c.name.slice(0, 10) + "…" : c.name}</span>
                               </div>
                             ))}
                           </div>
 
                           {currentOutfit.colorHarmony && (
                             <>
-                              <p className="text-slate-300 text-xs mb-1">{currentOutfit.colorHarmony.harmonyType}</p>
-                              <p className="text-slate-400 text-[11px]">{currentOutfit.colorHarmony.explanation}</p>
+                              <p className="text-foreground/80 text-xs mb-1">{currentOutfit.colorHarmony.harmonyType}</p>
+                              <p className="text-muted-foreground text-[11px]">{currentOutfit.colorHarmony.explanation}</p>
 
                               <div className="space-y-2 mt-3">
                                 <div className="flex items-start gap-2">
                                   <Lightbulb className="w-3 h-3 text-yellow-400 mt-0.5 flex-shrink-0" />
-                                  <p className="text-slate-300 text-[11px]">
+                                  <p className="text-foreground/80 text-[11px]">
                                     <span className="text-yellow-400 font-medium">Why This Works</span><br />
                                     {currentOutfit.colorHarmony.styleNotes}
                                   </p>
                                 </div>
                                 {currentOutfit.colorHarmony.weatherMatch && (
                                   <div className="flex items-start gap-2">
-                                    <Thermometer className="w-3 h-3 text-blue-400 mt-0.5 flex-shrink-0" />
-                                    <p className="text-slate-300 text-[11px]">
-                                      <span className="text-blue-400 font-medium">Weather Match</span><br />
+                                    <Thermometer className="w-3 h-3 text-primary mt-0.5 flex-shrink-0" />
+                                    <p className="text-foreground/80 text-[11px]">
+                                      <span className="text-primary font-medium">Weather Match</span><br />
                                       {currentOutfit.colorHarmony.weatherMatch}
                                     </p>
                                   </div>

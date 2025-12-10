@@ -103,10 +103,10 @@ export function AdvancedCharts({ items }: AdvancedChartsProps) {
     if (active && payload && payload.length) {
       const data = payload[0].payload
       return (
-        <div className="bg-slate-800 border border-slate-600 rounded-lg p-3 shadow-xl">
-          <p className="font-semibold text-white mb-1">{data.name}</p>
-          {data.category && <p className="text-xs text-slate-400">Category: {data.category}</p>}
-          {data.x !== undefined && <p className="text-sm text-blue-400">Wears: {data.x}</p>}
+        <div className="bg-card border border-border rounded-lg p-3 shadow-xl">
+          <p className="font-semibold text-foreground mb-1">{data.name}</p>
+          {data.category && <p className="text-xs text-muted-foreground">Category: {data.category}</p>}
+          {data.x !== undefined && <p className="text-sm text-primary">Wears: {data.x}</p>}
           {data.y !== undefined && <p className="text-sm text-green-400">Price: ${data.y.toFixed(2)}</p>}
           {data.z !== undefined && <p className="text-sm text-orange-400">Cost/Wear: ${data.z.toFixed(2)}</p>}
         </div>
@@ -156,7 +156,7 @@ export function AdvancedCharts({ items }: AdvancedChartsProps) {
   }
 
   return (
-    <Card className="border-slate-700/50 bg-gradient-to-br from-slate-800/50 to-slate-900/50">
+    <Card className="border-border/50 bg-gradient-to-br from-slate-800/50 to-slate-900/50">
       <CardHeader>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -168,7 +168,7 @@ export function AdvancedCharts({ items }: AdvancedChartsProps) {
               variant={activeChart === "bubble" ? "default" : "outline"}
               size="sm"
               onClick={() => setActiveChart("bubble")}
-              className={activeChart === "bubble" ? "bg-blue-600" : "border-slate-600"}
+              className={activeChart === "bubble" ? "bg-primary" : "border-border"}
             >
               <TrendingUp className="h-4 w-4 mr-1" />
               Bubble
@@ -177,7 +177,7 @@ export function AdvancedCharts({ items }: AdvancedChartsProps) {
               variant={activeChart === "radar" ? "default" : "outline"}
               size="sm"
               onClick={() => setActiveChart("radar")}
-              className={activeChart === "radar" ? "bg-purple-600" : "border-slate-600"}
+              className={activeChart === "radar" ? "bg-purple-600" : "border-border"}
             >
               <Grid3x3 className="h-4 w-4 mr-1" />
               Radar
@@ -186,7 +186,7 @@ export function AdvancedCharts({ items }: AdvancedChartsProps) {
               variant={activeChart === "treemap" ? "default" : "outline"}
               size="sm"
               onClick={() => setActiveChart("treemap")}
-              className={activeChart === "treemap" ? "bg-green-600" : "border-slate-600"}
+              className={activeChart === "treemap" ? "bg-green-600" : "border-border"}
             >
               <Layers className="h-4 w-4 mr-1" />
               Treemap
@@ -195,7 +195,7 @@ export function AdvancedCharts({ items }: AdvancedChartsProps) {
               variant={activeChart === "area" ? "default" : "outline"}
               size="sm"
               onClick={() => setActiveChart("area")}
-              className={activeChart === "area" ? "bg-orange-600" : "border-slate-600"}
+              className={activeChart === "area" ? "bg-orange-600" : "border-border"}
             >
               <BarChart3 className="h-4 w-4 mr-1" />
               Area
@@ -353,8 +353,8 @@ export function AdvancedCharts({ items }: AdvancedChartsProps) {
           )}
         </motion.div>
 
-        <div className="mt-4 p-4 bg-slate-900/50 rounded-lg border border-slate-700/50">
-          <p className="text-sm text-slate-300">
+        <div className="mt-4 p-4 bg-background/50 rounded-lg border border-border/50">
+          <p className="text-sm text-foreground/80">
             {activeChart === "bubble" && "💡 Larger bubbles = higher cost per wear. Items in the top-left are expensive but rarely worn."}
             {activeChart === "radar" && "💡 The radar shows your wardrobe balance. Larger areas indicate more items and usage in that category."}
             {activeChart === "treemap" && "💡 Larger rectangles = more items in that category. Hover to see exact counts."}

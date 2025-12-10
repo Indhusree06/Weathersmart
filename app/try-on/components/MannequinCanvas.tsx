@@ -112,11 +112,11 @@ function ClothingOverlay({ item, position, onRemove }: ClothingOverlayProps) {
           className="absolute -top-2 -right-2 w-7 h-7 bg-red-600 hover:bg-red-700 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-lg z-30"
           title="Remove item"
         >
-          <X className="w-4 h-4 text-white" />
+          <X className="w-4 h-4 text-foreground" />
         </button>
         {/* Item label on hover */}
-        <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-slate-800/90 px-3 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-          <span className="text-xs text-white">{item.name}</span>
+        <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-card/90 px-3 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+          <span className="text-xs text-foreground">{item.name}</span>
         </div>
       </div>
     </div>
@@ -188,13 +188,13 @@ function DropZone({ label, category, item, onDrop, onClear, position, isVisible 
       className={`absolute ${getPositionStyles()} border-2 rounded-lg transition-all ${
         isDragOver
           ? 'border-cyan-400 bg-cyan-400/20 shadow-lg shadow-cyan-500/50 scale-105'
-          : 'border-dashed border-slate-500/50 bg-slate-800/20 hover:border-slate-400 hover:bg-slate-800/30'
+          : 'border-dashed border-border/50 bg-card/20 hover:border-slate-400 hover:bg-card/30'
       }`}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
     >
-      <div className="w-full h-full flex flex-col items-center justify-center text-slate-400 text-sm px-2 text-center">
+      <div className="w-full h-full flex flex-col items-center justify-center text-muted-foreground text-sm px-2 text-center">
         <span className="font-medium">{label}</span>
         <span className="text-xs mt-1 opacity-70">Drag here</span>
       </div>
@@ -335,8 +335,8 @@ export function MannequinCanvas({
       {/* Canvas Area */}
       <div className="relative w-full h-full max-w-3xl mx-auto p-8">
         {/* Mannequin Label */}
-        <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-slate-800/90 backdrop-blur-sm px-4 py-2 rounded-full border border-slate-700 z-10 shadow-lg">
-          <p className="text-sm font-medium text-white">{getMannequinLabel()}</p>
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-card/90 backdrop-blur-sm px-4 py-2 rounded-full border border-border z-10 shadow-lg">
+          <p className="text-sm font-medium text-foreground">{getMannequinLabel()}</p>
         </div>
 
         {/* View Toggle & Controls */}
@@ -347,7 +347,7 @@ export function MannequinCanvas({
                 variant="outline"
                 size="sm"
                 onClick={handleZoomOut}
-                className="bg-slate-800/90 hover:bg-slate-700 text-white border-slate-600"
+                className="bg-card/90 hover:bg-muted text-foreground border-border"
                 title="Zoom Out"
               >
                 <ZoomOut className="w-4 h-4" />
@@ -356,7 +356,7 @@ export function MannequinCanvas({
                 variant="outline"
                 size="sm"
                 onClick={handleZoomIn}
-                className="bg-slate-800/90 hover:bg-slate-700 text-white border-slate-600"
+                className="bg-card/90 hover:bg-muted text-foreground border-border"
                 title="Zoom In"
               >
                 <ZoomIn className="w-4 h-4" />
@@ -367,7 +367,7 @@ export function MannequinCanvas({
             variant="outline"
             size="sm"
             onClick={() => setView3D(!view3D)}
-            className="bg-slate-800/90 hover:bg-slate-700 text-white border-slate-600"
+            className="bg-card/90 hover:bg-muted text-foreground border-border"
           >
             {view3D ? '2D View' : '3D View'}
           </Button>
@@ -375,7 +375,7 @@ export function MannequinCanvas({
             variant="outline"
             size="sm"
             onClick={handleResetView}
-            className="bg-slate-800/90 hover:bg-slate-700 text-white border-slate-600"
+            className="bg-card/90 hover:bg-muted text-foreground border-border"
             title="Reset View"
           >
             <RotateCcw className="w-4 h-4" />
@@ -391,7 +391,7 @@ export function MannequinCanvas({
           {aiPreviewUrl ? (
             /* Composed Outfit Preview - Enhanced */
             <div className="relative w-full h-full flex items-center justify-center">
-              <div className="relative w-[600px] h-[700px] bg-gradient-to-br from-slate-800 via-slate-850 to-slate-900 rounded-2xl overflow-hidden shadow-2xl border-2 border-slate-700">
+              <div className="relative w-[600px] h-[700px] bg-gradient-to-br from-slate-800 via-slate-850 to-slate-900 rounded-2xl overflow-hidden shadow-2xl border-2 border-border">
                 {/* Mannequin Base for Preview with better visibility */}
                 <div className="absolute inset-0 flex items-center justify-center opacity-50">
                   <div className="w-full h-full scale-110" style={{ 
@@ -456,7 +456,7 @@ export function MannequinCanvas({
                 {onClearAIPreview && (
                   <button
                     onClick={onClearAIPreview}
-                    className="absolute top-4 right-4 px-4 py-2 bg-slate-800/90 hover:bg-slate-700 text-white rounded-lg flex items-center space-x-2 shadow-lg z-30 transition-colors"
+                    className="absolute top-4 right-4 px-4 py-2 bg-card/90 hover:bg-muted text-foreground rounded-lg flex items-center space-x-2 shadow-lg z-30 transition-colors"
                   >
                     <X className="w-4 h-4" />
                     <span className="text-sm">Back to Mannequin</span>
@@ -465,7 +465,7 @@ export function MannequinCanvas({
                 
                 {/* Label */}
                 <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-cyan-600 to-blue-600 backdrop-blur-sm px-6 py-2 rounded-full shadow-lg">
-                  <p className="text-sm font-medium text-white">✨ Composed Outfit Preview</p>
+                  <p className="text-sm font-medium text-foreground">✨ Composed Outfit Preview</p>
                 </div>
               </div>
             </div>
@@ -572,7 +572,7 @@ export function MannequinCanvas({
               {hasClothing && (
                 <button
                   onClick={() => setShowDropZones(!showDropZones)}
-                  className="absolute top-2 left-2 px-3 py-1 bg-slate-800/80 hover:bg-slate-700 text-white text-xs rounded-lg transition-colors z-30"
+                  className="absolute top-2 left-2 px-3 py-1 bg-card/80 hover:bg-muted text-foreground text-xs rounded-lg transition-colors z-30"
                 >
                   {showDropZones ? 'Hide Zones' : 'Show Zones'}
                 </button>
@@ -583,7 +583,7 @@ export function MannequinCanvas({
 
         {/* Helper Text */}
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-center z-10 max-w-2xl">
-          <p className="text-sm text-slate-400 bg-slate-800/50 backdrop-blur-sm px-4 py-2 rounded-full">
+          <p className="text-sm text-muted-foreground bg-card/50 backdrop-blur-sm px-4 py-2 rounded-full">
             {aiPreviewUrl 
               ? "✨ Realistic preview of your complete outfit" 
               : view3D

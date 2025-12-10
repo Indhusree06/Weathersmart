@@ -119,7 +119,7 @@ export function MannequinScene3DClient({ clothing, onSavePositions }: Props) {
   if (!mounted || !ThreeComponents) {
     return (
       <div className="w-full h-full flex items-center justify-center bg-slate-950">
-        <div className="text-slate-400 text-sm animate-pulse">Loading 3D View...</div>
+        <div className="text-muted-foreground text-sm animate-pulse">Loading 3D View...</div>
       </div>
     )
   }
@@ -131,8 +131,8 @@ export function MannequinScene3DClient({ clothing, onSavePositions }: Props) {
       {/* Control Panel */}
       <div className="absolute top-4 right-4 z-10 space-y-2">
         {selectedItem && (
-          <div className="bg-slate-800/90 backdrop-blur-sm rounded-lg border border-slate-700 p-3 space-y-2">
-            <p className="text-xs text-slate-300 font-medium uppercase">{selectedItem} Selected</p>
+          <div className="bg-card/90 backdrop-blur-sm rounded-lg border border-border p-3 space-y-2">
+            <p className="text-xs text-foreground/80 font-medium uppercase">{selectedItem} Selected</p>
             <Button
               size="sm"
               variant="outline"
@@ -142,7 +142,7 @@ export function MannequinScene3DClient({ clothing, onSavePositions }: Props) {
                   setCropModalItem({ type: selectedItem, url: itemUrl, name: selectedItem })
                 }
               }}
-              className="w-full border-cyan-600 text-cyan-400 hover:bg-cyan-600 hover:text-white"
+              className="w-full border-cyan-600 text-cyan-400 hover:bg-cyan-600 hover:text-foreground"
             >
               <Crop className="w-3 h-3 mr-2" />
               Crop Image
@@ -151,19 +151,19 @@ export function MannequinScene3DClient({ clothing, onSavePositions }: Props) {
               size="sm"
               variant="outline"
               onClick={() => setSelectedItem(null)}
-              className="w-full border-slate-600 text-slate-300 hover:bg-slate-700"
+              className="w-full border-border text-foreground/80 hover:bg-muted"
             >
               Deselect
             </Button>
           </div>
         )}
         
-        <div className="bg-slate-800/90 backdrop-blur-sm rounded-lg border border-slate-700 p-2 space-y-2">
+        <div className="bg-card/90 backdrop-blur-sm rounded-lg border border-border p-2 space-y-2">
           <Button
             size="sm"
             variant="outline"
             onClick={handleReset}
-            className="w-full border-slate-600 text-slate-300 hover:bg-slate-700"
+            className="w-full border-border text-foreground/80 hover:bg-muted"
           >
             <RotateCcw className="w-3 h-3 mr-2" />
             Reset All
@@ -171,7 +171,7 @@ export function MannequinScene3DClient({ clothing, onSavePositions }: Props) {
           <Button
             size="sm"
             onClick={handleSavePositions}
-            className="w-full bg-green-600 hover:bg-green-700 text-white"
+            className="w-full bg-green-600 hover:bg-green-700 text-foreground"
           >
             <Save className="w-3 h-3 mr-2" />
             Save Layout
@@ -181,8 +181,8 @@ export function MannequinScene3DClient({ clothing, onSavePositions }: Props) {
 
       {/* Instructions */}
       {!selectedItem && (
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 bg-slate-800/90 backdrop-blur-sm rounded-full px-4 py-2 border border-slate-700">
-          <p className="text-xs text-slate-300">
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 bg-card/90 backdrop-blur-sm rounded-full px-4 py-2 border border-border">
+          <p className="text-xs text-foreground/80">
             Click a clothing item to move or crop it
           </p>
         </div>

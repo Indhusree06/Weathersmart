@@ -28,11 +28,11 @@ export function OutfitItemsPanel({
   }
 
   return (
-    <div className="w-[300px] bg-slate-800 border-l border-slate-700 p-4 overflow-y-auto">
+    <div className="w-[300px] bg-card border-l border-border p-4 overflow-y-auto">
       {/* Title */}
       <div className="mb-4">
-        <h2 className="text-lg font-bold text-white">Recommended Outfit</h2>
-        <p className="text-sm text-slate-400 mt-1">
+        <h2 className="text-lg font-bold text-foreground">Recommended Outfit</h2>
+        <p className="text-sm text-muted-foreground mt-1">
           Drag items onto the mannequin or click Apply
         </p>
       </div>
@@ -40,8 +40,8 @@ export function OutfitItemsPanel({
       {/* Outfit Items */}
       <div className="space-y-3">
         {outfitItems.length === 0 ? (
-          <Card className="bg-slate-700 border-slate-600 p-4">
-            <p className="text-sm text-slate-400 text-center italic">
+          <Card className="bg-muted border-border p-4">
+            <p className="text-sm text-muted-foreground text-center italic">
               No outfit items to display
             </p>
           </Card>
@@ -49,7 +49,7 @@ export function OutfitItemsPanel({
           outfitItems.map((item) => (
             <Card
               key={item.id}
-              className="bg-slate-700 border-slate-600 p-3 hover:bg-slate-650 transition-colors cursor-pointer"
+              className="bg-muted border-border p-3 hover:bg-slate-650 transition-colors cursor-pointer"
               draggable
               onDragStart={(e) => {
                 e.dataTransfer.setData('wardrobeItem', JSON.stringify(item))
@@ -58,7 +58,7 @@ export function OutfitItemsPanel({
             >
               <div className="flex space-x-3">
                 {/* Thumbnail */}
-                <div className="flex-shrink-0 w-16 h-16 bg-slate-800 rounded-md overflow-hidden relative">
+                <div className="flex-shrink-0 w-16 h-16 bg-card rounded-md overflow-hidden relative">
                   {item.image_url ? (
                     <Image
                       src={item.image_url}
@@ -75,10 +75,10 @@ export function OutfitItemsPanel({
 
                 {/* Item Info */}
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-sm font-semibold text-white truncate">
+                  <h3 className="text-sm font-semibold text-foreground truncate">
                     {item.name}
                   </h3>
-                  <p className="text-xs text-slate-400 mt-1">
+                  <p className="text-xs text-muted-foreground mt-1">
                     {getCategoryLabel(item)}
                   </p>
                   {item.color && (
@@ -92,7 +92,7 @@ export function OutfitItemsPanel({
                     <Button
                       size="sm"
                       variant="outline"
-                      className="border-slate-500 text-slate-300 hover:bg-slate-600 text-xs h-7 px-2"
+                      className="border-border text-foreground/80 hover:bg-muted/80 text-xs h-7 px-2"
                       disabled
                     >
                       <Hand className="w-3 h-3 mr-1" />
@@ -103,8 +103,8 @@ export function OutfitItemsPanel({
                       onClick={() => onApplyItem(item)}
                       disabled={isItemApplied(item)}
                       className={isItemApplied(item)
-                        ? "bg-green-700 text-white text-xs h-7 px-2 cursor-not-allowed"
-                        : "bg-green-600 hover:bg-green-700 text-white text-xs h-7 px-2"
+                        ? "bg-green-700 text-foreground text-xs h-7 px-2 cursor-not-allowed"
+                        : "bg-green-600 hover:bg-green-700 text-foreground text-xs h-7 px-2"
                       }
                     >
                       {isItemApplied(item) ? (
@@ -126,8 +126,8 @@ export function OutfitItemsPanel({
 
       {/* Optional: Alternatives Section */}
       <div className="mt-6">
-        <h3 className="text-sm font-semibold text-slate-400 mb-3">Alternatives</h3>
-        <Card className="bg-slate-700 border-slate-600 p-4">
+        <h3 className="text-sm font-semibold text-muted-foreground mb-3">Alternatives</h3>
+        <Card className="bg-muted border-border p-4">
           <p className="text-xs text-slate-500 text-center italic">
             Coming soon: Alternative item suggestions
           </p>

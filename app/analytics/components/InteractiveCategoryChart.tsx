@@ -49,17 +49,17 @@ export function InteractiveCategoryChart({ data, allItems }: InteractiveCategory
 
   if (data.length === 0) {
     return (
-      <Card className="border-slate-700/50 bg-gradient-to-br from-slate-800/50 to-slate-900/50">
+      <Card className="border-border/50 bg-gradient-to-br from-slate-800/50 to-slate-900/50">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <PieChartIcon className="h-5 w-5 text-blue-500" />
+            <PieChartIcon className="h-5 w-5 text-primary" />
             Wardrobe Categories
           </CardTitle>
           <CardDescription>Click on any category to see details</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="h-64 flex items-center justify-center">
-            <p className="text-slate-400">No items in your wardrobe yet</p>
+            <p className="text-muted-foreground">No items in your wardrobe yet</p>
           </div>
         </CardContent>
       </Card>
@@ -67,11 +67,11 @@ export function InteractiveCategoryChart({ data, allItems }: InteractiveCategory
   }
 
   return (
-    <Card className="border-slate-700/50 bg-gradient-to-br from-slate-800/50 to-slate-900/50 relative overflow-hidden">
+    <Card className="border-border/50 bg-gradient-to-br from-slate-800/50 to-slate-900/50 relative overflow-hidden">
       <CardHeader>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <PieChartIcon className="h-5 w-5 text-blue-500" />
+            <PieChartIcon className="h-5 w-5 text-primary" />
             <CardTitle>Wardrobe Categories</CardTitle>
           </div>
           {selectedCategory && (
@@ -79,7 +79,7 @@ export function InteractiveCategoryChart({ data, allItems }: InteractiveCategory
               variant="ghost"
               size="sm"
               onClick={handleClose}
-              className="text-slate-400 hover:text-white"
+              className="text-muted-foreground hover:text-foreground"
             >
               <X className="h-4 w-4 mr-1" />
               Close
@@ -140,11 +140,11 @@ export function InteractiveCategoryChart({ data, allItems }: InteractiveCategory
                       if (active && payload && payload.length) {
                         const data = payload[0].payload
                         return (
-                          <div className="bg-slate-800 border border-slate-600 rounded-lg p-3 shadow-xl">
-                            <p className="font-semibold text-white mb-1">{data.category}</p>
-                            <p className="text-sm text-slate-300">Count: {data.count}</p>
-                            <p className="text-sm text-slate-300">Percentage: {data.percentage.toFixed(1)}%</p>
-                            <p className="text-xs text-blue-400 mt-2">Click to view items</p>
+                          <div className="bg-card border border-border rounded-lg p-3 shadow-xl">
+                            <p className="font-semibold text-foreground mb-1">{data.category}</p>
+                            <p className="text-sm text-foreground/80">Count: {data.count}</p>
+                            <p className="text-sm text-foreground/80">Percentage: {data.percentage.toFixed(1)}%</p>
+                            <p className="text-xs text-primary mt-2">Click to view items</p>
                           </div>
                         )
                       }
@@ -159,7 +159,7 @@ export function InteractiveCategoryChart({ data, allItems }: InteractiveCategory
                 </PieChart>
               </ResponsiveContainer>
               <div className="mt-4 text-center">
-                <p className="text-sm text-slate-400">
+                <p className="text-sm text-muted-foreground">
                   💡 Click on any slice to see items in that category
                 </p>
               </div>
@@ -177,8 +177,8 @@ export function InteractiveCategoryChart({ data, allItems }: InteractiveCategory
               {/* Category Header */}
               <div className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/30 rounded-lg">
                 <div>
-                  <h3 className="text-xl font-bold text-white capitalize">{selectedCategory}</h3>
-                  <p className="text-sm text-slate-400">
+                  <h3 className="text-xl font-bold text-foreground capitalize">{selectedCategory}</h3>
+                  <p className="text-sm text-muted-foreground">
                     {selectedCategoryItems.length} items • {selectedCategoryItems.reduce((sum, item) => sum + item.wear_count, 0)} total wears
                   </p>
                 </div>
@@ -186,7 +186,7 @@ export function InteractiveCategoryChart({ data, allItems }: InteractiveCategory
                   variant="outline"
                   size="sm"
                   onClick={handleClose}
-                  className="border-slate-600 text-slate-300 hover:text-white"
+                  className="border-border text-foreground/80 hover:text-foreground"
                 >
                   <ArrowLeft className="h-4 w-4 mr-1" />
                   Back
@@ -194,8 +194,8 @@ export function InteractiveCategoryChart({ data, allItems }: InteractiveCategory
               </div>
 
               {/* Wear Frequency Bar Chart */}
-              <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-700/50">
-                <h4 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+              <div className="bg-background/50 rounded-lg p-4 border border-border/50">
+                <h4 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
                   <TrendingUp className="h-4 w-4 text-green-500" />
                   Wear Frequency
                 </h4>
@@ -225,7 +225,7 @@ export function InteractiveCategoryChart({ data, allItems }: InteractiveCategory
 
               {/* Items List */}
               <div className="space-y-2 max-h-64 overflow-y-auto">
-                <h4 className="text-sm font-semibold text-white sticky top-0 bg-slate-800 py-2">
+                <h4 className="text-sm font-semibold text-foreground sticky top-0 bg-card py-2">
                   All Items ({selectedCategoryItems.length})
                 </h4>
                 {sortedCategoryItems.map((item, index) => (
@@ -234,7 +234,7 @@ export function InteractiveCategoryChart({ data, allItems }: InteractiveCategory
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.05 }}
-                    className="flex items-center justify-between p-3 bg-slate-900/50 rounded-lg border border-slate-700/50 hover:border-blue-500/50 transition-colors"
+                    className="flex items-center justify-between p-3 bg-background/50 rounded-lg border border-border/50 hover:border-blue-500/50 transition-colors"
                   >
                     <div className="flex items-center gap-3">
                       {item.image_path && (
@@ -245,15 +245,15 @@ export function InteractiveCategoryChart({ data, allItems }: InteractiveCategory
                         />
                       )}
                       <div>
-                        <p className="text-sm font-medium text-white">{item.name}</p>
-                        <p className="text-xs text-slate-400">
+                        <p className="text-sm font-medium text-foreground">{item.name}</p>
+                        <p className="text-xs text-muted-foreground">
                           {item.color && `${item.color} • `}
                           ${item.price?.toFixed(2) || '0.00'}
                         </p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="text-sm font-semibold text-blue-400">{item.wear_count} wears</p>
+                      <p className="text-sm font-semibold text-primary">{item.wear_count} wears</p>
                       {item.wear_count > 0 && item.price && (
                         <p className="text-xs text-slate-500">
                           ${(item.price / item.wear_count).toFixed(2)}/wear

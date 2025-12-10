@@ -140,8 +140,8 @@ function TryOnContent() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
-        <div className="text-white">Loading...</div>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-foreground">Loading...</div>
       </div>
     )
   }
@@ -149,7 +149,7 @@ function TryOnContent() {
   if (!user) return null
 
   return (
-    <div className="min-h-screen bg-slate-900">
+    <div className="min-h-screen bg-background">
       {/* Navbar */}
       <Navbar 
         navLinks={[
@@ -166,23 +166,23 @@ function TryOnContent() {
       />
 
       {/* Header */}
-      <div className="bg-slate-800 border-b border-slate-700 px-6 py-4">
+      <div className="bg-card border-b border-border px-6 py-4">
         <div className="max-w-[1800px] mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <Link href="/chat">
-              <Button variant="ghost" className="text-slate-300 hover:text-white hover:bg-slate-700">
+              <Button variant="ghost" className="text-foreground/80 hover:text-foreground hover:bg-muted">
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Back
               </Button>
             </Link>
-            <h1 className="text-2xl font-bold text-white">Try On Your Outfit</h1>
+            <h1 className="text-2xl font-bold text-foreground">Try On Your Outfit</h1>
           </div>
           <div className="flex items-center space-x-3">
             <Button 
               variant="outline" 
               onClick={handleGenerateAIPreview}
               disabled={isGeneratingAI || (!mannequinSlots.top && !mannequinSlots.bottom)}
-              className="border-cyan-600 text-cyan-400 hover:bg-cyan-600 hover:text-white"
+              className="border-cyan-600 text-cyan-400 hover:bg-cyan-600 hover:text-foreground"
             >
               {isGeneratingAI ? (
                 <>
@@ -198,14 +198,14 @@ function TryOnContent() {
             <Button 
               variant="outline" 
               onClick={handleSaveOutfit}
-              className="border-purple-600 text-purple-400 hover:bg-purple-600 hover:text-white"
+              className="border-purple-600 text-purple-400 hover:bg-purple-600 hover:text-foreground"
             >
               <Save className="w-4 h-4 mr-2" />
               Save Outfit
             </Button>
             <Button 
               onClick={handleWearToday}
-              className="bg-green-600 hover:bg-green-700 text-white"
+              className="bg-green-600 hover:bg-green-700 text-foreground"
             >
               <Check className="w-4 h-4 mr-2" />
               Wear Today
@@ -259,8 +259,8 @@ function TryOnContent() {
 export default function TryOnPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
-        <div className="text-white">Loading...</div>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-foreground">Loading...</div>
       </div>
     }>
       <TryOnContent />

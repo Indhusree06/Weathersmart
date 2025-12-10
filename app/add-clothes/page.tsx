@@ -595,7 +595,7 @@ export default function AddClothesPage() {
         <div className="container mx-auto px-6 py-6 max-w-4xl">
           <Card className="bg-gray-800/70 border-gray-700">
             <CardHeader>
-              <CardTitle className="text-white">Item Image</CardTitle>
+              <CardTitle className="text-foreground">Item Image</CardTitle>
             </CardHeader>
             <CardContent>
               {singlePreview ? (
@@ -618,7 +618,7 @@ export default function AddClothesPage() {
 
               {singlePreview && (
                 <div className="mt-4 flex items-center gap-3">
-                  <Button variant="secondary" onClick={analyzeSingle} disabled={singleAnalyzing} className="bg-gray-200/20 text-white hover:bg-gray-200/30 border border-gray-600">
+                  <Button variant="secondary" onClick={analyzeSingle} disabled={singleAnalyzing} className="bg-gray-200/20 text-foreground hover:bg-gray-200/30 border border-gray-600">
                     {singleAnalyzing ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Sparkles className="w-4 h-4 mr-2" />}
                     Let AI fill details
                   </Button>
@@ -629,19 +629,19 @@ export default function AddClothesPage() {
 
           {/* Basic fields */}
           <Card className="mt-6 bg-gray-800/70 border-gray-700">
-            <CardHeader><CardTitle className="text-white">Details</CardTitle></CardHeader>
+            <CardHeader><CardTitle className="text-foreground">Details</CardTitle></CardHeader>
             <CardContent className="space-y-4">
               <div>
                 <Label className="text-gray-300">Item Name *</Label>
-                <Input className="mt-1 bg-gray-700 border-gray-600 text-white" value={single.name} onChange={(e)=>setSingle({...single, name:e.target.value})} />
+                <Input className="mt-1 bg-gray-700 border-gray-600 text-foreground" value={single.name} onChange={(e)=>setSingle({...single, name:e.target.value})} />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <Label className="text-gray-300">Category *</Label>
                   <Select value={single.categoryId} onValueChange={(v)=>setSingle({...single, categoryId:v})}>
-                    <SelectTrigger className="mt-1 bg-gray-700 border-gray-600 text-white"><SelectValue placeholder="Select category" /></SelectTrigger>
-                    <SelectContent className="bg-gray-800 text-white border-gray-700">
+                    <SelectTrigger className="mt-1 bg-gray-700 border-gray-600 text-foreground"><SelectValue placeholder="Select category" /></SelectTrigger>
+                    <SelectContent className="bg-gray-800 text-foreground border-gray-700">
                       {categories.map((c)=> <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}
                     </SelectContent>
                   </Select>
@@ -649,8 +649,8 @@ export default function AddClothesPage() {
                 <div>
                   <Label className="text-gray-300">Color</Label>
                   <Select value={single.color} onValueChange={(v)=>setSingle({...single, color: v as ColorValue})}>
-                    <SelectTrigger className="mt-1 bg-gray-700 border-gray-600 text-white"><SelectValue placeholder="Select" /></SelectTrigger>
-                    <SelectContent className="bg-gray-800 text-white border-gray-700">
+                    <SelectTrigger className="mt-1 bg-gray-700 border-gray-600 text-foreground"><SelectValue placeholder="Select" /></SelectTrigger>
+                    <SelectContent className="bg-gray-800 text-foreground border-gray-700">
                       {COLORS.map((c)=> <SelectItem key={c} value={c}>{c.charAt(0).toUpperCase()+c.slice(1)}</SelectItem>)}
                     </SelectContent>
                   </Select>
@@ -660,13 +660,13 @@ export default function AddClothesPage() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <Label className="text-gray-300">Size</Label>
-                  <Input className="mt-1 bg-gray-700 border-gray-600 text-white" value={single.size || ""} onChange={(e)=>setSingle({...single, size:e.target.value})}/>
+                  <Input className="mt-1 bg-gray-700 border-gray-600 text-foreground" value={single.size || ""} onChange={(e)=>setSingle({...single, size:e.target.value})}/>
                 </div>
                 <div>
                   <Label className="text-gray-300">Condition</Label>
                   <Select value={single.condition} onValueChange={(v)=>setSingle({...single, condition:v as ConditionValue})}>
-                    <SelectTrigger className="mt-1 bg-gray-700 border-gray-600 text-white"><SelectValue /></SelectTrigger>
-                    <SelectContent className="bg-gray-800 text-white border-gray-700">
+                    <SelectTrigger className="mt-1 bg-gray-700 border-gray-600 text-foreground"><SelectValue /></SelectTrigger>
+                    <SelectContent className="bg-gray-800 text-foreground border-gray-700">
                       {CONDITIONS.map((c)=> <SelectItem key={c.value} value={c.value}>{c.label}</SelectItem>)}
                     </SelectContent>
                   </Select>
@@ -705,7 +705,7 @@ export default function AddClothesPage() {
                     <span className="text-gray-300 text-sm flex items-center gap-1"><Zap className="w-3 h-3" /> Room to grow</span>
                   </div>
                   <Card className="bg-gray-900/40 border-green-700/40">
-                    <CardHeader className="py-2"><CardTitle className="text-white text-sm flex items-center gap-2"><Shield className="w-4 h-4 text-green-400" /> Safety features</CardTitle></CardHeader>
+                    <CardHeader className="py-2"><CardTitle className="text-foreground text-sm flex items-center gap-2"><Shield className="w-4 h-4 text-green-400" /> Safety features</CardTitle></CardHeader>
                     <CardContent className="grid grid-cols-1 gap-1">
                       {ENHANCED_SAFETY_FEATURES.map((sf)=>(
                         <label key={`single-sf-${sf.value}`} className="flex items-center gap-2">
@@ -718,7 +718,7 @@ export default function AddClothesPage() {
                   </Card>
                   <div>
                     <Label className="text-gray-300">Care Instructions</Label>
-                    <Textarea rows={2} className="mt-1 bg-gray-700 border-gray-600 text-white" value={single.careInstructions || ""} onChange={(e)=>setSingle({...single, careInstructions:e.target.value})} />
+                    <Textarea rows={2} className="mt-1 bg-gray-700 border-gray-600 text-foreground" value={single.careInstructions || ""} onChange={(e)=>setSingle({...single, careInstructions:e.target.value})} />
                   </div>
                 </div>
               ) : (
@@ -733,21 +733,21 @@ export default function AddClothesPage() {
                   <Label className="text-gray-300">Price</Label>
                   <div className="relative mt-1">
                     <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                    <Input type="number" step="0.01" className="pl-10 bg-gray-700 border-gray-600 text-white" value={single.price || ""} onChange={(e)=>setSingle({...single, price:e.target.value})}/>
+                    <Input type="number" step="0.01" className="pl-10 bg-gray-700 border-gray-600 text-foreground" value={single.price || ""} onChange={(e)=>setSingle({...single, price:e.target.value})}/>
                   </div>
                 </div>
                 <div>
                   <Label className="text-gray-300">Purchase Date</Label>
                   <div className="relative mt-1">
                     <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                    <Input type="date" className="pl-10 bg-gray-700 border-gray-600 text-white" value={single.purchaseDate || ""} onChange={(e)=>setSingle({...single, purchaseDate:e.target.value})}/>
+                    <Input type="date" className="pl-10 bg-gray-700 border-gray-600 text-foreground" value={single.purchaseDate || ""} onChange={(e)=>setSingle({...single, purchaseDate:e.target.value})}/>
                   </div>
                 </div>
               </div>
 
               <div>
                 <Label className="text-gray-300">Description</Label>
-                <Textarea rows={3} className="mt-1 bg-gray-700 border-gray-600 text-white" value={single.description} onChange={(e)=>setSingle({...single, description:e.target.value})}/>
+                <Textarea rows={3} className="mt-1 bg-gray-700 border-gray-600 text-foreground" value={single.description} onChange={(e)=>setSingle({...single, description:e.target.value})}/>
               </div>
 
               <div className="flex justify-end">
@@ -770,7 +770,7 @@ export default function AddClothesPage() {
                 <Button className="bg-white hover:bg-gray-200 text-black" onClick={()=>fileInputRef.current?.click()}>
                   <Upload className="w-4 h-4 mr-2" /> Upload Photos (max 5)
                 </Button>
-                <Button variant="secondary" onClick={analyzeSelected} disabled={selectedDrafts.length===0 || analyzing} className="bg-gray-200/20 text-white hover:bg-gray-200/30 border border-gray-600">
+                <Button variant="secondary" onClick={analyzeSelected} disabled={selectedDrafts.length===0 || analyzing} className="bg-gray-200/20 text-foreground hover:bg-gray-200/30 border border-gray-600">
                   {analyzing ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Sparkles className="w-4 h-4 mr-2" />} Analyze with AI{selectedDrafts.length ? ` (${selectedDrafts.length})` : ""}
                 </Button>
                 <Button onClick={saveAll} disabled={saving || drafts.every((d)=>d.status!=="ready")} className="bg-white hover:bg-gray-200 text-black">
@@ -803,7 +803,7 @@ export default function AddClothesPage() {
                 {drafts.map((d)=>(
                   <Card key={d.id} className={`bg-gray-800/70 border ${d.selected ? "border-white/40" : "border-gray-700"} relative`}>
                     <div className="absolute top-2 left-2 z-10"><Checkbox checked={d.selected} onCheckedChange={(c)=>toggleSelect(d.id, c===true)} /></div>
-                    <Button variant="ghost" size="icon" className="absolute top-2 right-2 z-10 text-gray-300 hover:text-white" onClick={()=>removeDraft(d.id)}>
+                    <Button variant="ghost" size="icon" className="absolute top-2 right-2 z-10 text-gray-300 hover:text-foreground" onClick={()=>removeDraft(d.id)}>
                       <X className="w-4 h-4" />
                     </Button>
                     <CardHeader className="pb-2">
@@ -815,7 +815,7 @@ export default function AddClothesPage() {
                           d.status==="ready" ? "bg-green-500/20 text-green-300 border border-green-500/40" :
                           d.status==="saved" ? "bg-emerald-600/20 text-emerald-300 border border-emerald-500/40" :
                           d.status==="error" ? "bg-red-600/20 text-red-300 border border-red-500/40" :
-                          (d.status==="analyzing"||d.status==="uploading"||d.status==="saving") ? "bg-blue-500/20 text-blue-300 border border-blue-500/40" :
+                          (d.status==="analyzing"||d.status==="uploading"||d.status==="saving") ? "bg-primary/20 text-blue-300 border border-blue-500/40" :
                           "bg-gray-600/20 text-gray-300 border border-gray-500/40"
                         }`}>{d.status.charAt(0).toUpperCase()+d.status.slice(1)}</span>
                         {d.error && <p className="text-xs text-red-300">{d.error}</p>}
@@ -823,7 +823,7 @@ export default function AddClothesPage() {
                           <Button
                             variant="secondary"
                             size="xs"
-                            className="h-6 px-2 bg-gray-200/20 text-white hover:bg-gray-200/30 border border-gray-600"
+                            className="h-6 px-2 bg-gray-200/20 text-foreground hover:bg-gray-200/30 border border-gray-600"
                             onClick={() => { toggleSelect(d.id, true); analyzeSelected() }}
                           >
                             Retry
@@ -834,14 +834,14 @@ export default function AddClothesPage() {
                     <CardContent className="space-y-3">
                       <div>
                         <Label className="text-gray-300">Name</Label>
-                        <Input className="mt-1 bg-gray-700 border-gray-600 text-white" value={d.fields.name} onChange={(e)=>setField(d.id,"name",e.target.value)} />
+                        <Input className="mt-1 bg-gray-700 border-gray-600 text-foreground" value={d.fields.name} onChange={(e)=>setField(d.id,"name",e.target.value)} />
                       </div>
                       <div className="grid grid-cols-2 gap-3">
                         <div>
                           <Label className="text-gray-300">Category</Label>
                           <Select value={d.fields.categoryId} onValueChange={(v)=>setField(d.id,"categoryId",v)}>
-                            <SelectTrigger className="mt-1 bg-gray-700 border-gray-600 text-white"><SelectValue placeholder="Select" /></SelectTrigger>
-                            <SelectContent className="bg-gray-800 text-white border-gray-700">
+                            <SelectTrigger className="mt-1 bg-gray-700 border-gray-600 text-foreground"><SelectValue placeholder="Select" /></SelectTrigger>
+                            <SelectContent className="bg-gray-800 text-foreground border-gray-700">
                               {categories.map((c)=> <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}
                             </SelectContent>
                           </Select>
@@ -849,8 +849,8 @@ export default function AddClothesPage() {
                         <div>
                           <Label className="text-gray-300">Color</Label>
                           <Select value={d.fields.color} onValueChange={(v)=>setField(d.id,"color",v as ColorValue)}>
-                            <SelectTrigger className="mt-1 bg-gray-700 border-gray-600 text-white"><SelectValue placeholder="Select" /></SelectTrigger>
-                            <SelectContent className="bg-gray-800 text-white border-gray-700">
+                            <SelectTrigger className="mt-1 bg-gray-700 border-gray-600 text-foreground"><SelectValue placeholder="Select" /></SelectTrigger>
+                            <SelectContent className="bg-gray-800 text-foreground border-gray-700">
                               {COLORS.map((c)=> <SelectItem key={c} value={c}>{c.charAt(0).toUpperCase()+c.slice(1)}</SelectItem>)}
                             </SelectContent>
                           </Select>
@@ -859,13 +859,13 @@ export default function AddClothesPage() {
                       <div className="grid grid-cols-2 gap-3">
                         <div>
                           <Label className="text-gray-300">Size</Label>
-                          <Input className="mt-1 bg-gray-700 border-gray-600 text-white" value={d.fields.size || ""} onChange={(e)=>setField(d.id,"size",e.target.value)} />
+                          <Input className="mt-1 bg-gray-700 border-gray-600 text-foreground" value={d.fields.size || ""} onChange={(e)=>setField(d.id,"size",e.target.value)} />
                         </div>
                         <div>
                           <Label className="text-gray-300">Condition</Label>
                           <Select value={d.fields.condition} onValueChange={(v)=>setField(d.id,"condition",v as ConditionValue)}>
-                            <SelectTrigger className="mt-1 bg-gray-700 border-gray-600 text-white"><SelectValue /></SelectTrigger>
-                            <SelectContent className="bg-gray-800 text-white border-gray-700">
+                            <SelectTrigger className="mt-1 bg-gray-700 border-gray-600 text-foreground"><SelectValue /></SelectTrigger>
+                            <SelectContent className="bg-gray-800 text-foreground border-gray-700">
                               {CONDITIONS.map((c)=> <SelectItem key={c.value} value={c.value}>{c.label}</SelectItem>)}
                             </SelectContent>
                           </Select>
@@ -873,7 +873,7 @@ export default function AddClothesPage() {
                       </div>
                       <div>
                         <Label className="text-gray-300">Description</Label>
-                        <Textarea rows={2} className="mt-1 bg-gray-700 border-gray-600 text-white" value={d.fields.description} onChange={(e)=>setField(d.id,"description",e.target.value)} />
+                        <Textarea rows={2} className="mt-1 bg-gray-700 border-gray-600 text-foreground" value={d.fields.description} onChange={(e)=>setField(d.id,"description",e.target.value)} />
                       </div>
                       {/* Weather/Season */}
                       <div className="grid grid-cols-2 gap-2">
@@ -906,7 +906,7 @@ export default function AddClothesPage() {
                             <span className="text-gray-300 text-sm flex items-center gap-1"><Zap className="w-3 h-3" /> Room to grow</span>
                           </div>
                           <Card className="bg-gray-900/40 border-green-700/40">
-                            <CardHeader className="py-2"><CardTitle className="text-white text-sm flex items-center gap-2"><Shield className="w-4 h-4 text-green-400" /> Safety features</CardTitle></CardHeader>
+                            <CardHeader className="py-2"><CardTitle className="text-foreground text-sm flex items-center gap-2"><Shield className="w-4 h-4 text-green-400" /> Safety features</CardTitle></CardHeader>
                             <CardContent className="grid grid-cols-1 gap-1">
                               {ENHANCED_SAFETY_FEATURES.map((sf)=>(
                                 <label key={`${d.id}-sf-${sf.value}`} className="flex items-center gap-2">
@@ -934,7 +934,7 @@ export default function AddClothesPage() {
           <div className="container mx-auto px-6 pb-10">
             <div className="flex justify-end gap-3">
               <Link href={profileId ? `/wardrobe?profile=${profileId}` : "/wardrobe"}>
-                <Button variant="outline" className="border-gray-600 hover:bg-gray-700 bg-transparent text-white">Cancel</Button>
+                <Button variant="outline" className="border-gray-600 hover:bg-gray-700 bg-transparent text-foreground">Cancel</Button>
               </Link>
               <Button onClick={saveAll} disabled={saving || drafts.every((d)=>d.status!=="ready")} className="bg-white hover:bg-gray-200 text-black min-w-[160px]">
                 {saving ? <><div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin mr-2" />Saving…</>

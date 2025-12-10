@@ -144,7 +144,7 @@ export default function DatabaseTestPage() {
       case "warning":
         return <AlertCircle className="h-4 w-4 text-yellow-500" />
       case "loading":
-        return <Loader2 className="h-4 w-4 animate-spin text-blue-500" />
+        return <Loader2 className="h-4 w-4 animate-spin text-primary" />
     }
   }
 
@@ -215,7 +215,7 @@ export default function DatabaseTestPage() {
                       <div className="text-sm text-muted-foreground">{test.message}</div>
                       {test.details && (
                         <details className="mt-1">
-                          <summary className="text-xs cursor-pointer text-blue-600">Show details</summary>
+                          <summary className="text-xs cursor-pointer text-primary">Show details</summary>
                           <pre className="text-xs mt-1 p-2 bg-gray-100 rounded overflow-auto">
                             {JSON.stringify(test.details, null, 2)}
                           </pre>

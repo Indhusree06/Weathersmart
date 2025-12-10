@@ -25,43 +25,43 @@ function StarRating({ rating }: { rating: number }) {
 
 export function WeatherReadinessCard({ data }: WeatherReadinessCardProps) {
   return (
-    <Card className="bg-slate-800 border-slate-700 p-6">
-      <h3 className="text-lg font-semibold text-white mb-4">Weather Readiness</h3>
+    <Card className="bg-card border-border p-6">
+      <h3 className="text-lg font-semibold text-foreground mb-4">Weather Readiness</h3>
       <div className="space-y-4">
-        <div className="flex items-center justify-between p-3 bg-slate-700/50 rounded-lg">
+        <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
           <div className="flex items-center space-x-3">
-            <div className="p-2 bg-blue-500/20 rounded-lg">
-              <CloudRain className="w-5 h-5 text-blue-400" />
+            <div className="p-2 bg-primary/20 rounded-lg">
+              <CloudRain className="w-5 h-5 text-primary" />
             </div>
             <div>
-              <p className="text-sm font-medium text-white">Rain Gear</p>
-              <p className="text-xs text-slate-400">{data.rain.count} items</p>
+              <p className="text-sm font-medium text-foreground">Rain Gear</p>
+              <p className="text-xs text-muted-foreground">{data.rain.count} items</p>
             </div>
           </div>
           <StarRating rating={data.rain.rating} />
         </div>
 
-        <div className="flex items-center justify-between p-3 bg-slate-700/50 rounded-lg">
+        <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
           <div className="flex items-center space-x-3">
             <div className="p-2 bg-cyan-500/20 rounded-lg">
               <Snowflake className="w-5 h-5 text-cyan-400" />
             </div>
             <div>
-              <p className="text-sm font-medium text-white">Winter Gear</p>
-              <p className="text-xs text-slate-400">{data.winter.count} items</p>
+              <p className="text-sm font-medium text-foreground">Winter Gear</p>
+              <p className="text-xs text-muted-foreground">{data.winter.count} items</p>
             </div>
           </div>
           <StarRating rating={data.winter.rating} />
         </div>
 
-        <div className="flex items-center justify-between p-3 bg-slate-700/50 rounded-lg">
+        <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
           <div className="flex items-center space-x-3">
             <div className="p-2 bg-orange-500/20 rounded-lg">
               <Sun className="w-5 h-5 text-orange-400" />
             </div>
             <div>
-              <p className="text-sm font-medium text-white">Summer Gear</p>
-              <p className="text-xs text-slate-400">{data.summer.count} items</p>
+              <p className="text-sm font-medium text-foreground">Summer Gear</p>
+              <p className="text-xs text-muted-foreground">{data.summer.count} items</p>
             </div>
           </div>
           <StarRating rating={data.summer.rating} />

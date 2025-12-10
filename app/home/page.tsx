@@ -84,7 +84,7 @@ export default function HomePage() {
         <div className="mb-8">
           <div className="flex items-center space-x-4 mb-6">
             <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center relative">
-              <User className="w-8 h-8 text-blue-600" />
+              <User className="w-8 h-8 text-primary" />
               <div className="absolute bottom-0 right-0 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
             </div>
             <div>
@@ -166,7 +166,7 @@ export default function HomePage() {
             <Card className="bg-white border border-slate-200">
               <CardContent className="p-6">
                 <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-                  <Shirt className="w-5 h-5 text-blue-600" />
+                  <Shirt className="w-5 h-5 text-primary" />
                 </div>
                 <h3 className="text-lg font-semibold text-slate-900 mb-2">Organize by Season</h3>
                 <p className="text-slate-600 text-sm">

@@ -50,19 +50,19 @@ export function AuthForm() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-background via-muted/30 to-background relative overflow-hidden">
       {/* Background Image */}
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-10"
         style={{
           backgroundImage:
             "url('https://hebbkx1anhila5yf.public.blob.vercel-storage.com/priscilla-du-preez-JGyRJlk3idE-unsplash.jpg-af3pIApkOYdobxx6Z9Px603LOHB9s3.jpeg')",
         }}
       />
-      <div className="absolute inset-0 bg-black/40" />
+      <div className="absolute inset-0 bg-background/60" />
 
       <div className="relative z-10 flex items-center justify-center min-h-screen p-4">
-        <Card className="w-full max-w-md bg-gray-800/80 backdrop-blur-xl border-gray-700/50 shadow-2xl">
+        <Card className="w-full max-w-md bg-card/95 backdrop-blur-xl border-border shadow-2xl">
           <CardContent className="p-8">
             {/* Back Button */}
             <div className="mb-6">
@@ -70,7 +70,7 @@ export function AuthForm() {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="border-gray-600 hover:bg-gray-700 bg-transparent text-gray-300 hover:text-white"
+                  className="border-border hover:bg-muted bg-transparent text-muted-foreground hover:text-foreground"
                 >
                   <ArrowLeft className="w-4 h-4 mr-2" />
                   Back to Main page
@@ -80,19 +80,19 @@ export function AuthForm() {
 
             {/* Logo and Header */}
             <div className="text-center mb-8">
-              <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-                <Sparkles className="w-8 h-8 text-black" />
+              <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+                <span className="text-2xl font-bold text-primary-foreground">W</span>
               </div>
-              <h1 className="text-2xl font-bold text-white mb-2">Welcome to Weather Smart</h1>
-              <p className="text-gray-400">Your AI-powered wardrobe assistant</p>
+              <h1 className="text-2xl font-bold text-foreground mb-2">Welcome to Weather Smart</h1>
+              <p className="text-muted-foreground">Your AI-powered wardrobe assistant</p>
             </div>
 
             {/* Tab Buttons */}
-            <div className="flex mb-6 bg-gray-700 rounded-lg p-1">
+            <div className="flex mb-6 bg-muted rounded-lg p-1">
               <button
                 onClick={() => setIsSignUp(false)}
                 className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
-                  !isSignUp ? "bg-white text-black" : "text-gray-400 hover:text-white"
+                  !isSignUp ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
                 }`}
               >
                 Sign In
@@ -100,7 +100,7 @@ export function AuthForm() {
               <button
                 onClick={() => setIsSignUp(true)}
                 className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
-                  isSignUp ? "bg-white text-black" : "text-gray-400 hover:text-white"
+                  isSignUp ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
                 }`}
               >
                 Sign Up
@@ -111,7 +111,7 @@ export function AuthForm() {
             <form onSubmit={handleSubmit} className="space-y-4">
               {isSignUp && (
                 <div>
-                  <Label htmlFor="fullName" className="text-gray-300 text-sm font-medium">
+                  <Label htmlFor="fullName" className="text-foreground text-sm font-medium">
                     Full Name
                   </Label>
                   <Input
@@ -120,14 +120,14 @@ export function AuthForm() {
                     placeholder="Enter your full name"
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
-                    className="mt-1 h-12 bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:border-white focus:ring-white"
+                    className="mt-1 h-11"
                     required={isSignUp}
                   />
                 </div>
               )}
 
               <div>
-                <Label htmlFor="email" className="text-gray-300 text-sm font-medium">
+                <Label htmlFor="email" className="text-foreground text-sm font-medium">
                   Email
                 </Label>
                 <Input
@@ -136,13 +136,13 @@ export function AuthForm() {
                   placeholder="Enter your email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="mt-1 h-12 bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:border-white focus:ring-white"
+                  className="mt-1 h-11"
                   required
                 />
               </div>
 
               <div>
-                <Label htmlFor="password" className="text-gray-300 text-sm font-medium">
+                <Label htmlFor="password" className="text-foreground text-sm font-medium">
                   Password
                 </Label>
                 <Input
@@ -151,13 +151,13 @@ export function AuthForm() {
                   placeholder="Enter your password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="mt-1 h-12 bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:border-white focus:ring-white"
+                  className="mt-1 h-11"
                   required
                 />
               </div>
 
               {error && (
-                <div className="text-red-400 text-sm text-center bg-red-900/20 border border-red-800 rounded-lg p-3">
+                <div className="text-destructive text-sm text-center bg-destructive/10 border border-destructive/30 rounded-lg p-3">
                   {error}
                 </div>
               )}
@@ -165,7 +165,7 @@ export function AuthForm() {
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full h-12 bg-white hover:bg-gray-100 text-black font-medium text-base disabled:opacity-50"
+                className="w-full h-11 font-medium text-base disabled:opacity-50"
               >
                 {loading ? "Please wait..." : isSignUp ? "Sign Up" : "Sign In"}
               </Button>
@@ -173,16 +173,16 @@ export function AuthForm() {
 
             {!isSignUp && (
               <div className="text-center mt-4">
-                <button className="text-gray-400 hover:text-white text-sm">Forgot your password?</button>
+                <button className="text-muted-foreground hover:text-foreground text-sm">Forgot your password?</button>
               </div>
             )}
 
             {/* Demo Credentials */}
-            <div className="mt-8 p-4 bg-blue-900/20 border border-blue-700/50 rounded-lg">
-              <p className="text-blue-300 text-sm font-medium mb-2 text-center">Demo Credentials:</p>
+            <div className="mt-8 p-4 bg-primary/10 border border-primary/30 rounded-lg">
+              <p className="text-primary text-sm font-medium mb-2 text-center">Demo Credentials:</p>
               <div className="space-y-1 text-center">
-                <p className="text-gray-300 text-sm font-mono">Email: <span className="text-white">abcd@gmail.com</span></p>
-                <p className="text-gray-300 text-sm font-mono">Password: <span className="text-white">abcdefg</span></p>
+                <p className="text-muted-foreground text-sm font-mono">Email: <span className="text-foreground font-medium">abcd@gmail.com</span></p>
+                <p className="text-muted-foreground text-sm font-mono">Password: <span className="text-foreground font-medium">abcdefg</span></p>
               </div>
             </div>
           </CardContent>
