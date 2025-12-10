@@ -579,6 +579,10 @@ export default function ChatPage() {
             style_notes: recommendation.reasoning,
             colorHarmony: computedColorHarmony,
           })
+          // Clear previous outfit options when generating new outfit
+          setOutfitOptions([])
+          setShowMultipleOptions(false)
+          setSelectedOptionIndex(0)
 
           if (recommendation?.reasoning) {
             setMessages((prev) => [...prev, {
@@ -1090,12 +1094,39 @@ export default function ChatPage() {
                               onClick={async () => {
                                 setIsLoading(true)
                                 try {
-                                  const options = await generateMultipleOutfits(
+                                  // Determine occasion from last request or current outfit
+                                  let occasion = 'casual'
+                                  const requestLower = lastRequest.toLowerCase()
+                                  if (requestLower.includes('work') || requestLower.includes('professional') || requestLower.includes('business')) {
+                                    occasion = 'work'
+                                  } else if (requestLower.includes('date') || requestLower.includes('dinner') || requestLower.includes('evening')) {
+                                    occasion = 'date'
+                                  } else if (requestLower.includes('workout') || requestLower.includes('gym') || requestLower.includes('athletic')) {
+                                    occasion = 'workout'
+                                  } else if (currentOutfit?.occasion) {
+                                    occasion = currentOutfit.occasion
+                                  }
+
+                                  const recommendations = generateMultipleOutfits(
                                     currentWardrobeItems,
-                                    weather ? { temperature: weather.temperature, condition: weather.condition } : undefined,
-                                    lastRequest.toLowerCase().includes('work') ? 'work' : 'casual',
+                                    {
+                                      occasion,
+                                      weather: weather ? { temperature: weather.temperature, condition: weather.condition } : undefined
+                                    },
                                     3
                                   )
+                                  
+                                  // Convert OutfitRecommendation to Outfit format
+                                  const options = recommendations.map((rec, idx) => ({
+                                    id: `option-${Date.now()}-${idx}`,
+                                    name: `${occasion.charAt(0).toUpperCase() + occasion.slice(1)} Option ${idx + 1}`,
+                                    items: rec.items,
+                                    occasion,
+                                    weather_suitability: weather ? `${weather.temperature}°F, ${weather.condition}` : 'N/A',
+                                    style_notes: rec.reasoning.join('. '),
+                                    colorHarmony: rec.colorHarmony,
+                                  }))
+                                  
                                   setOutfitOptions(options)
                                   setShowMultipleOptions(true)
                                   setSelectedOptionIndex(0)
