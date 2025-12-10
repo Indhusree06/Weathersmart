@@ -416,9 +416,18 @@ export default function ChatPage() {
 
   /* ------------------------------- Persistence ------------------------------ */
   useEffect(() => {
-    const chatSession = { messages, currentOutfit, selectedProfile, selectedLocation, timestamp: Date.now() }
+    const chatSession = { 
+      messages, 
+      currentOutfit, 
+      selectedProfile, 
+      selectedLocation,
+      outfitOptions,
+      showMultipleOptions,
+      selectedOptionIndex,
+      timestamp: Date.now() 
+    }
     localStorage.setItem('weathersmart-chat-session', JSON.stringify(chatSession))
-  }, [messages, currentOutfit, selectedProfile, selectedLocation])
+  }, [messages, currentOutfit, selectedProfile, selectedLocation, outfitOptions, showMultipleOptions, selectedOptionIndex])
 
   useEffect(() => {
     const restore = () => {
@@ -431,6 +440,9 @@ export default function ChatPage() {
             if (s.messages) setMessages(s.messages)
             if (s.currentOutfit) setCurrentOutfit(s.currentOutfit)
             if (s.selectedLocation) setSelectedLocation(s.selectedLocation)
+            if (s.outfitOptions) setOutfitOptions(s.outfitOptions)
+            if (s.showMultipleOptions !== undefined) setShowMultipleOptions(s.showMultipleOptions)
+            if (s.selectedOptionIndex !== undefined) setSelectedOptionIndex(s.selectedOptionIndex)
           }
         }
       } catch (e) { console.error("restore error", e) }
@@ -1203,11 +1215,13 @@ export default function ChatPage() {
                                 else router.push(`/wardrobe?profile=${profileParam}&from=chat&search=${encodeURIComponent(item.name)}`)
                               }}
                             >
-                              <SwapItemButton
-                                currentItem={item}
-                                alternativeItems={getAlternativeItems(item)}
-                                onSwap={(newItem) => handleSwapItem(item, newItem)}
-                              />
+                              <div onClick={(e) => e.stopPropagation()}>
+                                <SwapItemButton
+                                  currentItem={item}
+                                  alternativeItems={getAlternativeItems(item)}
+                                  onSwap={(newItem) => handleSwapItem(item, newItem)}
+                                />
+                              </div>
                               <div className="w-14 h-14 rounded-md overflow-hidden bg-muted flex items-center justify-center">
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img
