@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { Card } from "@/components/ui/card"
 import { Calendar, MapPin, Cloud, Sparkles } from "lucide-react"
-import { createClient } from "@/lib/supabase/client"
+import { supabase } from "@/lib/supabase"
 import { motion } from "framer-motion"
 
 interface OutfitHistoryItem {
@@ -32,7 +32,6 @@ export function OutfitHistory() {
 
   const fetchHistory = async () => {
     try {
-      const supabase = createClient()
       const { data, error } = await supabase
         .from("outfit_history")
         .select("*")
