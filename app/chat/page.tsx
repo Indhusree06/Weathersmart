@@ -1221,7 +1221,8 @@ export default function ChatPage() {
                                         location: weather?.location || null,
                                         occasion: null
                                       },
-                                      profileId: selectedProfile === "owner" ? null : selectedProfile
+                                      profileId: selectedProfile === "owner" ? null : selectedProfile,
+                                      userId: user?.id
                                     })
                                   })
 

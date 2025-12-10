@@ -3,15 +3,12 @@ import { supabase } from "@/lib/supabase"
 
 export async function POST(request: NextRequest) {
   try {
-    
-    // Get authenticated user
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
-    if (authError || !user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-    }
-
     const body = await request.json()
-    const { outfit, profileId } = body
+    const { outfit, profileId, userId } = body
+
+    if (!userId) {
+      return NextResponse.json({ error: "User ID required" }, { status: 400 })
+    }
 
     if (!outfit || !outfit.items || outfit.items.length === 0) {
       return NextResponse.json({ error: "Invalid outfit data" }, { status: 400 })
@@ -21,7 +18,7 @@ export async function POST(request: NextRequest) {
     const { data: savedOutfit, error: outfitError } = await supabase
       .from("outfit_history")
       .insert({
-        user_id: user.id,
+        user_id: userId,
         profile_id: profileId || null,
         worn_date: new Date().toISOString(),
         outfit_data: outfit,
@@ -34,30 +31,33 @@ export async function POST(request: NextRequest) {
 
     if (outfitError) {
       console.error("Error saving outfit:", outfitError)
-      return NextResponse.json({ error: "Failed to save outfit" }, { status: 500 })
+      return NextResponse.json({ error: "Failed to save outfit to history", details: outfitError.message }, { status: 500 })
     }
 
-    // 2. Update wear count for each item
-    const itemIds = outfit.items.map((item: any) => item.id)
+    // 2. Update wear count and last_worn for each item
+    const itemIds = outfit.items.map((item: any) => item.id).filter(Boolean)
     
-    // Increment wear_count for all items in the outfit
-    const { error: updateError } = await supabase.rpc('increment_wear_count', {
-      item_ids: itemIds
-    })
+    if (itemIds.length > 0) {
+      // Update each item individually to avoid RPC issues
+      for (const itemId of itemIds) {
+        // Get current wear count
+        const { data: item } = await supabase
+          .from("wardrobe_items")
+          .select("wear_count")
+          .eq("id", itemId)
+          .single()
 
-    if (updateError) {
-      console.error("Error updating wear counts:", updateError)
-      // Don't fail the request, outfit is already saved
-    }
+        const newWearCount = (item?.wear_count || 0) + 1
 
-    // 3. Update last_worn date for each item
-    const { error: dateError } = await supabase
-      .from("wardrobe_items")
-      .update({ last_worn: new Date().toISOString() })
-      .in("id", itemIds)
-
-    if (dateError) {
-      console.error("Error updating last worn dates:", dateError)
+        // Update wear count and last_worn
+        await supabase
+          .from("wardrobe_items")
+          .update({ 
+            wear_count: newWearCount,
+            last_worn: new Date().toISOString()
+          })
+          .eq("id", itemId)
+      }
     }
 
     return NextResponse.json({ 
@@ -69,7 +69,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error("Error in save-outfit-worn:", error)
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Internal server error", details: error instanceof Error ? error.message : "Unknown error" },
       { status: 500 }
     )
   }
