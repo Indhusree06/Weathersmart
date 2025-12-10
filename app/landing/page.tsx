@@ -332,7 +332,7 @@ export default function LandingPage() {
               <Link href="/auth">
                 <Button
                   variant="outline"
-                  className="border-border text-foreground/80 hover:bg-card hover:text-foreground bg-transparent"
+                  className="border-primary text-primary hover:bg-primary hover:text-white"
                 >
                   Sign In
                 </Button>
@@ -346,7 +346,7 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero Section */}
-      <section id="hero" className="py-24 bg-gradient-to-br from-black via-background to-black relative overflow-hidden">
+      <section id="hero" className="py-24 bg-gradient-to-br from-background via-muted to-background relative overflow-hidden">
         {/* Background decorative elements */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-card rounded-full opacity-20 blur-3xl -translate-y-1/2 translate-x-1/2"></div>
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-muted rounded-full opacity-10 blur-3xl translate-y-1/2 -translate-x-1/2"></div>
@@ -719,17 +719,17 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="relative">
         {/* Full-width wardrobe image */}
-        <div className="w-full h-64 md:h-80 bg-gradient-to-r from-black to-background relative overflow-hidden">
-          <div className="absolute inset-0 bg-black/60"></div>
+        <div className="w-full h-64 md:h-80 bg-gradient-to-r from-primary/10 to-secondary/10 relative overflow-hidden">
+          <div className="absolute inset-0 bg-white/80"></div>
           <img
             src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/faith-lee-rg5WfuAihU8-unsplash.jpg-7BrehqsohboRsoCRh8XjJTQ8Jk7DzO.jpeg"
             alt="Black and white wardrobe with hanging clothes showing sophisticated style aesthetic"
             className="w-full h-full object-cover opacity-70"
           />
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="text-center text-foreground">
-              <h3 className="text-2xl md:text-3xl font-bold mb-2">Your Style Journey Starts Here</h3>
-              <p className="text-lg opacity-90">Discover the perfect outfit for every occasion</p>
+            <div className="text-center">
+              <h3 className="text-2xl md:text-3xl font-bold mb-2 text-foreground">Your Style Journey Starts Here</h3>
+              <p className="text-lg text-muted-foreground">Discover the perfect outfit for every occasion</p>
             </div>
           </div>
         </div>
