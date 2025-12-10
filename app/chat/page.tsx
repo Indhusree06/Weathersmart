@@ -565,6 +565,7 @@ export default function ChatPage() {
 
           const itemsWithColors = recommendation.items.map((it: any) => ({
             ...it,
+            category: typeof it.category === 'object' ? (it.category?.name || 'No category') : (it.category || 'No category'),
             color: it.color ? it.color : "",
             _hex: colorForItemDot(it.color)
           }))
@@ -1120,7 +1121,11 @@ export default function ChatPage() {
                                   const options = recommendations.map((rec, idx) => ({
                                     id: `option-${Date.now()}-${idx}`,
                                     name: `${occasion.charAt(0).toUpperCase() + occasion.slice(1)} Option ${idx + 1}`,
-                                    items: rec.items,
+                                    items: rec.items.map((it: any) => ({
+                                      ...it,
+                                      category: typeof it.category === 'object' ? (it.category?.name || 'No category') : (it.category || 'No category'),
+                                      _hex: colorForItemDot(it.color)
+                                    })),
                                     occasion,
                                     weather_suitability: weather ? `${weather.temperature}°F, ${weather.condition}` : 'N/A',
                                     style_notes: rec.reasoning.join('. '),
