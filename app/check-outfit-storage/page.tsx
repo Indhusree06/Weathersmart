@@ -126,7 +126,7 @@ export default function CheckOutfitStoragePage() {
       case "error":
         return <XCircle className="h-5 w-5 text-red-500" />
       default:
-        return <XCircle className="h-5 w-5 text-gray-500" />
+        return <XCircle className="h-5 w-5 text-muted-foreground" />
     }
   }
 
@@ -152,7 +152,7 @@ export default function CheckOutfitStoragePage() {
   const isFullyFunctional = completeness === 100
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-background via-card to-background p-6">
       <div className="container mx-auto max-w-4xl">
         {/* Header */}
         <div className="text-center mb-8">
@@ -162,13 +162,13 @@ export default function CheckOutfitStoragePage() {
             </div>
             <h1 className="text-3xl font-bold text-foreground">AI Outfit Storage Integration Check</h1>
           </div>
-          <p className="text-gray-400">
+          <p className="text-muted-foreground">
             Diagnostic tool to check if your AI outfit picker is properly connected to your wardrobe database
           </p>
         </div>
 
         {/* Progress Overview */}
-        <Card className="mb-8 border-gray-700 bg-gray-800/80 backdrop-blur-xl">
+        <Card className="mb-8 border-border bg-card/80 backdrop-blur-xl">
           <CardHeader>
             <CardTitle className="text-foreground flex items-center gap-2">
               <Zap className="w-5 h-5" />
@@ -178,13 +178,13 @@ export default function CheckOutfitStoragePage() {
           <CardContent>
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-gray-300">Overall Progress</span>
+                <span className="text-foreground/80">Overall Progress</span>
                 <Badge variant={isFullyFunctional ? "default" : "destructive"}>{completeness}% Complete</Badge>
               </div>
               <Progress value={completeness} className="h-3" />
 
               {loading ? (
-                <div className="flex items-center gap-2 text-gray-400">
+                <div className="flex items-center gap-2 text-muted-foreground">
                   <Loader2 className="w-4 h-4 animate-spin" />
                   Checking database integration...
                 </div>
@@ -192,19 +192,19 @@ export default function CheckOutfitStoragePage() {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
                   <div className="text-center">
                     <div className="text-2xl font-bold text-green-400">{summary.working}</div>
-                    <div className="text-sm text-gray-400">Working</div>
+                    <div className="text-sm text-muted-foreground">Working</div>
                   </div>
                   <div className="text-center">
                     <div className="text-2xl font-bold text-yellow-400">{summary.missing}</div>
-                    <div className="text-sm text-gray-400">Missing</div>
+                    <div className="text-sm text-muted-foreground">Missing</div>
                   </div>
                   <div className="text-center">
                     <div className="text-2xl font-bold text-red-400">{summary.errors}</div>
-                    <div className="text-sm text-gray-400">Errors</div>
+                    <div className="text-sm text-muted-foreground">Errors</div>
                   </div>
                   <div className="text-center">
                     <div className="text-2xl font-bold text-primary">{summary.total}</div>
-                    <div className="text-sm text-gray-400">Total</div>
+                    <div className="text-sm text-muted-foreground">Total</div>
                   </div>
                 </div>
               ) : null}
@@ -216,20 +216,20 @@ export default function CheckOutfitStoragePage() {
         {results.length > 0 && (
           <div className="grid gap-4 mb-8">
             {results.map((result, index) => (
-              <Card key={index} className="border-gray-700 bg-gray-800/80 backdrop-blur-xl">
+              <Card key={index} className="border-border bg-card/80 backdrop-blur-xl">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       {getStatusIcon(result)}
                       <div>
                         <h3 className="font-medium text-foreground">{result.component}</h3>
-                        {result.details && <p className="text-sm text-gray-400">{result.details}</p>}
+                        {result.details && <p className="text-sm text-muted-foreground">{result.details}</p>}
                         {result.error && <p className="text-sm text-red-400">Error: {result.error}</p>}
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
                       {typeof result.count === "number" && (
-                        <Badge variant="outline" className="text-gray-300">
+                        <Badge variant="outline" className="text-foreground/80">
                           {result.count} items
                         </Badge>
                       )}
@@ -245,10 +245,10 @@ export default function CheckOutfitStoragePage() {
         )}
 
         {/* Action Buttons */}
-        <Card className="mb-8 border-gray-700 bg-gray-800/80 backdrop-blur-xl">
+        <Card className="mb-8 border-border bg-card/80 backdrop-blur-xl">
           <CardHeader>
             <CardTitle className="text-foreground">Actions</CardTitle>
-            <CardDescription className="text-gray-400">Test and fix your AI outfit picker integration</CardDescription>
+            <CardDescription className="text-muted-foreground">Test and fix your AI outfit picker integration</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex flex-wrap gap-3">
@@ -256,7 +256,7 @@ export default function CheckOutfitStoragePage() {
                 onClick={runCheck}
                 disabled={loading}
                 variant="outline"
-                className="border-gray-600 hover:bg-gray-700 bg-transparent text-foreground"
+                className="border-border hover:bg-muted bg-transparent text-foreground"
               >
                 {loading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
                 Re-check Status
@@ -277,7 +277,7 @@ export default function CheckOutfitStoragePage() {
                 onClick={testChatIntegration}
                 disabled={testingChat}
                 variant="outline"
-                className="border-gray-600 hover:bg-gray-700 bg-transparent text-foreground"
+                className="border-border hover:bg-muted bg-transparent text-foreground"
               >
                 {testingChat ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
                 Test Chat Integration
@@ -285,8 +285,8 @@ export default function CheckOutfitStoragePage() {
             </div>
 
             {chatTestResult && (
-              <Alert className="border-gray-600 bg-gray-800/50">
-                <AlertDescription className="text-gray-300">
+              <Alert className="border-border bg-card/50">
+                <AlertDescription className="text-foreground/80">
                   <pre className="whitespace-pre-wrap text-sm">{chatTestResult}</pre>
                 </AlertDescription>
               </Alert>
@@ -317,7 +317,7 @@ export default function CheckOutfitStoragePage() {
         )}
 
         {/* What This Enables */}
-        <Card className="border-gray-700 bg-gray-800/80 backdrop-blur-xl">
+        <Card className="border-border bg-card/80 backdrop-blur-xl">
           <CardHeader>
             <CardTitle className="text-foreground flex items-center gap-2">
               <Shirt className="w-5 h-5" />
@@ -330,21 +330,21 @@ export default function CheckOutfitStoragePage() {
                 <Bot className="w-5 h-5 text-primary mt-1" />
                 <div>
                   <h4 className="font-medium text-foreground">Smart Recommendations</h4>
-                  <p className="text-sm text-gray-400">AI uses your actual wardrobe items for suggestions</p>
+                  <p className="text-sm text-muted-foreground">AI uses your actual wardrobe items for suggestions</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
                 <Users className="w-5 h-5 text-green-400 mt-1" />
                 <div>
                   <h4 className="font-medium text-foreground">Family Wardrobes</h4>
-                  <p className="text-sm text-gray-400">Manage outfits for multiple family members</p>
+                  <p className="text-sm text-muted-foreground">Manage outfits for multiple family members</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
                 <Tags className="w-5 h-5 text-purple-400 mt-1" />
                 <div>
                   <h4 className="font-medium text-foreground">Outfit Organization</h4>
-                  <p className="text-sm text-gray-400">Save and categorize complete outfits</p>
+                  <p className="text-sm text-muted-foreground">Save and categorize complete outfits</p>
                 </div>
               </div>
             </div>

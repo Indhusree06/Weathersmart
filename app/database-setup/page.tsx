@@ -145,7 +145,7 @@ export default function DatabaseSetupPage() {
       case "running":
         return <Clock className="h-5 w-5 text-primary animate-spin" />
       default:
-        return <div className="h-5 w-5 rounded-full border-2 border-gray-300" />
+        return <div className="h-5 w-5 rounded-full border-2 border-border" />
     }
   }
 
@@ -166,8 +166,8 @@ export default function DatabaseSetupPage() {
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-4xl mx-auto px-4">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Multi-User Family Wardrobe Database Setup</h1>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <h1 className="text-3xl font-bold text-foreground mb-2">Multi-User Family Wardrobe Database Setup</h1>
+          <p className="text-muted-foreground max-w-2xl mx-auto">
             This will create a comprehensive database schema supporting multiple users, family members, wardrobe items,
             weather essentials, and child-specific features.
           </p>
@@ -179,7 +179,7 @@ export default function DatabaseSetupPage() {
             <CardContent className="pt-6">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm font-medium">Setup Progress</span>
-                <span className="text-sm text-gray-500">{Math.round(progress)}%</span>
+                <span className="text-sm text-muted-foreground">{Math.round(progress)}%</span>
               </div>
               <Progress value={progress} className="h-2" />
             </CardContent>
@@ -196,11 +196,11 @@ export default function DatabaseSetupPage() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center space-x-2 mb-1">
                       {step.icon}
-                      <h3 className="text-lg font-semibold text-gray-900">
+                      <h3 className="text-lg font-semibold text-foreground">
                         {index + 1}. {step.name}
                       </h3>
                     </div>
-                    <p className="text-gray-600 mb-2">{step.description}</p>
+                    <p className="text-muted-foreground mb-2">{step.description}</p>
                     {step.details && (
                       <p className={`text-sm ${step.status === "error" ? "text-red-600" : "text-green-600"}`}>
                         {step.details}
@@ -246,13 +246,13 @@ export default function DatabaseSetupPage() {
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div>
-                  <p className="text-sm text-gray-600">Steps Completed</p>
+                  <p className="text-sm text-muted-foreground">Steps Completed</p>
                   <p className="text-2xl font-bold">
                     {summary.successfulSteps}/{summary.totalSteps}
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600">Database Status</p>
+                  <p className="text-sm text-muted-foreground">Database Status</p>
                   <p className={`text-lg font-semibold ${summary.isComplete ? "text-green-600" : "text-yellow-600"}`}>
                     {summary.isComplete ? "Ready to Use" : "Needs Attention"}
                   </p>
@@ -293,7 +293,7 @@ export default function DatabaseSetupPage() {
 
         {/* Database Features */}
         <div className="mt-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Database Features</h2>
+          <h2 className="text-2xl font-bold text-foreground mb-6 text-center">Database Features</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <Card>
               <CardHeader>
@@ -303,7 +303,7 @@ export default function DatabaseSetupPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <ul className="text-sm text-gray-600 space-y-1">
+                <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• Main user accounts</li>
                   <li>• Family member profiles</li>
                   <li>• Relationship management</li>
@@ -320,7 +320,7 @@ export default function DatabaseSetupPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <ul className="text-sm text-gray-600 space-y-1">
+                <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• Safety features tracking</li>
                   <li>• Child-specific categories</li>
                   <li>• Activity-based organization</li>
@@ -337,7 +337,7 @@ export default function DatabaseSetupPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <ul className="text-sm text-gray-600 space-y-1">
+                <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• Weather essentials</li>
                   <li>• Condition-based items</li>
                   <li>• Seasonal organization</li>

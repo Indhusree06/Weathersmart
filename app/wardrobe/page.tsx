@@ -549,7 +549,7 @@ export default function WardrobePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-background via-card to-background flex items-center justify-center">
         <div className="text-foreground">Loading...</div>
       </div>
     )
@@ -560,7 +560,7 @@ export default function WardrobePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-foreground">
+    <div className="min-h-screen bg-gradient-to-br from-background via-card to-background text-foreground">
       {/* Navigation */}
       <Navbar 
         navLinks={[
@@ -582,7 +582,7 @@ export default function WardrobePage() {
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
           <div>
             <h1 className="text-3xl font-bold mb-2">{selectedProfile.name}</h1>
-            <p className="text-gray-400">
+            <p className="text-muted-foreground">
               {selectedProfile.relation === "self" || selectedProfile.is_owner
                 ? "Your personal clothing collection"
                 : `${selectedProfile.name}'s clothing collection`}
@@ -642,7 +642,7 @@ export default function WardrobePage() {
                   onClick={() => setSearchTerm("")}
                   variant="ghost"
                   size="sm"
-                  className="text-gray-400 hover:text-foreground"
+                  className="text-muted-foreground hover:text-foreground"
                 >
                   <X className="w-4 h-4" />
                 </Button>
@@ -652,27 +652,27 @@ export default function WardrobePage() {
         )}
 
         {/* Filters & Sorting */}
-        <Card className="mb-6 bg-gray-800/50 border-gray-700">
+        <Card className="mb-6 bg-card/50 border-border">
           <CardContent className="p-6">
             <div className="flex items-center gap-2 mb-4">
-              <Filter className="w-5 h-5 text-gray-400" />
+              <Filter className="w-5 h-5 text-muted-foreground" />
               <h2 className="text-lg font-semibold text-foreground">Filters & Sorting</h2>
             </div>
 
             {/* Search */}
             <div className="mb-4">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input
                   placeholder="Search items..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 bg-gray-700/50 border-gray-600 text-foreground placeholder-gray-400"
+                  className="pl-10 bg-muted/50 border-border text-foreground placeholder-gray-400"
                 />
                 {searchTerm && (
                   <button
                     onClick={() => setSearchTerm("")}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-foreground"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -683,12 +683,12 @@ export default function WardrobePage() {
             {/* Filter Row 1 */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Category</label>
+                <label className="block text-sm font-medium text-foreground/80 mb-2">Category</label>
                 <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                  <SelectTrigger className="bg-gray-700/50 border-gray-600 text-foreground">
+                  <SelectTrigger className="bg-muted/50 border-border text-foreground">
                     <SelectValue placeholder="All Categories" />
                   </SelectTrigger>
-                  <SelectContent className="bg-gray-800 border-gray-700">
+                  <SelectContent className="bg-card border-border">
                     <SelectItem value="all" className="text-foreground">
                       All Categories
                     </SelectItem>
@@ -702,12 +702,12 @@ export default function WardrobePage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Color</label>
+                <label className="block text-sm font-medium text-foreground/80 mb-2">Color</label>
                 <Select value={selectedColor} onValueChange={setSelectedColor}>
-                  <SelectTrigger className="bg-gray-700/50 border-gray-600 text-foreground">
+                  <SelectTrigger className="bg-muted/50 border-border text-foreground">
                     <SelectValue placeholder="All Colors" />
                   </SelectTrigger>
-                  <SelectContent className="bg-gray-800 border-gray-700">
+                  <SelectContent className="bg-card border-border">
                     <SelectItem value="all" className="text-foreground">
                       All Colors
                     </SelectItem>
@@ -721,12 +721,12 @@ export default function WardrobePage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Condition</label>
+                <label className="block text-sm font-medium text-foreground/80 mb-2">Condition</label>
                 <Select value={selectedCondition} onValueChange={setSelectedCondition}>
-                  <SelectTrigger className="bg-gray-700/50 border-gray-600 text-foreground">
+                  <SelectTrigger className="bg-muted/50 border-border text-foreground">
                     <SelectValue placeholder="All Conditions" />
                   </SelectTrigger>
-                  <SelectContent className="bg-gray-800 border-gray-700">
+                  <SelectContent className="bg-card border-border">
                     <SelectItem value="all" className="text-foreground">
                       All Conditions
                     </SelectItem>
@@ -740,12 +740,12 @@ export default function WardrobePage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Sort By</label>
+                <label className="block text-sm font-medium text-foreground/80 mb-2">Sort By</label>
                 <Select value={sortBy} onValueChange={setSortBy}>
-                  <SelectTrigger className="bg-gray-700/50 border-gray-600 text-foreground">
+                  <SelectTrigger className="bg-muted/50 border-border text-foreground">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-gray-800 border-gray-700">
+                  <SelectContent className="bg-card border-border">
                     <SelectItem value="newest" className="text-foreground">
                       Newest First
                     </SelectItem>
@@ -779,15 +779,15 @@ export default function WardrobePage() {
                   id="favorites"
                   checked={showFavoritesOnly}
                   onCheckedChange={setShowFavoritesOnly}
-                  className="border-gray-600"
+                  className="border-border"
                 />
-                <label htmlFor="favorites" className="text-sm text-gray-300">
+                <label htmlFor="favorites" className="text-sm text-foreground/80">
                   Favorites Only
                 </label>
               </div>
               <div className="flex items-center space-x-2">
-                <Checkbox id="new" checked={showNewOnly} onCheckedChange={setShowNewOnly} className="border-gray-600" />
-                <label htmlFor="new" className="text-sm text-gray-300">
+                <Checkbox id="new" checked={showNewOnly} onCheckedChange={setShowNewOnly} className="border-border" />
+                <label htmlFor="new" className="text-sm text-foreground/80">
                   New Items Only
                 </label>
               </div>
@@ -797,10 +797,10 @@ export default function WardrobePage() {
 
         {/* Results Summary */}
         <div className="flex justify-between items-center mb-6">
-          <div className="text-gray-300">
+          <div className="text-foreground/80">
             Showing {filteredAndSortedItems.length} of {items.length} items
           </div>
-          <div className="text-gray-300">
+          <div className="text-foreground/80">
             Total Value: <span className="text-green-400 font-semibold">${totalValue.toFixed(2)}</span>
           </div>
         </div>
@@ -808,13 +808,13 @@ export default function WardrobePage() {
         {/* Items Grid */}
         {isLoading ? (
           <div className="flex justify-center items-center py-12">
-            <div className="text-gray-400">Loading wardrobe items...</div>
+            <div className="text-muted-foreground">Loading wardrobe items...</div>
           </div>
         ) : filteredAndSortedItems.length === 0 ? (
           <div className="text-center py-12">
-            <Shirt className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-gray-300 mb-2">No items found</h3>
-            <p className="text-gray-400 mb-6">
+            <Shirt className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-foreground/80 mb-2">No items found</h3>
+            <p className="text-muted-foreground mb-6">
               {items.length === 0
                 ? `${selectedProfile.name} is empty. Add some items to get started!`
                 : "No items match your current filters. Try adjusting your search criteria."}
@@ -824,7 +824,7 @@ export default function WardrobePage() {
                 <Button
                   onClick={handleViewFullWardrobe}
                   variant="outline"
-                  className="bg-transparent border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-foreground"
+                  className="bg-transparent border-border text-foreground/80 hover:bg-muted hover:text-foreground"
                 >
                   <Grid3X3 className="w-4 h-4 mr-2" />
                   View Full Wardrobe
@@ -848,11 +848,11 @@ export default function WardrobePage() {
                 <Card
                   key={item.id}
                   ref={(el) => (itemRefs.current[item.id] = el)}
-                  className="bg-gray-800/50 border-gray-700 hover:bg-gray-800/70 transition-all duration-200 group"
+                  className="bg-card/50 border-border hover:bg-card/70 transition-all duration-200 group"
                 >
                   <CardContent className="p-4">
                     {/* Item Image */}
-                    <div className="relative aspect-square mb-3 bg-gray-700 rounded-lg overflow-hidden">
+                    <div className="relative aspect-square mb-3 bg-muted rounded-lg overflow-hidden">
                       {item.image_url ? (
                         <Image
                           src={item.image_url || "/placeholder.svg"}
@@ -863,7 +863,7 @@ export default function WardrobePage() {
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center">
-                          <Shirt className="w-12 h-12 text-gray-500" />
+                          <Shirt className="w-12 h-12 text-muted-foreground" />
                         </div>
                       )}
 
@@ -871,7 +871,7 @@ export default function WardrobePage() {
                       <button
                         onClick={() => toggleFavorite(item.id, item.is_favorite)}
                         className={`absolute top-2 right-2 p-1 rounded-full transition-colors ${
-                          item.is_favorite ? "bg-red-500 text-foreground" : "bg-gray-800/80 text-gray-400 hover:text-red-400"
+                          item.is_favorite ? "bg-red-500 text-foreground" : "bg-card/80 text-muted-foreground hover:text-red-400"
                         }`}
                       >
                         <Heart className={`w-4 h-4 ${item.is_favorite ? "fill-current" : ""}`} />
@@ -880,28 +880,28 @@ export default function WardrobePage() {
                       {/* More options */}
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <button className="absolute top-2 left-2 p-1 bg-gray-800/80 rounded-full text-gray-400 hover:text-foreground transition-colors">
+                          <button className="absolute top-2 left-2 p-1 bg-card/80 rounded-full text-muted-foreground hover:text-foreground transition-colors">
                             <MoreVertical className="w-4 h-4" />
                           </button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent className="bg-gray-800 border-gray-700">
+                        <DropdownMenuContent className="bg-card border-border">
                           <DropdownMenuItem 
                             onClick={() => handleViewItem(item)}
-                            className="text-foreground hover:bg-gray-700"
+                            className="text-foreground hover:bg-muted"
                           >
                             <Eye className="w-4 h-4 mr-2" />
                             View Details
                           </DropdownMenuItem>
                           <DropdownMenuItem 
                             onClick={() => handleEditItem(item)}
-                            className="text-foreground hover:bg-gray-700"
+                            className="text-foreground hover:bg-muted"
                           >
                             <Edit className="w-4 h-4 mr-2" />
                             Edit Item
                           </DropdownMenuItem>
                           <DropdownMenuItem
                             onClick={() => handleDeleteItem(item.id)}
-                            className="text-red-400 hover:bg-gray-700"
+                            className="text-red-400 hover:bg-muted"
                           >
                             <Trash2 className="w-4 h-4 mr-2" />
                             Delete Item
@@ -917,32 +917,32 @@ export default function WardrobePage() {
                       {/* Tags */}
                       <div className="flex flex-wrap gap-1">
                         {categoryName && categoryName !== "Uncategorized" && (
-                          <Badge variant="outline" className="text-xs border-gray-600 text-gray-300">
+                          <Badge variant="outline" className="text-xs border-border text-foreground/80">
                             {categoryName}
                           </Badge>
                         )}
                         {item.color && (
-                          <Badge variant="outline" className="text-xs border-gray-600 text-gray-300">
+                          <Badge variant="outline" className="text-xs border-border text-foreground/80">
                             {item.color}
                           </Badge>
                         )}
                         {item.brand && (
-                          <Badge variant="outline" className="text-xs border-gray-600 text-gray-300">
+                          <Badge variant="outline" className="text-xs border-border text-foreground/80">
                             {item.brand}
                           </Badge>
                         )}
                         {tagNames.slice(0, 2).map((tagName, index) => (
-                          <Badge key={index} variant="outline" className="text-xs border-gray-600 text-gray-300">
+                          <Badge key={index} variant="outline" className="text-xs border-border text-foreground/80">
                             {tagName}
                           </Badge>
                         ))}
                       </div>
 
                       {/* Description */}
-                      {item.description && <p className="text-xs text-gray-400 line-clamp-2">{item.description}</p>}
+                      {item.description && <p className="text-xs text-muted-foreground line-clamp-2">{item.description}</p>}
 
                       {/* Stats */}
-                      <div className="flex items-center justify-between pt-2 text-xs text-gray-400">
+                      <div className="flex items-center justify-between pt-2 text-xs text-muted-foreground">
                         <div className="flex items-center gap-1">
                           <Star className="w-3 h-3" />
                           <span>Worn {item.wear_count || 0} times</span>
@@ -959,7 +959,7 @@ export default function WardrobePage() {
                               ? "border-green-600 text-green-400"
                               : item.condition === "excellent"
                                 ? "border-blue-600 text-primary"
-                                : "border-gray-600 text-gray-400"
+                                : "border-border text-muted-foreground"
                           }`}
                         >
                           {item.condition}

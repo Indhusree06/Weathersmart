@@ -83,8 +83,8 @@ export default function CheckCollectionsPage() {
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-4xl mx-auto px-4">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Collections Feature Check</h1>
-          <p className="text-gray-600">
+          <h1 className="text-3xl font-bold text-foreground mb-2">Collections Feature Check</h1>
+          <p className="text-muted-foreground">
             Check if your wardrobe database has collections functionality for organizing items
           </p>
         </div>
@@ -204,9 +204,9 @@ export default function CheckCollectionsPage() {
                         className="p-4 border rounded-lg"
                         style={{ borderColor: collection.color_theme || "#e5e7eb" }}
                       >
-                        <h3 className="font-semibold text-gray-900">{collection.name}</h3>
+                        <h3 className="font-semibold text-foreground">{collection.name}</h3>
                         {collection.description && (
-                          <p className="text-sm text-gray-600 mt-1">{collection.description}</p>
+                          <p className="text-sm text-muted-foreground mt-1">{collection.description}</p>
                         )}
                         <div className="flex flex-wrap gap-1 mt-2">
                           {collection.is_seasonal && (
@@ -241,8 +241,8 @@ export default function CheckCollectionsPage() {
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <h4 className="font-semibold text-gray-900 mb-2">Organization Features</h4>
-                    <ul className="text-sm text-gray-600 space-y-1">
+                    <h4 className="font-semibold text-foreground mb-2">Organization Features</h4>
+                    <ul className="text-sm text-muted-foreground space-y-1">
                       <li>• Group items by season, occasion, or style</li>
                       <li>• Create themed collections (work, vacation, etc.)</li>
                       <li>• Color-coded organization system</li>
@@ -250,8 +250,8 @@ export default function CheckCollectionsPage() {
                     </ul>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-gray-900 mb-2">User Experience</h4>
-                    <ul className="text-sm text-gray-600 space-y-1">
+                    <h4 className="font-semibold text-foreground mb-2">User Experience</h4>
+                    <ul className="text-sm text-muted-foreground space-y-1">
                       <li>• Quick access to related items</li>
                       <li>• Visual organization with color themes</li>
                       <li>• Many-to-many relationships (items in multiple collections)</li>
@@ -280,7 +280,7 @@ export default function CheckCollectionsPage() {
               <CardDescription>Collections allow you to organize wardrobe items into groups</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-600 mb-4">
+              <p className="text-muted-foreground mb-4">
                 Click "Check Collections" to see if your database already has collections functionality, or add it if
                 it's missing.
               </p>

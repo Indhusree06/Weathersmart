@@ -182,7 +182,7 @@ export function MannequinCSS3D({ clothing, onRemoveItem }: MannequinCSS3DProps) 
 
             {/* Stand pole */}
             <div 
-              className="absolute bg-gray-600 shadow-lg"
+              className="absolute bg-muted/80 shadow-lg"
               style={{
                 width: '20px',
                 height: '120px',
@@ -194,7 +194,7 @@ export function MannequinCSS3D({ clothing, onRemoveItem }: MannequinCSS3DProps) 
 
             {/* Stand base */}
             <div 
-              className="absolute bg-gradient-to-br from-gray-700 to-gray-800 rounded-full shadow-2xl"
+              className="absolute bg-gradient-to-br from-gray-700 to-card rounded-full shadow-2xl"
               style={{
                 width: '200px',
                 height: '40px',

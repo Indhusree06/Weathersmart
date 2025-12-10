@@ -28,7 +28,7 @@ export default function RootPage() {
   // Show error state if there's an authentication error
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-background via-card to-background flex items-center justify-center">
         <div className="text-center max-w-md mx-auto p-6">
           <div className="w-12 h-12 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
             <svg className="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -36,7 +36,7 @@ export default function RootPage() {
             </svg>
           </div>
           <h2 className="text-xl font-semibold text-foreground mb-2">Connection Error</h2>
-          <p className="text-gray-400 mb-4">{error}</p>
+          <p className="text-muted-foreground mb-4">{error}</p>
           <button 
             onClick={() => window.location.reload()} 
             className="px-4 py-2 bg-primary text-foreground rounded-lg hover:bg-primary/90 transition-colors"
@@ -50,10 +50,10 @@ export default function RootPage() {
 
   // Show loading while checking auth state or redirecting
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center">
+    <div className="min-h-screen bg-gradient-to-br from-background via-card to-background flex items-center justify-center">
       <div className="text-center">
         <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-        <p className="text-gray-500">
+        <p className="text-muted-foreground">
           {loading ? "Loading..." : redirecting ? "Redirecting..." : "Initializing..."}
         </p>
       </div>

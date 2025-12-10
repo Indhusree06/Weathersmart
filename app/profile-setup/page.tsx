@@ -94,9 +94,9 @@ export default function ProfileSetupPage() {
   const userInitial = user.email?.charAt(0).toUpperCase() || "U"
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-background via-card to-background">
       {/* Navigation */}
-      <nav className="border-b border-gray-700 bg-gray-800/50 backdrop-blur-sm">
+      <nav className="border-b border-border bg-card/50 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-8">
@@ -112,15 +112,15 @@ export default function ProfileSetupPage() {
                   <User className="w-4 h-4" />
                   <span>My Profile</span>
                 </div>
-                <div className="text-gray-500 flex items-center space-x-2">
+                <div className="text-muted-foreground flex items-center space-x-2">
                   <MessageCircle className="w-4 h-4" />
                   <span>AI Outfit Picker</span>
                 </div>
-                <div className="text-gray-500 flex items-center space-x-2">
+                <div className="text-muted-foreground flex items-center space-x-2">
                   <Users className="w-4 h-4" />
                   <span>Family Wardrobe</span>
                 </div>
-                <div className="text-gray-500 flex items-center space-x-2">
+                <div className="text-muted-foreground flex items-center space-x-2">
                   <Cloud className="w-4 h-4" />
                   <span>Weather Essentials</span>
                 </div>
@@ -136,7 +136,7 @@ export default function ProfileSetupPage() {
                 </Avatar>
                 <div className="hidden sm:block">
                   <p className="text-sm font-medium text-foreground">{user.email?.split("@")[0]}</p>
-                  <p className="text-xs text-gray-400">{user.email}</p>
+                  <p className="text-xs text-muted-foreground">{user.email}</p>
                 </div>
               </div>
               <Button
@@ -162,37 +162,37 @@ export default function ProfileSetupPage() {
             </div>
             <span className="ml-2 text-primary font-medium">My Profile</span>
           </div>
-          <div className="w-16 h-0.5 bg-gray-600"></div>
+          <div className="w-16 h-0.5 bg-muted/80"></div>
           <div className="flex items-center">
-            <div className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center text-gray-400 text-sm font-medium">
+            <div className="w-8 h-8 bg-muted/80 rounded-full flex items-center justify-center text-muted-foreground text-sm font-medium">
               2
             </div>
-            <span className="ml-2 text-gray-400">AI Outfit Picker</span>
+            <span className="ml-2 text-muted-foreground">AI Outfit Picker</span>
           </div>
-          <div className="w-16 h-0.5 bg-gray-600"></div>
+          <div className="w-16 h-0.5 bg-muted/80"></div>
           <div className="flex items-center">
-            <div className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center text-gray-400 text-sm font-medium">
+            <div className="w-8 h-8 bg-muted/80 rounded-full flex items-center justify-center text-muted-foreground text-sm font-medium">
               3
             </div>
-            <span className="ml-2 text-gray-400">Family Wardrobe</span>
+            <span className="ml-2 text-muted-foreground">Family Wardrobe</span>
           </div>
-          <div className="w-16 h-0.5 bg-gray-600"></div>
+          <div className="w-16 h-0.5 bg-muted/80"></div>
           <div className="flex items-center">
-            <div className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center text-gray-400 text-sm font-medium">
+            <div className="w-8 h-8 bg-muted/80 rounded-full flex items-center justify-center text-muted-foreground text-sm font-medium">
               4
             </div>
-            <span className="ml-2 text-gray-400">Weather Essentials</span>
+            <span className="ml-2 text-muted-foreground">Weather Essentials</span>
           </div>
         </div>
       </div>
 
       {/* Main Content */}
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <Card className="bg-gray-800/80 backdrop-blur-xl border-gray-700 shadow-2xl">
+        <Card className="bg-card/80 backdrop-blur-xl border-border shadow-2xl">
           <CardContent className="p-8">
             <div className="text-center mb-8">
               <h1 className="text-3xl font-bold text-foreground mb-2">Welcome to Weather Smart!</h1>
-              <p className="text-gray-400">Let's set up your profile and start building your smart wardrobe</p>
+              <p className="text-muted-foreground">Let's set up your profile and start building your smart wardrobe</p>
             </div>
 
             <div className="space-y-6">
@@ -204,7 +204,7 @@ export default function ProfileSetupPage() {
                       <img
                         src={imagePreview || "/placeholder.svg"}
                         alt="Profile preview"
-                        className="w-24 h-24 rounded-full object-cover border-4 border-gray-600"
+                        className="w-24 h-24 rounded-full object-cover border-4 border-border"
                       />
                       <Button
                         type="button"
@@ -220,8 +220,8 @@ export default function ProfileSetupPage() {
                       </Button>
                     </div>
                   ) : (
-                    <div className="w-24 h-24 bg-gray-600 rounded-full flex items-center justify-center border-4 border-gray-500">
-                      <Camera className="w-8 h-8 text-gray-400" />
+                    <div className="w-24 h-24 bg-muted/80 rounded-full flex items-center justify-center border-4 border-border">
+                      <Camera className="w-8 h-8 text-muted-foreground" />
                     </div>
                   )}
                 </div>
@@ -247,7 +247,7 @@ export default function ProfileSetupPage() {
 
               {/* Display Name */}
               <div>
-                <Label htmlFor="displayName" className="text-gray-300 text-sm font-medium flex items-center gap-2">
+                <Label htmlFor="displayName" className="text-foreground/80 text-sm font-medium flex items-center gap-2">
                   <User className="w-4 h-4" />
                   Display Name
                 </Label>
@@ -257,13 +257,13 @@ export default function ProfileSetupPage() {
                   placeholder="Enter your display name"
                   value={displayName}
                   onChange={(e) => setDisplayName(e.target.value)}
-                  className="mt-2 h-12 bg-gray-700 border-gray-600 text-foreground placeholder-gray-400 focus:border-blue-400 focus:ring-blue-400"
+                  className="mt-2 h-12 bg-muted border-border text-foreground placeholder-gray-400 focus:border-blue-400 focus:ring-blue-400"
                 />
               </div>
 
               {/* Description */}
               <div>
-                <Label htmlFor="description" className="text-gray-300 text-sm font-medium flex items-center gap-2">
+                <Label htmlFor="description" className="text-foreground/80 text-sm font-medium flex items-center gap-2">
                   <MessageCircle className="w-4 h-4" />
                   Describe yourself
                 </Label>
@@ -272,7 +272,7 @@ export default function ProfileSetupPage() {
                   placeholder="Tell us about your style preferences..."
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="mt-2 bg-gray-700 border-gray-600 text-foreground placeholder-gray-400 focus:border-blue-400 focus:ring-blue-400 min-h-[100px]"
+                  className="mt-2 bg-muted border-border text-foreground placeholder-gray-400 focus:border-blue-400 focus:ring-blue-400 min-h-[100px]"
                 />
               </div>
 
@@ -315,7 +315,7 @@ export default function ProfileSetupPage() {
                   <Button
                     variant="link"
                     onClick={handleSkipSetup}
-                    className="text-gray-400 hover:text-gray-300 text-sm"
+                    className="text-muted-foreground hover:text-foreground/80 text-sm"
                   >
                     Skip profile setup and start adding clothes
                   </Button>

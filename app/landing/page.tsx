@@ -299,7 +299,7 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-black">
       {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-black/95 backdrop-blur-sm border-b border-gray-800">
+      <nav className="sticky top-0 z-50 bg-black/95 backdrop-blur-sm border-b border-border">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
@@ -311,19 +311,19 @@ export default function LandingPage() {
             <div className="hidden md:flex items-center space-x-8">
               <button
                 onClick={() => scrollToSection("audience")}
-                className={`text-sm font-medium transition-colors ${activeSection === "audience" ? "text-foreground" : "text-gray-400 hover:text-foreground"}`}
+                className={`text-sm font-medium transition-colors ${activeSection === "audience" ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`}
               >
                 Our audience
               </button>
               <button
                 onClick={() => scrollToSection("features")}
-                className={`text-sm font-medium transition-colors ${activeSection === "features" ? "text-foreground" : "text-gray-400 hover:text-foreground"}`}
+                className={`text-sm font-medium transition-colors ${activeSection === "features" ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`}
               >
                 Features
               </button>
               <button
                 onClick={() => scrollToSection("how")}
-                className={`text-sm font-medium transition-colors ${activeSection === "how" ? "text-foreground" : "text-gray-400 hover:text-foreground"}`}
+                className={`text-sm font-medium transition-colors ${activeSection === "how" ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`}
               >
                 How it works
               </button>
@@ -332,7 +332,7 @@ export default function LandingPage() {
               <Link href="/auth">
                 <Button
                   variant="outline"
-                  className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-foreground bg-transparent"
+                  className="border-border text-foreground/80 hover:bg-card hover:text-foreground bg-transparent"
                 >
                   Sign In
                 </Button>
@@ -346,16 +346,16 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero Section */}
-      <section id="hero" className="py-24 bg-gradient-to-br from-black via-gray-900 to-black relative overflow-hidden">
+      <section id="hero" className="py-24 bg-gradient-to-br from-black via-background to-black relative overflow-hidden">
         {/* Background decorative elements */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-gray-800 rounded-full opacity-20 blur-3xl -translate-y-1/2 translate-x-1/2"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-gray-700 rounded-full opacity-10 blur-3xl translate-y-1/2 -translate-x-1/2"></div>
+        <div className="absolute top-0 right-0 w-64 h-64 bg-card rounded-full opacity-20 blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-muted rounded-full opacity-10 blur-3xl translate-y-1/2 -translate-x-1/2"></div>
 
         <div className="container mx-auto px-6 relative z-10">
           <div className="flex flex-col items-center justify-center gap-12">
             <div className="text-center">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-4">Weather Smart</h1>
-              <p className="text-lg md:text-xl text-gray-300 mb-6 max-w-3xl mx-auto">
+              <p className="text-lg md:text-xl text-foreground/80 mb-6 max-w-3xl mx-auto">
                 Your AI-powered Outfit Selector with intelligent outfit recommendations based on weather, occasion, and
                 your personal style
               </p>
@@ -373,22 +373,22 @@ export default function LandingPage() {
       </section>
 
       {/* Our Audience Section */}
-      <section id="audience" className="py-20 bg-gray-900">
+      <section id="audience" className="py-20 bg-background">
         <div className="container mx-auto px-6">
           <div className="text-center">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Made for families</h2>
-            <p className="text-lg text-gray-400 max-w-2xl mx-auto mb-12">
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-12">
               Weather Smart helps busy moms manage wardrobes for the whole family and empowers teens to develop their
               own style
             </p>
 
             {/* Audience Selection Buttons - Dark Style */}
             <div className="flex justify-center mb-12">
-              <div className="inline-flex bg-gray-800 rounded-lg p-1">
+              <div className="inline-flex bg-card rounded-lg p-1">
                 <button
                   onClick={() => handleAudienceChange("moms")}
                   className={`px-6 py-3 rounded-md text-sm font-medium transition-all duration-200 ${
-                    audienceType === "moms" ? "bg-white text-black shadow-sm" : "text-gray-400 hover:text-foreground"
+                    audienceType === "moms" ? "bg-white text-black shadow-sm" : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
                   For Moms
@@ -396,7 +396,7 @@ export default function LandingPage() {
                 <button
                   onClick={() => handleAudienceChange("teens")}
                   className={`px-6 py-3 rounded-md text-sm font-medium transition-all duration-200 ${
-                    audienceType === "teens" ? "bg-white text-black shadow-sm" : "text-gray-400 hover:text-foreground"
+                    audienceType === "teens" ? "bg-white text-black shadow-sm" : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
                   For Teens
@@ -411,7 +411,7 @@ export default function LandingPage() {
                   <>
                     <div className="text-left">
                       <h3 className="text-2xl font-semibold text-foreground mb-4">For Busy Moms</h3>
-                      <ul className="space-y-3 text-gray-400">
+                      <ul className="space-y-3 text-muted-foreground">
                         <li className="flex items-start">
                           <span className="text-foreground mr-2">•</span>
                           Simplify morning routines for the entire family
@@ -432,7 +432,7 @@ export default function LandingPage() {
                     </div>
                     <div className="text-left">
                       <h3 className="text-2xl font-semibold text-foreground mb-4">Family Benefits</h3>
-                      <ul className="space-y-3 text-gray-400">
+                      <ul className="space-y-3 text-muted-foreground">
                         <li className="flex items-start">
                           <span className="text-foreground mr-2">•</span>
                           Coordinate outfits for the whole family
@@ -456,7 +456,7 @@ export default function LandingPage() {
                   <>
                     <div className="text-left">
                       <h3 className="text-2xl font-semibold text-foreground mb-4">For Teens</h3>
-                      <ul className="space-y-3 text-gray-400">
+                      <ul className="space-y-3 text-muted-foreground">
                         <li className="flex items-start">
                           <span className="text-foreground mr-2">•</span>
                           Discover and develop your personal style
@@ -477,7 +477,7 @@ export default function LandingPage() {
                     </div>
                     <div className="text-left">
                       <h3 className="text-2xl font-semibold text-foreground mb-4">Style Development</h3>
-                      <ul className="space-y-3 text-gray-400">
+                      <ul className="space-y-3 text-muted-foreground">
                         <li className="flex items-start">
                           <span className="text-foreground mr-2">•</span>
                           Explore different fashion trends safely
@@ -567,14 +567,14 @@ export default function LandingPage() {
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Why families love Weather Smart</h2>
-            <p className="text-lg text-gray-400 max-w-2xl mx-auto">
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Real solutions for real wardrobe challenges that busy families face every day
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            <div className="bg-gray-900 rounded-xl p-8 shadow-sm border border-gray-800 hover:bg-gray-800 transition-colors">
-              <div className="w-12 h-12 bg-gray-800 rounded-lg flex items-center justify-center mb-6">
+            <div className="bg-background rounded-xl p-8 shadow-sm border border-border hover:bg-card transition-colors">
+              <div className="w-12 h-12 bg-card rounded-lg flex items-center justify-center mb-6">
                 <svg className="w-6 h-6 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
@@ -585,14 +585,14 @@ export default function LandingPage() {
                 </svg>
               </div>
               <h3 className="text-xl font-semibold text-foreground mb-4">Never guess the weather again</h3>
-              <p className="text-gray-400 leading-relaxed">
+              <p className="text-muted-foreground leading-relaxed">
                 No more sending kids to school in shorts when it's 45°F. Get outfit suggestions that actually match the
                 weather forecast, so everyone stays comfortable all day.
               </p>
             </div>
 
-            <div className="bg-gray-900 rounded-xl p-8 shadow-sm border border-gray-800 hover:bg-gray-800 transition-colors">
-              <div className="w-12 h-12 bg-gray-800 rounded-lg flex items-center justify-center mb-6">
+            <div className="bg-background rounded-xl p-8 shadow-sm border border-border hover:bg-card transition-colors">
+              <div className="w-12 h-12 bg-card rounded-lg flex items-center justify-center mb-6">
                 <svg className="w-6 h-6 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
@@ -603,14 +603,14 @@ export default function LandingPage() {
                 </svg>
               </div>
               <h3 className="text-xl font-semibold text-foreground mb-4">Cut morning chaos in half</h3>
-              <p className="text-gray-400 leading-relaxed">
+              <p className="text-muted-foreground leading-relaxed">
                 Stop the daily "I have nothing to wear" meltdowns. Plan outfits the night before or get instant
                 suggestions when you're running late.
               </p>
             </div>
 
-            <div className="bg-gray-900 rounded-xl p-8 shadow-sm border border-gray-800 hover:bg-gray-800 transition-colors">
-              <div className="w-12 h-12 bg-gray-800 rounded-lg flex items-center justify-center mb-6">
+            <div className="bg-background rounded-xl p-8 shadow-sm border border-border hover:bg-card transition-colors">
+              <div className="w-12 h-12 bg-card rounded-lg flex items-center justify-center mb-6">
                 <svg className="w-6 h-6 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
@@ -621,7 +621,7 @@ export default function LandingPage() {
                 </svg>
               </div>
               <h3 className="text-xl font-semibold text-foreground mb-4">Rediscover clothes you forgot you had</h3>
-              <p className="text-gray-400 leading-relaxed">
+              <p className="text-muted-foreground leading-relaxed">
                 That cute top buried in the back of the closet? Weather Smart remembers it and suggests new ways to wear
                 it. Make the most of what you already own.
               </p>
@@ -630,8 +630,8 @@ export default function LandingPage() {
 
           {/* Additional Features Row */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto mt-12">
-            <div className="bg-gray-900 rounded-xl p-8 shadow-sm border border-gray-800 hover:bg-gray-800 transition-colors">
-              <div className="w-12 h-12 bg-gray-800 rounded-lg flex items-center justify-center mb-6">
+            <div className="bg-background rounded-xl p-8 shadow-sm border border-border hover:bg-card transition-colors">
+              <div className="w-12 h-12 bg-card rounded-lg flex items-center justify-center mb-6">
                 <svg className="w-6 h-6 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
@@ -642,14 +642,14 @@ export default function LandingPage() {
                 </svg>
               </div>
               <h3 className="text-xl font-semibold text-foreground mb-4">Perfect for the whole family</h3>
-              <p className="text-gray-400 leading-relaxed">
+              <p className="text-muted-foreground leading-relaxed">
                 Manage everyone's wardrobe in one place. From toddler tantrums to teenage fashion crises, get
                 age-appropriate suggestions for every family member.
               </p>
             </div>
 
-            <div className="bg-gray-900 rounded-xl p-8 shadow-sm border border-gray-800 hover:bg-gray-800 transition-colors">
-              <div className="w-12 h-12 bg-gray-800 rounded-lg flex items-center justify-center mb-6">
+            <div className="bg-background rounded-xl p-8 shadow-sm border border-border hover:bg-card transition-colors">
+              <div className="w-12 h-12 bg-card rounded-lg flex items-center justify-center mb-6">
                 <svg className="w-6 h-6 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
@@ -660,7 +660,7 @@ export default function LandingPage() {
                 </svg>
               </div>
               <h3 className="text-xl font-semibold text-foreground mb-4">Explore and Mix</h3>
-              <p className="text-gray-400 leading-relaxed">
+              <p className="text-muted-foreground leading-relaxed">
                 Easily explore different fashion trends and mix and match pieces from your wardrobe to create unique
                 outfits.
               </p>
@@ -670,11 +670,11 @@ export default function LandingPage() {
       </section>
 
       {/* How It Works Section */}
-      <section id="how" className="py-20 bg-gray-900">
+      <section id="how" className="py-20 bg-background">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">How it works</h2>
-            <p className="text-lg text-gray-400 max-w-2xl mx-auto">
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Getting started with Weather Smart is simple and takes just a few minutes
             </p>
           </div>
@@ -685,29 +685,29 @@ export default function LandingPage() {
                 <Upload className="w-8 h-8 text-black" />
               </div>
               <h3 className="text-xl font-semibold text-foreground mb-3">1. Upload Your Photos</h3>
-              <p className="text-gray-400 leading-relaxed">
+              <p className="text-muted-foreground leading-relaxed">
                 Take photos of your clothes and upload them to create your digital wardrobe. Our app makes it easy to
                 organize everything by category, color, and season.
               </p>
             </div>
 
             <div className="text-center">
-              <div className="w-16 h-16 bg-gray-600 rounded-full flex items-center justify-center mx-auto mb-6">
+              <div className="w-16 h-16 bg-muted/80 rounded-full flex items-center justify-center mx-auto mb-6">
                 <Tag className="w-8 h-8 text-foreground" />
               </div>
               <h3 className="text-xl font-semibold text-foreground mb-3">2. Add Your Tags</h3>
-              <p className="text-gray-400 leading-relaxed">
+              <p className="text-muted-foreground leading-relaxed">
                 Tag your items with details like color, style, occasion, and season. This helps our AI understand your
                 preferences and suggest the perfect combinations.
               </p>
             </div>
 
             <div className="text-center">
-              <div className="w-16 h-16 bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-6">
+              <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-6">
                 <Zap className="w-8 h-8 text-foreground" />
               </div>
               <h3 className="text-xl font-semibold text-foreground mb-3">3. Get Smart Suggestions</h3>
-              <p className="text-gray-400 leading-relaxed">
+              <p className="text-muted-foreground leading-relaxed">
                 Receive personalized outfit recommendations based on weather, occasion, and your style preferences.
                 Getting dressed has never been easier!
               </p>
@@ -719,7 +719,7 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="relative">
         {/* Full-width wardrobe image */}
-        <div className="w-full h-64 md:h-80 bg-gradient-to-r from-black to-gray-900 relative overflow-hidden">
+        <div className="w-full h-64 md:h-80 bg-gradient-to-r from-black to-background relative overflow-hidden">
           <div className="absolute inset-0 bg-black/60"></div>
           <img
             src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/faith-lee-rg5WfuAihU8-unsplash.jpg-7BrehqsohboRsoCRh8XjJTQ8Jk7DzO.jpeg"

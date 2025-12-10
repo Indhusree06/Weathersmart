@@ -28,19 +28,19 @@ export default function LandingPage() {
             <div className="hidden md:flex items-center space-x-8">
               <button
                 onClick={() => setActiveSection("audience")}
-                className={`text-sm font-medium ${activeSection === "audience" ? "text-primary" : "text-gray-600 hover:text-primary"}`}
+                className={`text-sm font-medium ${activeSection === "audience" ? "text-primary" : "text-muted-foreground hover:text-primary"}`}
               >
                 Our audience
               </button>
               <button
                 onClick={() => setActiveSection("features")}
-                className={`text-sm font-medium ${activeSection === "features" ? "text-primary" : "text-gray-600 hover:text-primary"}`}
+                className={`text-sm font-medium ${activeSection === "features" ? "text-primary" : "text-muted-foreground hover:text-primary"}`}
               >
                 Features
               </button>
               <button
                 onClick={() => setActiveSection("how")}
-                className={`text-sm font-medium ${activeSection === "how" ? "text-primary" : "text-gray-600 hover:text-primary"}`}
+                className={`text-sm font-medium ${activeSection === "how" ? "text-primary" : "text-muted-foreground hover:text-primary"}`}
               >
                 How it works
               </button>
@@ -64,11 +64,11 @@ export default function LandingPage() {
         <div className="container mx-auto px-6">
           <div className="flex flex-col md:flex-row items-center">
             <div className="md:w-1/2 mb-10 md:mb-0">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6">
                 Your AI-Powered <br />
                 <span className="text-primary">Wardrobe Assistant</span>
               </h1>
-              <p className="text-lg text-gray-600 mb-8 max-w-lg">
+              <p className="text-lg text-muted-foreground mb-8 max-w-lg">
                 Transform your wardrobe with intelligent outfit recommendations based on weather, occasion, and your
                 personal style.
               </p>
@@ -82,7 +82,7 @@ export default function LandingPage() {
                 <Link href="#how-it-works">
                   <Button
                     variant="outline"
-                    className="border-gray-300 text-gray-700 hover:bg-gray-100 px-8 py-3 text-lg bg-transparent"
+                    className="border-border text-foreground/90 hover:bg-gray-100 px-8 py-3 text-lg bg-transparent"
                   >
                     Learn More
                   </Button>
@@ -100,7 +100,7 @@ export default function LandingPage() {
                           <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
                           <div className="w-3 h-3 rounded-full bg-green-400"></div>
                         </div>
-                        <div className="px-4 py-1 rounded-full bg-gray-100 text-xs text-gray-500">
+                        <div className="px-4 py-1 rounded-full bg-gray-100 text-xs text-muted-foreground">
                           weather-smart.app
                         </div>
                       </div>
@@ -110,24 +110,24 @@ export default function LandingPage() {
                             <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
                               <Sparkles className="w-5 h-5 text-foreground" />
                             </div>
-                            <span className="text-lg font-semibold text-gray-800">Weather Smart</span>
+                            <span className="text-lg font-semibold text-foreground">Weather Smart</span>
                           </div>
                         </div>
 
                         <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-200 mb-6">
-                          <p className="text-gray-700 text-sm mb-4">Here's your outfit for today's business meeting:</p>
+                          <p className="text-foreground/90 text-sm mb-4">Here's your outfit for today's business meeting:</p>
                           <div className="grid grid-cols-3 gap-3">
                             <div className="bg-gray-100 rounded-lg p-2 text-center">
                               <div className="w-full h-16 bg-blue-100 rounded-md mb-2"></div>
-                              <span className="text-xs text-gray-600">Navy Blazer</span>
+                              <span className="text-xs text-muted-foreground">Navy Blazer</span>
                             </div>
                             <div className="bg-gray-100 rounded-lg p-2 text-center">
                               <div className="w-full h-16 bg-blue-100 rounded-md mb-2"></div>
-                              <span className="text-xs text-gray-600">White Shirt</span>
+                              <span className="text-xs text-muted-foreground">White Shirt</span>
                             </div>
                             <div className="bg-gray-100 rounded-lg p-2 text-center">
                               <div className="w-full h-16 bg-blue-100 rounded-md mb-2"></div>
-                              <span className="text-xs text-gray-600">Gray Slacks</span>
+                              <span className="text-xs text-muted-foreground">Gray Slacks</span>
                             </div>
                           </div>
                         </div>
@@ -148,8 +148,8 @@ export default function LandingPage() {
       <section id="features" className="py-20">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Smart Features for Your Wardrobe</h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Smart Features for Your Wardrobe</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Weather Smart combines AI technology with your personal style to create the perfect wardrobe experience
             </p>
           </div>
@@ -182,8 +182,8 @@ export default function LandingPage() {
                 <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-2xl mb-4">
                   {feature.icon}
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">{feature.title}</h3>
-                <p className="text-gray-600">{feature.description}</p>
+                <h3 className="text-xl font-semibold text-foreground mb-3">{feature.title}</h3>
+                <p className="text-muted-foreground">{feature.description}</p>
               </div>
             ))}
           </div>
@@ -194,8 +194,8 @@ export default function LandingPage() {
       <section id="how-it-works" className="py-20 bg-blue-50">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">How It Works</h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">How It Works</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Getting started with Weather Smart is easy and takes just minutes
             </p>
           </div>
@@ -222,8 +222,8 @@ export default function LandingPage() {
                 <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-foreground font-bold text-lg mx-auto mb-4">
                   {step.step}
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">{step.title}</h3>
-                <p className="text-gray-600">{step.description}</p>
+                <h3 className="text-xl font-semibold text-foreground mb-2">{step.title}</h3>
+                <p className="text-muted-foreground">{step.description}</p>
               </div>
             ))}
           </div>
@@ -259,21 +259,21 @@ export default function LandingPage() {
             </div>
 
             <div className="flex flex-wrap justify-center gap-6 mb-6 md:mb-0">
-              <a href="#" className="text-gray-600 hover:text-primary transition-colors">
+              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
                 About
               </a>
-              <a href="#" className="text-gray-600 hover:text-primary transition-colors">
+              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
                 Features
               </a>
-              <a href="#" className="text-gray-600 hover:text-primary transition-colors">
+              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
                 Pricing
               </a>
-              <a href="#" className="text-gray-600 hover:text-primary transition-colors">
+              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
                 Contact
               </a>
             </div>
 
-            <p className="text-gray-500 text-sm">© 2025 Weather Smart. All rights reserved.</p>
+            <p className="text-muted-foreground text-sm">© 2025 Weather Smart. All rights reserved.</p>
           </div>
         </div>
       </footer>
