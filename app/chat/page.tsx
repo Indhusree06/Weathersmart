@@ -1159,38 +1159,19 @@ export default function ChatPage() {
                             </Button>
                           </div>
 
-                          {/* Share Outfit Buttons */}
-                          <div className="mt-2 grid grid-cols-2 gap-2">
+                          {/* Download Outfit Report */}
+                          <div className="mt-2">
                             <Button
-                              onClick={() => {
-                                const outfitText = currentOutfit?.items?.map((item: any) => item.name).join(', ') || 'My outfit'
-                                const shareText = `Check out my outfit: ${outfitText} (${selectedLocation} - ${weather?.temperature}°F)`
-                                navigator.clipboard.writeText(`${shareText}\n${window.location.href}`)
-                                alert('✅ Outfit link copied to clipboard!')
+                              onClick={async () => {
+                                const { downloadOutfitReport } = await import('@/lib/downloadOutfitReport')
+                                downloadOutfitReport(currentOutfit, weather, selectedLocation)
                               }}
-                              className="bg-muted hover:bg-muted/80 w-full text-xs"
+                              className="bg-green-600 hover:bg-green-700 w-full text-xs"
                               disabled={!currentOutfit?.items || currentOutfit.items.length === 0}
                             >
-                              📋 Copy Link
+                              📥 Download Outfit Report
                             </Button>
-                            <Button
-                              onClick={() => {
-                                const outfitText = currentOutfit?.items?.map((item: any) => item.name).join(', ') || 'My outfit'
-                                const shareText = `Check out my outfit: ${outfitText} (${selectedLocation} - ${weather?.temperature}°F)`
-                                const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(window.location.href)}`
-                                window.open(twitterUrl, '_blank')
-                              }}
-                              className="bg-sky-600 hover:bg-sky-700 w-full text-xs"
-                              disabled={!currentOutfit?.items || currentOutfit.items.length === 0}
-                            >
-                              🐦 Share
-                            </Button>
-                          </div>
-
-                          {/* Outfit Options Display */}
-                          {showMultipleOptions && outfitOptions.length > 0 && (
-                            <div className="mt-3">
-                              <OutfitOptions
+                          </div>itOptions
                                 options={outfitOptions}
                                 selectedIndex={selectedOptionIndex}
                                 onSelect={(index) => {
