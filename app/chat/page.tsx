@@ -19,6 +19,7 @@ import { supabase, wardrobeProfileService, wardrobeService } from "@/lib/supabas
 import { createSimpleOutfitRecommendation, analyzeColorHarmony } from "./createSimpleOutfitRecommendation"
 import { QuickFilters } from "./components/QuickFilters"
 import { VoiceInput } from "./components/VoiceInput"
+import { SwapItemButton } from "./components/SwapItemButton"
 
 /* --------------------------------- Types --------------------------------- */
 interface WeatherData {
@@ -669,6 +670,51 @@ export default function ChatPage() {
     setTimeout(() => { try { window.localStorage.removeItem('skipNextErrorMessage') } catch {} }, 4000)
   }
 
+  const handleSwapItem = (oldItem: any, newItem: any) => {
+    if (!currentOutfit) return
+    
+    // Replace the old item with the new item in the outfit
+    const updatedItems = currentOutfit.items.map((item: any) => 
+      item.id === oldItem.id ? { ...newItem, _hex: colorForItemDot(newItem.color) } : item
+    )
+    
+    // Recalculate color harmony with new items
+    const computedColorHarmony = analyzeColorHarmony(updatedItems)
+    
+    // Update the outfit state
+    setCurrentOutfit({
+      ...currentOutfit,
+      items: updatedItems,
+      colorHarmony: computedColorHarmony,
+    })
+  }
+
+  const getAlternativeItems = (currentItem: any) => {
+    if (!currentWardrobeItems || currentWardrobeItems.length === 0) return []
+    
+    // Filter by same category and exclude current outfit items
+    const currentOutfitIds = currentOutfit?.items?.map((item: any) => item.id) || []
+    
+    return currentWardrobeItems
+      .filter((item: any) => {
+        // Must be same category
+        const sameCategory = item.category?.toLowerCase() === currentItem.category?.toLowerCase()
+        // Must not be in current outfit
+        const notInOutfit = !currentOutfitIds.includes(item.id)
+        // Must not be the current item
+        const notCurrentItem = item.id !== currentItem.id
+        
+        return sameCategory && notInOutfit && notCurrentItem
+      })
+      .sort((a: any, b: any) => {
+        // Sort by least worn first
+        const aWorn = a.worn_count || a.wear_count || 0
+        const bWorn = b.worn_count || b.wear_count || 0
+        return aWorn - bWorn
+      })
+      .slice(0, 6) // Limit to 6 alternatives
+  }
+
   /* ----------------------------- Derived colors ---------------------------- */
   const uniqueItemColors = useMemo(() => {
     if (!currentOutfit?.items) return []
@@ -1102,7 +1148,7 @@ export default function ChatPage() {
                           {Array.isArray(currentOutfit.items) && currentOutfit.items.map((item: any, index: number) => (
                             <div
                               key={item.id || `item-${index}`}
-                              className="bg-slate-800 rounded-lg p-2 flex items-center gap-3 hover:bg-slate-700 transition-colors cursor-pointer"
+                              className="bg-slate-800 rounded-lg p-2 flex items-center gap-3 hover:bg-slate-700 transition-colors cursor-pointer relative"
                               onClick={() => {
                                 const profileParam = selectedProfile === "owner" ? wardrobeProfiles.find((p) => p.relationship === "self")?.id : selectedProfile
                                 const match = currentWardrobeItems.find((wi) => wi.name.toLowerCase().includes(String(item.name).toLowerCase()) || String(item.name).toLowerCase().includes(wi.name.toLowerCase()))
@@ -1110,6 +1156,11 @@ export default function ChatPage() {
                                 else router.push(`/wardrobe?profile=${profileParam}&from=chat&search=${encodeURIComponent(item.name)}`)
                               }}
                             >
+                              <SwapItemButton
+                                currentItem={item}
+                                alternativeItems={getAlternativeItems(item)}
+                                onSwap={(newItem) => handleSwapItem(item, newItem)}
+                              />
                               <div className="w-14 h-14 rounded-md overflow-hidden bg-slate-700 flex items-center justify-center">
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img
