@@ -144,7 +144,8 @@ export default function AnalyticsPage() {
         userName={user?.email?.split("@")[0]}
       />
 
-      {/* Main Content */}      <div className="max-w-7xl mx-auto p-6 space-y-8">g:px-8 py-8">
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto p-6 space-y-8">
         {/* Header */}
         <div className="mb-8">
           <Link href="/wardrobes">
