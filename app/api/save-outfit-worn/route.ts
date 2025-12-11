@@ -16,15 +16,17 @@ export async function POST(request: NextRequest) {
 
     // 1. Save outfit to history
     const { data: savedOutfit, error: outfitError } = await supabase
-      .from("outfit_history")
+      .from("outfits")
       .insert({
         user_id: userId,
-        profile_id: profileId || null,
-        worn_date: new Date().toISOString(),
-        outfit_data: outfit,
-        weather: outfit.weather || null,
+        name: `Outfit - ${new Date().toLocaleDateString()}`,
+        items: outfit.items,
+        occasion: outfit.occasion || 'Daily wear',
+        weather_condition: outfit.weather || null,
         location: outfit.location || null,
-        occasion: outfit.occasion || null
+        style_notes: outfit.style_notes || '',
+        worn_date: new Date().toISOString().split('T')[0],
+        created_at: new Date().toISOString()
       })
       .select()
       .single()
