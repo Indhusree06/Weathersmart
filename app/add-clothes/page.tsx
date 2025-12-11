@@ -225,8 +225,18 @@ export default function AddClothesPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const profileId = searchParams.get("profile") || undefined
-  const { user } = useAuth()
+  const { user, signOut } = useAuth()
   const { toast } = useToast()
+
+  const handleLogout = async () => {
+    try {
+      await signOut()
+      router.push("/login")
+    } catch (error) {
+      console.error("Logout error:", error)
+      toast({ title: "Error", description: "Failed to log out", variant: "destructive" })
+    }
+  }
 
   const [mode, setMode] = useState<Mode>("single")
 

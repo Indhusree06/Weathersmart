@@ -507,10 +507,10 @@ function ensureDiversity(
   const diverse: OutfitRecommendation[] = [];
   const usedItems = new Set<string>();
 
+  // First pass: strict diversity (less than 50% overlap)
   for (const outfit of outfits) {
     if (diverse.length >= count) break;
 
-    // Check if this outfit shares too many items with already selected outfits
     const itemIds = outfit.items.map(item => item.id);
     const overlap = itemIds.filter(id => usedItems.has(id)).length;
 
@@ -521,5 +521,20 @@ function ensureDiversity(
     }
   }
 
-  return diverse;
+  // Second pass: if we don't have enough options, relax the constraint
+  if (diverse.length < count) {
+    for (const outfit of outfits) {
+      if (diverse.length >= count) break;
+      
+      // Check if this outfit is already in diverse
+      if (diverse.some(d => d.score === outfit.score && d.items.length === outfit.items.length)) {
+        continue;
+      }
+      
+      diverse.push(outfit);
+    }
+  }
+
+  // Third pass: if still not enough, return what we have (at least the top ones)
+  return diverse.slice(0, Math.max(count, diverse.length));
 }
