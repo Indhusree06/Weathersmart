@@ -1,8 +1,3 @@
-/**
- * Intelligent Outfit Recommendation Engine
- * Uses color theory, style matching, and context awareness
- */
-
 import { autoCategorizeItem, type ItemCategory } from './autoCategorize';
 
 interface WardrobeItem {
@@ -149,51 +144,43 @@ function filterByWeather(
       if (name.includes('tank') || name.includes('shorts') || name.includes('sandal')) return false;
     } else if (temperature > 75) {
       // Hot weather - prefer light items
-      if (name.includes('tank') || name.includes('short') || name.includes('sandal')) return true;
-      if (name.includes('light') || name.includes('breathable')) return true;
-      // Exclude winter items
-      if (category === 'outerwear' && name.includes('coat')) return false;
-      if (name.includes('heavy') || name.includes('wool')) return false;
+      if (name.includes('shorts') || name.includes('tank') || name.includes('sandal')) return true;
+      if (name.includes('sweater') || name.includes('heavy') || name.includes('winter')) return false;
     }
 
     // Condition-based filtering
     if (condition.toLowerCase().includes('rain')) {
-      if (name.includes('waterproof') || name.includes('rain')) return true;
-      if (name.includes('boot')) return true;
-      // Avoid delicate items
-      if (name.includes('suede') || name.includes('silk')) return false;
+      if (name.includes('rain') || name.includes('waterproof') || category === 'outerwear') return true;
+      if (name.includes('suede') || name.includes('canvas')) return false;
     }
 
-    return true; // Default: include item
+    return true;
   });
 }
 
 /**
- * Filter items by occasion
+ * Filter items by occasion appropriateness
  */
-function filterByOccasion(items: WardrobeItem[], occasion?: string): WardrobeItem[] {
+function filterByOccasion(
+  items: WardrobeItem[],
+  occasion?: string
+): WardrobeItem[] {
   if (!occasion) return items;
 
-  const occasionLower = occasion.toLowerCase();
-
   return items.filter(item => {
-    const name = item.name.toLowerCase();
-    const description = (item.description || '').toLowerCase();
-    const tags = (item.tags || []).map(t => t.toLowerCase());
-    const allText = `${name} ${description} ${tags.join(' ')}`;
+    const allText = `${item.name} ${item.description || ''}`.toLowerCase();
 
-    switch (occasionLower) {
+    switch (occasion.toLowerCase()) {
       case 'work':
-      case 'formal':
-      case 'business':
       case 'professional':
+      case 'business':
         return (
-          allText.includes('formal') ||
-          allText.includes('business') ||
+          allText.includes('work') ||
           allText.includes('professional') ||
+          allText.includes('business') ||
+          allText.includes('formal') ||
           allText.includes('blazer') ||
-          allText.includes('dress shirt') ||
-          allText.includes('trousers') ||
+          allText.includes('dress pants') ||
           !allText.includes('casual') && !allText.includes('athletic')
         );
 
@@ -302,101 +289,126 @@ function generateOutfitCombinations(
     }
   }
 
+  // Strategy 3: Fallback - any valid combination
+  if (outfits.length < maxCombinations && items.length >= 2) {
+    for (let i = 0; i < Math.min(items.length, maxCombinations - outfits.length); i++) {
+      const randomItems = [items[i]];
+      for (let j = 0; j < 2 && randomItems.length < 3; j++) {
+        const randomIdx = Math.floor(Math.random() * items.length);
+        if (!randomItems.some(item => item.id === items[randomIdx].id)) {
+          randomItems.push(items[randomIdx]);
+        }
+      }
+      if (randomItems.length >= 2) {
+        outfits.push(createOutfitRecommendation(randomItems, context));
+      }
+    }
+  }
+
   return outfits;
 }
 
 /**
- * Find best matching item based on color and style
+ * Find best matching item
  */
 function findBestMatch(
-  baseItem: WardrobeItem,
+  referenceItem: WardrobeItem,
   candidates: WardrobeItem[],
   context: RecommendationContext
 ): WardrobeItem | null {
   if (candidates.length === 0) return null;
 
-  // Prioritize unworn items
-  const unwornItems = candidates.filter(item => (item.wear_count || 0) === 0);
-  const pool = unwornItems.length > 0 ? unwornItems : candidates;
-
-  // Find color-compatible items
-  const compatible = pool.filter(item => 
-    areColorsCompatible(baseItem.color, item.color)
-  );
-
-  if (compatible.length === 0) return pool[0];
-
-  // Return least worn compatible item
-  return compatible.sort((a, b) => (a.wear_count || 0) - (b.wear_count || 0))[0];
+  return candidates.reduce((best, candidate) => {
+    const score = calculateMatchScore(referenceItem, candidate, context);
+    const bestScore = calculateMatchScore(referenceItem, best, context);
+    return score > bestScore ? candidate : best;
+  });
 }
 
 /**
- * Check if two colors are compatible
+ * Calculate match score between two items
+ */
+function calculateMatchScore(
+  item1: WardrobeItem,
+  item2: WardrobeItem,
+  context: RecommendationContext
+): number {
+  let score = 0;
+
+  // Color compatibility
+  if (areColorsCompatible(item1.color, item2.color)) {
+    score += 50;
+  }
+
+  // Occasion match
+  if (context.occasion) {
+    const occasion = context.occasion.toLowerCase();
+    const text = `${item1.name} ${item2.name}`.toLowerCase();
+    if (text.includes(occasion)) {
+      score += 30;
+    }
+  }
+
+  // Prefer unworn items
+  if ((item2.wear_count || 0) === 0) {
+    score += 20;
+  }
+
+  // Brand consistency (bonus for matching brands)
+  if (item1.brand && item1.brand === item2.brand) {
+    score += 10;
+  }
+
+  return score;
+}
+
+/**
+ * Check if colors are compatible
  */
 function areColorsCompatible(color1?: string, color2?: string): boolean {
-  if (!color1 || !color2) return true; // No color info, assume compatible
+  if (!color1 || !color2) return true;
 
   const c1 = normalizeColor(color1);
   const c2 = normalizeColor(color2);
 
-  // Neutral colors go with everything
-  const neutrals = ['black', 'white', 'gray', 'grey', 'beige', 'cream', 'navy', 'brown'];
-  if (neutrals.includes(c1) || neutrals.includes(c2)) return true;
-
-  // Same color family
   if (c1 === c2) return true;
 
-  // Complementary colors
+  const neutrals = ['black', 'white', 'gray', 'beige', 'navy', 'brown', 'cream'];
+  if (neutrals.includes(c1) || neutrals.includes(c2)) return true;
+
   const complementary: Record<string, string[]> = {
-    'blue': ['orange', 'yellow', 'white'],
-    'red': ['green', 'white', 'black'],
-    'green': ['red', 'brown', 'beige'],
-    'yellow': ['blue', 'purple', 'gray'],
-    'purple': ['yellow', 'green', 'white'],
-    'orange': ['blue', 'green', 'brown']
+    red: ['green', 'white', 'black'],
+    blue: ['orange', 'yellow', 'white'],
+    yellow: ['blue', 'purple', 'black'],
+    green: ['red', 'pink', 'white'],
+    pink: ['green', 'white', 'black'],
+    purple: ['yellow', 'white', 'black'],
+    orange: ['blue', 'white', 'black'],
   };
 
-  if (complementary[c1]?.includes(c2)) return true;
-  if (complementary[c2]?.includes(c1)) return true;
-
-  // Avoid clashing
-  const clashing = [
-    ['red', 'pink'],
-    ['orange', 'red'],
-    ['purple', 'pink']
-  ];
-
-  for (const [a, b] of clashing) {
-    if ((c1 === a && c2 === b) || (c1 === b && c2 === a)) return false;
-  }
-
-  return true; // Default: compatible
+  return (complementary[c1]?.includes(c2) || complementary[c2]?.includes(c1)) ?? false;
 }
 
 /**
- * Normalize color names
+ * Normalize color name
  */
 function normalizeColor(color: string): string {
   const normalized = color.toLowerCase().trim();
   const colorMap: Record<string, string> = {
-    'navy': 'blue',
-    'cobalt': 'blue',
-    'teal': 'blue',
-    'sky': 'blue',
-    'burgundy': 'red',
-    'maroon': 'red',
-    'crimson': 'red',
-    'coral': 'orange',
-    'tan': 'beige',
-    'khaki': 'beige',
-    'ivory': 'cream'
+    'dark blue': 'navy',
+    'light blue': 'blue',
+    'light gray': 'gray',
+    'dark gray': 'gray',
+    'light green': 'green',
+    'dark green': 'green',
+    'light red': 'red',
+    'dark red': 'red',
   };
-
   return colorMap[normalized] || normalized;
 }
 
 /**
- * Create outfit recommendation with scoring
+ * Create outfit recommendation
  */
 function createOutfitRecommendation(
   items: WardrobeItem[],
@@ -444,7 +456,7 @@ function createOutfitRecommendation(
 }
 
 /**
- * Analyze color harmony
+ * Analyze color harmony with dynamic descriptions
  */
 function analyzeColorHarmony(items: WardrobeItem[]): {
   score: number;
@@ -460,19 +472,45 @@ function analyzeColorHarmony(items: WardrobeItem[]): {
   const uniqueColors = Array.from(new Set(colors));
   const neutralCount = colors.filter(c => ['black', 'white', 'gray', 'beige', 'navy', 'brown'].includes(c)).length;
 
+  // Generate random index for variety
+  const randomIdx = Math.floor(Math.random() * 5);
+
   // Monochromatic (same color)
   if (uniqueColors.length === 1) {
-    return { score: 0.9, type: 'monochromatic', description: 'Monochromatic color scheme creates a cohesive look' };
+    const color = uniqueColors[0];
+    const descriptions = [
+      `Elegant ${color} monochromatic look`,
+      `Sophisticated single-color palette in ${color}`,
+      `Cohesive ${color} ensemble`,
+      `Minimalist ${color} styling`,
+      `Refined ${color} monochrome`
+    ];
+    return { score: 0.9, type: 'monochromatic', description: descriptions[randomIdx] };
   }
 
   // Neutral palette
   if (neutralCount === colors.length) {
-    return { score: 1.0, type: 'neutral', description: 'Classic neutral palette - always elegant' };
+    const descriptions = [
+      'Timeless neutral combination',
+      'Classic and versatile neutral palette',
+      'Sophisticated monochrome styling',
+      'Elegant neutral ensemble',
+      'Professional neutral look'
+    ];
+    return { score: 1.0, type: 'neutral', description: descriptions[randomIdx] };
   }
 
   // Mixed with neutrals
   if (neutralCount > 0) {
-    return { score: 0.95, type: 'balanced', description: 'Well-balanced colors with neutral accents' };
+    const accentColor = uniqueColors.find(c => !['black', 'white', 'gray', 'beige', 'navy', 'brown'].includes(c));
+    const descriptions = [
+      `${accentColor} accent with neutral base`,
+      `Balanced ${accentColor} and neutral tones`,
+      `Neutral foundation with ${accentColor} pop`,
+      `Sophisticated ${accentColor} and neutral mix`,
+      `Versatile ${accentColor} with neutral palette`
+    ];
+    return { score: 0.95, type: 'balanced', description: descriptions[randomIdx] };
   }
 
   // Complementary colors
@@ -481,10 +519,24 @@ function analyzeColorHarmony(items: WardrobeItem[]): {
   );
 
   if (hasComplementary) {
-    return { score: 0.85, type: 'complementary', description: 'Complementary colors create visual interest' };
+    const descriptions = [
+      `Vibrant color combination`,
+      `Bold and striking palette`,
+      `Eye-catching color ensemble`,
+      `Dynamic color coordination`,
+      `Striking color harmony`
+    ];
+    return { score: 0.85, type: 'complementary', description: descriptions[randomIdx] };
   }
 
-  return { score: 0.7, type: 'mixed', description: 'Colorful combination' };
+  const descriptions = [
+    `Unique color combination`,
+    `Creative color palette`,
+    `Colorful and expressive look`,
+    `Distinctive color styling`,
+    `Artistic color arrangement`
+  ];
+  return { score: 0.7, type: 'mixed', description: descriptions[randomIdx] };
 }
 
 /**
@@ -537,4 +589,21 @@ function ensureDiversity(
 
   // Third pass: if still not enough, return what we have (at least the top ones)
   return diverse.slice(0, Math.max(count, diverse.length));
+}
+
+/**
+ * Auto-categorize item (placeholder - should import from autoCategorize)
+ */
+export function autoCategorizeItemFallback(item: WardrobeItem): ItemCategory {
+  const name = item.name.toLowerCase();
+  const desc = (item.description || '').toLowerCase();
+  const text = `${name} ${desc}`;
+
+  if (text.includes('shoe') || text.includes('boot') || text.includes('sneaker') || text.includes('sandal')) return 'shoes';
+  if (text.includes('dress')) return 'dress';
+  if (text.includes('jacket') || text.includes('coat') || text.includes('hoodie') || text.includes('blazer')) return 'outerwear';
+  if (text.includes('pant') || text.includes('jean') || text.includes('short') || text.includes('skirt')) return 'bottom';
+  if (text.includes('shirt') || text.includes('blouse') || text.includes('tee') || text.includes('top') || text.includes('sweater')) return 'top';
+  
+  return 'accessory';
 }
